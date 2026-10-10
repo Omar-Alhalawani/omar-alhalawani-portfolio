@@ -34,6 +34,8 @@ The site is static. No server, database, AI service, API key, or secret needs co
 | `npm run qa:browser` | Responsive matrix, axe, keyboard, scroll, resize, models, mocked contact, fallback, lifecycle, route stress |
 | `npm run qa:network` | Initial delivery, scene splitting, graphics-free routes, renderer statistics |
 | `npm run qa:lighthouse` | Actual desktop and emulated mobile Lighthouse reports |
+| `node scripts/targeted-qa.mjs` | All home scenes, DPR caps, and no-JavaScript delivery |
+| `npm run qa:interaction` | Pointer, native browser-tab visibility where supported, and delayed demo controls |
 | `npm run art` | Regenerate original static SVG scene artwork |
 | `npm run og` | Regenerate the 1200×630 social preview using built self-hosted fonts |
 

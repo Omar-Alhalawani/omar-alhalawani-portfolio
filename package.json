@@ -17,6 +17,7 @@
     "qa:static": "node scripts/static-qa.mjs",
     "qa:network": "node scripts/network-qa.mjs",
     "qa:lighthouse": "node scripts/lighthouse-qa.mjs",
+    "qa:interaction": "node scripts/interaction-qa.mjs",
     "art": "node scripts/generate-art.mjs",
     "og": "node scripts/generate-og.mjs"
   },

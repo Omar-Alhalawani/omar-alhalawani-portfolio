@@ -51,7 +51,9 @@ try{
         await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(750);
         await page.screenshot({path:`${artifactDirectory}/${slug(route)}-${width}.png`});
       }
-      const unexpected=errors.slice(mark).filter(error=>!(route==='/missing-signal'&&error==='Failed to load resource: the server responded with a status of 404 (Not Found)'));
+      // HTTP/2 may omit the reason phrase that the local HTTP/1.1 server sends.
+      // Asset failures still receive their own URL-specific response error.
+      const unexpected=errors.slice(mark).filter(error=>!(route==='/missing-signal'&&/^Failed to load resource: the server responded with a status of 404 \(.*\)$/.test(error)));
       assert.deepEqual(unexpected,[],`${route} at ${width}: console/network errors`);
       result.matrix.push({route,width,height,status:response.status(),...measurement,graphics});
       console.log(`PASS ${width}×${height} ${route}`);
@@ -100,7 +102,7 @@ try{
   await page.getByRole('button',{name:'Send message'}).click();await page.waitForFunction(()=>document.querySelector('#form-status')?.dataset.state==='error');assert.ok((await page.getByLabel('Message',{exact:true}).inputValue()).includes('Retain'));await page.screenshot({path:`${artifactDirectory}/contact-error.png`});result.checks.push('Contact native validation, mocked success/reset and failure/retention; zero real submissions');
   await page.goto(base+'/resume',{waitUntil:'networkidle'});const pdf=await page.request.get(base+'/resume/Resume_Omar_Alhalawani.pdf');assert.equal(pdf.status(),200);assert.match(pdf.headers()['content-type'],/application\/pdf/);assert.equal((await pdf.body()).length,89116);assert.ok(await page.getByRole('link',{name:'Download PDF'}).getAttribute('download')!==null);result.checks.push('Original PDF embed URL, direct response, and download attribute');
   for(let i=0;i<2;i++)for(const route of ['/','/projects','/projects/fifo','/projects','/experience','/about','/']){await page.goto(base+route,{waitUntil:'networkidle'});await ready(page);assert.ok(await page.locator('canvas').count()<=1||route==='/');}
-  const unexpected=errors.filter(error=>error!=='Failed to load resource: the server responded with a status of 500 (Internal Server Error)');
+  const unexpected=errors.filter(error=>!/^Failed to load resource: the server responded with a status of 500 \(.*\)$/.test(error));
   assert.deepEqual(unexpected,[]);result.checks.push('Two route stress cycles; no unexpected console/network errors or duplicate scene canvases. Mocked form failure intentionally returns 500.');await page.close();
   const mobile=await browser.newPage({viewport:{width:390,height:844}});await mobile.goto(base+'/contact',{waitUntil:'networkidle'});await mobile.getByText('Menu',{exact:true}).click();assert.ok(await mobile.locator('.mobile-nav').getAttribute('open')!==null);await mobile.locator('.mobile-nav').getByRole('link',{name:'Projects'}).click();await mobile.waitForURL(base+'/projects');result.checks.push('Mobile menu and project navigation');await mobile.close();
   const reduced=await browser.newPage({viewport:{width:1440,height:900},reducedMotion:'reduce'});await reduced.goto(base,{waitUntil:'networkidle'});await ready(reduced);assert.equal(await reduced.locator('.scene-island').first().getAttribute('data-render-loop'),'demand');await reduced.screenshot({path:`${artifactDirectory}/home-reduced.png`});await reduced.locator('[data-layer="3"]').focus();assert.equal(await reduced.locator('[data-layer="3"]').getAttribute('aria-pressed'),'true');result.checks.push('Reduced motion renders an intentional static composition and responds to focus');await reduced.close();
