@@ -14,6 +14,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   const host = useRef<HTMLDivElement>(null);
   const [load, setLoad] = useState(false);
   const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
+  const fallback = scene === 'hero' ? '/art/silicon-fallback.svg' : `/art/${scene}-fallback.svg`;
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -33,7 +34,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   }, []);
   return (
     <div className="scene-island" ref={host} data-state={status} data-scene={scene} aria-hidden="true">
-      <img className="scene-fallback" src="/art/silicon-fallback.svg" width="900" height="900" alt="" />
+      <img className="scene-fallback" src={fallback} width="900" height={scene==='hero'?900:600} alt="" />
       {load && status !== 'fallback' && <GraphicsBoundary onFailure={() => setStatus('fallback')}>
         <Suspense fallback={null}><CanvasShell scene={scene} host={host} onReady={() => setStatus('ready')} onFailure={() => setStatus('fallback')} /></Suspense>
       </GraphicsBoundary>}

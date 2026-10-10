@@ -1,0 +1,32 @@
+---
+import SceneIsland from './SceneIsland';
+import ProjectCard from './ProjectCard.astro';
+import type {Project} from '../data/projects';
+interface Props { projects:Project[]; }
+const {projects}=Astro.props;
+---
+<div class="project-explorer">
+  <div class="project-list">{projects.map((project,index)=><ProjectCard project={project} index={index}/>)}</div>
+  <div class="project-map-column"><div class="project-map"><SceneIsland scene="floorplan" client:visible /><div class="map-labels" aria-hidden="true"><span>MEMORY</span><span>LOGIC</span><span>ANALOG</span><span>OPTICAL</span><span>ACQUISITION</span><span>MOTION</span></div><p class="art-caption">Independent projects. One conceptual map.<br />Hover, focus, or open a project to follow its signal.</p></div></div>
+</div>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-project]').forEach(card=>{
+    const select=()=>{
+      document.querySelectorAll('[data-project]').forEach(item=>item.removeAttribute('data-active'));
+      card.setAttribute('data-active','true');
+      window.dispatchEvent(new CustomEvent('portfolio:project',{detail:card.dataset.project}));
+    };
+    card.addEventListener('pointerenter',select);card.addEventListener('focus',select);
+  });
+</script>
+<style>
+  .project-explorer { display:grid; grid-template-columns:1fr 1.15fr; gap:64px; position:relative; }
+  .project-list { border-bottom:1px solid var(--line); }
+  .project-map-column { position:relative; }
+  .project-map { position:sticky; top:calc(var(--header) + 24px); height:630px; }
+  .project-map :global(.scene-island) { height:520px; }
+  .map-labels { display:flex; justify-content:center; flex-wrap:wrap; gap:10px 16px; max-width:460px; margin:0 auto 22px; font:400 8px/1.5 var(--mono); color:var(--muted); letter-spacing:.08em; }
+  .art-caption { text-align:center; max-width:400px; margin:auto; }
+  @media(max-width:1050px) { .project-explorer { gap:32px; grid-template-columns:1fr 1fr; } .project-map { height:500px; } .project-map :global(.scene-island) { height:390px; } }
+  @media(max-width:800px) { .project-explorer { grid-template-columns:1fr; gap:20px; } .project-map-column { grid-row:1; } .project-map { height:370px; position:relative; top:0; } .project-map :global(.scene-island) { height:280px; } .map-labels { font-size:7px; margin-bottom:16px; } .art-caption { font-size:8px; } }
+</style>

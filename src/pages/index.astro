@@ -3,8 +3,13 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import Button from '../components/Button.astro';
 import SceneIsland from '../components/SceneIsland';
+import ExperienceCard from '../components/ExperienceCard.astro';
+import VerificationVisual from '../components/VerificationVisual.astro';
+import ProjectExplorer from '../components/ProjectExplorer.astro';
 import { site } from '../data/site';
 import { skills } from '../data/skills';
+import { experience } from '../data/experience';
+import { featuredProjects } from '../data/projects';
 ---
 <SiteLayout>
   <div id="silicon-sequence" class="silicon-sequence">
@@ -33,7 +38,10 @@ import { skills } from '../data/skills';
       </div>
     </section>
   </div>
-  <section class="prototype-end container"><Eyebrow>Experience comes next</Eyebrow><h2>Verification methodology,<br />in practice.</h2><p>This production-quality prototype establishes the silicon, signal, and system visual language. The full portfolio continues with Ciena, selected projects, and source-backed case studies.</p></section>
+  <section class="home-experience container section" aria-labelledby="experience-title"><div class="section-heading"><div><Eyebrow>03 // Verification in practice</Eyebrow><h2 id="experience-title">Test the assumptions.<br />Trust the evidence.</h2></div><a href="/experience" class="text-link">All experience ↗</a></div><div class="experience-grid"><ExperienceCard item={experience[0]} compact/><VerificationVisual /></div></section>
+  <section class="home-projects container section" aria-labelledby="projects-title"><div class="section-heading"><div><Eyebrow>04 // Selected systems</Eyebrow><h2 id="projects-title">From a clock edge<br />to a physical signal.</h2></div><a href="/projects" class="text-link">All projects ↗</a></div><ProjectExplorer projects={featuredProjects}/></section>
+  <section class="home-about container section" aria-labelledby="about-title"><div><Eyebrow>05 // The engineer behind the work</Eyebrow><h2 id="about-title">Curiosity follows<br />the signal.</h2></div><div><p>I’m a Computer Systems Engineering student at Carleton University in Ottawa. My work connects hardware verification, embedded instrumentation, and tools that make engineering repeatable.</p><p>From research labs to digital-system classrooms, I enjoy making complicated behavior easier to understand.</p><a href="/about" class="text-link">More about me ↗</a></div></section>
+  <section class="cta-band container"><div><Eyebrow>06 // Open a channel</Eyebrow><h2>Have a system<br />worth building?</h2></div><Button href="/contact" variant="primary">Let’s connect ↗</Button></section>
 </SiteLayout>
 <script>
   document.querySelectorAll<HTMLButtonElement>('[data-layer]').forEach(button=>{
@@ -84,11 +92,18 @@ import { skills } from '../data/skills';
   .skill-row:hover,.skill-row[data-active],.skill-row:focus-visible { border-top-color:var(--cyan); }
   .skill-row:hover strong,.skill-row[data-active] strong { color:var(--cyan); }
   .concept-note { margin-top:24px; color:var(--muted); font:400 9px/1.8 var(--mono); }
-  .prototype-end { border-top:1px solid var(--line); padding-block:100px; }
-  .prototype-end p { max-width:560px; margin-top:28px; }
+  .home-experience,.home-projects,.home-about { border-top:1px solid var(--line); }
+  .experience-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; }
+  .home-about { display:grid; grid-template-columns:1fr 1fr; gap:100px; }
+  .home-about p { font-size:16px; line-height:1.9; max-width:620px; }
+  .home-about p+p { margin-top:22px; }
+  .home-about .text-link { margin-top:24px; }
   @media (min-width:1900px) { .hero h1 { font-size:108px; } .hero-description { font-size:15px; } }
   @media (max-width:1100px) { .hero .actions { gap:8px; } .hero .button { padding-inline:14px; } .hero-copy { width:52%; } .stack-copy { width:47%; } .world-stage { width:54%; } }
   @media (max-width:900px) {
+    .experience-grid { grid-template-columns:1fr; gap:24px; }
+    .home-about { grid-template-columns:1fr; gap:32px; }
+    .home-about p { font-size:14px; }
     .hero { min-height:980px; align-items:start; padding-top:56px; padding-bottom:440px; }
     .hero-copy { width:100%; max-width:580px; }
     .hero h1 { font-size:clamp(52px,12vw,78px); margin-bottom:24px; }

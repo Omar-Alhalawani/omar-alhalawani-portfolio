@@ -1,0 +1,20 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Button from '../components/Button.astro';
+import {site} from '../data/site';
+---
+<SiteLayout title="Resume — Omar Alhalawani" description="View or download Omar Alhalawani’s original resume PDF. Computer Systems Engineering, ASIC verification, digital design, and embedded systems.">
+  <div class="container"><section class="page-intro"><Eyebrow>Resume // Engineering experience</Eyebrow><h1>The work,<br />on one page.</h1><p class="lead">Education, experience, and selected engineering projects.</p><div class="actions resume-actions"><Button href={site.resume} variant="primary" download>Download PDF ↓</Button><Button href={site.resume} external>Open PDF ↗</Button></div></section>
+    <section class="resume-document" aria-label="Resume PDF"><iframe src={site.resume} title="Omar Alhalawani’s resume PDF" loading="lazy"><p><a href={site.resume}>Open the resume PDF</a></p></iframe><p class="resume-help">If your browser does not display embedded PDFs, <a href={site.resume} target="_blank" rel="noopener noreferrer">open the PDF in a new tab</a> or use the download link above.</p></section>
+    <section class="cta-band"><div><Eyebrow>Let’s connect</Eyebrow><h2>Have a system<br />worth building?</h2></div><Button href="/contact">Get in touch ↗</Button></section>
+  </div>
+</SiteLayout>
+<style>
+  .resume-actions { margin-top:30px; }
+  .resume-document { padding-bottom:80px; }
+  .resume-document iframe { display:block; width:100%; height:1050px; max-height:85vh; min-height:500px; border:1px solid var(--line); background:var(--bg-raised); border-radius:4px; }
+  .resume-help { font-size:12px; line-height:1.85; color:var(--muted); margin-top:22px; }
+  .resume-help a { color:var(--cyan); text-decoration:underline; text-underline-offset:4px; }
+  @media(max-width:600px) { .resume-document iframe { min-height:430px; } }
+</style>

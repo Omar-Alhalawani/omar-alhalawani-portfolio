@@ -1,0 +1,37 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Button from '../components/Button.astro';
+import {skills} from '../data/skills';
+---
+<SiteLayout title="About — Omar Alhalawani" description="Omar Alhalawani, Computer Systems Engineering student at Carleton University in Ottawa. Interested in hardware verification, embedded systems, and useful engineering tools.">
+  <div class="container"><section class="about-intro"><div><Eyebrow>About // The person behind the systems</Eyebrow><h1>Curiosity,<br />close to the hardware.</h1><p class="lead">I’m Omar, a Computer Systems Engineering student at Carleton University in Ottawa.</p><p>I’m interested in the point where software has to answer to physical reality: a clock edge, a sensor reading, a captured operand, or a result that needs to be verified.</p><p>My work spans RTL design and verification, embedded instrumentation, and automation. I like understanding the whole path, then making each part easier to reason about.</p><div class="actions"><Button href="/experience">My experience ↗</Button><Button href="/contact" variant="text">Get in touch ↗</Button></div></div><figure><img src="/images/omar.webp" alt="Portrait of Omar Alhalawani" width="500" height="500" loading="eager" decoding="async"/><figcaption class="art-caption">OTTAWA, CANADA // CARLETON UNIVERSITY</figcaption></figure></section>
+    <section class="about-details"><div><Eyebrow>Education & recognition</Eyebrow><h2>Learning the system,<br />layer by layer.</h2></div><div class="education"><h3>B.Eng. Computer Systems Engineering</h3><p class="education-school">Carleton University · 2024–2029</p><dl><div><dt>CGPA</dt><dd>10.80 / 12.00</dd></div><div><dt>Recognition</dt><dd>Ontario Professional Engineers Scholarship<br />Dean’s Honour List</dd></div></dl><p>Alongside coursework and engineering projects, I’ve contributed to BioCARE and research instrumentation work at Carleton.</p></div></section>
+    <section class="about-details interests"><div><Eyebrow>Technical interests</Eyebrow><h2>From logic<br />to living signals.</h2></div><div>{skills.map(skill=><div class="interest-row"><h3>{skill.name}</h3><p>{skill.detail}</p><span>{skill.tech}</span></div>)}</div></section>
+    <section class="cta-band"><div><Eyebrow>Keep exploring</Eyebrow><h2>See how the ideas<br />become implementations.</h2></div><Button href="/projects" variant="primary">Explore projects ↗</Button></section>
+  </div>
+</SiteLayout>
+<style>
+  .about-intro { display:grid; grid-template-columns:1.3fr .8fr; gap:110px; align-items:center; padding-block:90px 110px; }
+  .about-intro h1 { font-size:clamp(44px,5.2vw,80px); margin-bottom:30px; }
+  .about-intro p { max-width:640px; margin-top:22px; font-size:15px; line-height:1.9; }
+  .about-intro>.lead { font-size:18px; }
+  .about-intro .actions { margin-top:32px; }
+  .about-intro img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:8px; filter:saturate(.75); border:1px solid var(--line); }
+  .about-intro figcaption { margin-top:20px; font-size:8px; text-align:center; }
+  .about-details { display:grid; grid-template-columns:1fr 1.2fr; gap:100px; border-top:1px solid var(--line); padding-block:80px; }
+  .about-details h2 { font-size:clamp(32px,3.4vw,49px); }
+  .education h3 { font-size:27px; margin-bottom:20px; }
+  .education-school { font-size:13px; color:var(--muted); }
+  .education dl { margin-block:30px; display:grid; gap:24px; }
+  .education dt { font:400 9px/1.8 var(--mono); color:var(--cyan); margin-bottom:10px; }
+  .education dd { font-size:15px; line-height:1.85; margin:0; }
+  .education>p:last-child { font-size:14px; line-height:1.9; }
+  .interest-row { padding-block:24px; border-top:1px solid var(--line); }
+  .interest-row:first-child { padding-top:0; border:0; }
+  .interest-row h3 { font-size:24px; margin-bottom:16px; }
+  .interest-row p { font-size:13px; margin-bottom:14px; }
+  .interest-row>span { font:400 9px/1.8 var(--mono); color:var(--muted); }
+  @media(max-width:1000px) { .about-intro { gap:50px; } .about-details { gap:50px; } }
+  @media(max-width:800px) { .about-intro { grid-template-columns:1fr; gap:40px; padding-block:56px 72px; } .about-intro figure { max-width:420px; } .about-details { grid-template-columns:1fr; gap:40px; padding-block:56px; } }
+</style>

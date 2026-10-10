@@ -23,7 +23,7 @@ Read V1 `README.md`, `index.html`, `experience.html`, `projects.html`, `project-
 | Resume | Copy PDF byte-for-byte | `assets/resume/Resume_Omar_Alhalawani.pdf`, 89,116 bytes. No content edits. |
 
 ## Assets
-Preserve Omar's actual profile photo and useful project images. Images are evidence inside case studies, not a collage competing with the shader. Create an original code-native wafer fallback and dedicated 1200×630 OG image. Do not copy V1's styles, scripts, game, stock person photos, or heavy favicon.
+Preserve Omar's supplied profile photo. V1's FPGA illustration shows a seven-segment display and an FSM, contradicting the published RTL. Exclude that image and the other unneeded illustrative project thumbnails from V2; they cannot serve as implementation evidence. Use original procedural scenes and clearly labeled conceptual diagrams. Create an original code-native wafer fallback, project-specific static SVGs, and dedicated 1200×630 OG image. Do not copy V1's styles, scripts, game, stock person photos, or heavy favicon.
 
 ## Content problems resolved
 V1 repeats the same identity on many pages and mixes accurate case studies with stale README tags. V2 uses structured data once, gives each project its own route, and distinguishes design behavior, implemented tests, ongoing work, and conceptual visuals. No fictitious telemetry belongs in the UI.

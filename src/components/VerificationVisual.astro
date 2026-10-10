@@ -1,0 +1,16 @@
+---
+import SceneIsland from './SceneIsland';
+---
+<figure class="verification-visual">
+  <div class="verification-art"><SceneIsland scene="verification" client:visible /></div>
+  <div class="verification-stages" aria-label="Verification workflow"><span>SPECIFICATION</span><span>RTL</span><span>TESTBENCH</span><span>VERIFY</span></div>
+  <figcaption class="art-caption">A general verification workflow.<br />A conceptual illustration, independent of any employer design.</figcaption>
+</figure>
+<style>
+  .verification-visual { display:grid; align-content:center; }
+  .verification-art { height:440px; }
+  .verification-stages { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; text-align:center; font:400 8px/1.7 var(--mono); color:var(--cyan); max-width:540px; margin-inline:auto; width:100%; }
+  figcaption { margin-top:24px; text-align:center; }
+  @media(max-width:800px) { .verification-art { height:320px; } .verification-stages { font-size:7px; gap:8px; } }
+  @media(max-width:350px) { .verification-art { height:270px; } }
+</style>

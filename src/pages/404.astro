@@ -1,0 +1,9 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Eyebrow from '../components/Eyebrow.astro';
+import Button from '../components/Button.astro';
+---
+<SiteLayout title="404 // Signal Lost — Omar Alhalawani" description="This signal reached a broken connection. Return to Omar Alhalawani’s portfolio or explore the engineering projects.">
+  <section class="lost-signal container"><Eyebrow>404 // Signal lost</Eyebrow><h1>A broken connection.</h1><p>This page isn’t on the map. Let’s route you back to the work.</p><svg class="broken-trace" viewBox="0 0 640 150" fill="none" aria-hidden="true"><path d="M20 100H130L180 50H290" stroke="#75e4f6" stroke-width="2"/><path d="M350 50H460L510 100H620" stroke="#283449" stroke-width="2"/><circle cx="290" cy="50" r="5" fill="#75e4f6"/><circle cx="350" cy="50" r="5" stroke="#b3a1f4" stroke-width="2"/><path d="M314 38L326 62M326 38L314 62" stroke="#b3a1f4" stroke-width="2"/></svg><div class="actions"><Button href="/" variant="primary">Back to home ↗</Button><Button href="/projects">Explore projects ↗</Button></div></section>
+</SiteLayout>
+<style>.lost-signal{min-height:calc(100svh - var(--header) - 230px);padding-block:100px}.lost-signal h1{margin-bottom:28px}.lost-signal p{max-width:540px;font-size:16px}.broken-trace{display:block;width:640px;margin-block:44px}.lost-signal .actions{margin-top:28px}@media(max-width:600px){.lost-signal{padding-block:64px}.lost-signal h1{font-size:45px}}</style>

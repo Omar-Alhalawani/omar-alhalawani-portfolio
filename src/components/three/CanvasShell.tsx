@@ -4,6 +4,14 @@ import type { GraphicsTier, SceneKind, SceneProps } from './types';
 
 const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.ComponentType<SceneProps>>>>> = {
   hero: lazy(() => import('./HeroScene')),
+  verification: lazy(() => import('./ExperienceScene')),
+  floorplan: lazy(() => import('./ProjectFloorplan')),
+  fifo: lazy(() => import('./projects/FifoScene')),
+  fpga: lazy(() => import('./projects/FpgaScene')),
+  emg: lazy(() => import('./projects/EmgScene')),
+  lumalink: lazy(() => import('./projects/LumaScene')),
+  cubex: lazy(() => import('./projects/CubexScene')),
+  daq: lazy(() => import('./projects/DaqScene')),
 };
 
 function RenderLifecycle({ onReady, onFailure, reducedMotion, tier }: SceneProps & { onReady: () => void; onFailure: () => void }) {
@@ -24,7 +32,9 @@ function RenderLifecycle({ onReady, onFailure, reducedMotion, tier }: SceneProps
       if (gl.info.render.calls > 0) { announced.current=true; onReady(); }
       else invalidate();
     }
-    if (frame.current % 60 === 0) {
+    if (frame.current % 30 === 0 || frame.current === 3) {
+      gl.domElement.dataset.frames = String(frame.current);
+      gl.domElement.dataset.dpr = String(gl.getPixelRatio());
       gl.domElement.dataset.drawCalls = String(gl.info.render.calls);
       gl.domElement.dataset.triangles = String(gl.info.render.triangles);
       gl.domElement.dataset.textures = String(gl.info.memory.textures);
@@ -56,6 +66,9 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   }, [host]);
   const Scene = sceneModules[scene];
   const dpr = tier === 'high' ? 1.75 : tier === 'medium' ? 1.35 : 1;
+  useEffect(()=>{
+    if(host.current)host.current.dataset.renderLoop=visible?(reducedMotion?'demand':'always'):'paused';
+  },[host,visible,reducedMotion]);
   return <Canvas className="scene-canvas" dpr={[1,dpr]} frameloop={visible ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onFailure={onFailure} reducedMotion={reducedMotion} tier={tier} />
     <ambientLight intensity={.65} />

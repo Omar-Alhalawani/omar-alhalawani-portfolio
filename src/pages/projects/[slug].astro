@@ -1,0 +1,63 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Eyebrow from '../../components/Eyebrow.astro';
+import Button from '../../components/Button.astro';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
+import SceneIsland from '../../components/SceneIsland';
+import FifoDemo from '../../components/FifoDemo';
+import FpgaDemo from '../../components/FpgaDemo';
+import {projects,type Project} from '../../data/projects';
+export function getStaticPaths(){return projects.map(project=>({params:{slug:project.id},props:{project}}));}
+interface Props{project:Project}
+const {project}=Astro.props;
+const related=projects.filter(item=>item.id!==project.id).slice(0,2);
+const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, with read and write pointers.', 'fpga-arithmetic':'Captured operands, arithmetic, and eight visible output bits.',emg:'Synthetic signal acquisition and conditioning concept.',lumalink:'A light pulse travels between independent transmitter and receiver.',cubex:'An illustrative frame, bed, gantry, and print head.','mini-lysimeter':'A conceptual sensor-to-acquisition signal chain.'};
+---
+<SiteLayout title={`${project.title} — Omar Alhalawani`} description={project.description} project={project}>
+  <div class="container"><a class="text-link case-back" href="/projects">← All projects</a>
+    <section class="case-hero"><div class="case-heading"><Eyebrow>{project.category}</Eyebrow><h1>{project.title}<span>.</span></h1><p class="lead">{project.description}</p><div class="tech-tags">{project.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div><p class="case-status"><span aria-hidden="true">●</span> {project.status}</p><div class="actions">{project.source&&<Button href={project.source} variant="primary" external>View source ↗</Button>}<Button href="#architecture">Trace the architecture ↓</Button></div></div>
+      <figure class="case-art"><div class="case-canvas"><SceneIsland scene={project.scene} client:visible /></div><figcaption class="art-caption">{sceneLabel[project.id]}<br />Conceptual illustration. Essential details are in the case study.</figcaption></figure>
+    </section>
+    <div class="case-content"><aside class="case-toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#architecture">Architecture</a>{project.sections.map((section,index)=><a href={`#section-${index+1}`}>{section.title}</a>)}{['fifo','fpga-arithmetic'].includes(project.id)&&<a href="#interactive-model">Interactive model</a>}</aside>
+      <article class="case-prose"><section id="architecture"><h2>Follow the signal.</h2><ArchitectureDiagram project={project}/></section>{project.sections.map((section,index)=><section class="case-section" id={`section-${index+1}`}><span class="section-number">0{index+1} // ENGINEERING NOTES</span><h2>{section.title}</h2><p>{section.text}</p>{section.points&&<ul>{section.points.map(point=><li>{point}</li>)}</ul>}</section>)}
+        {project.id==='fifo'&&<section id="interactive-model"><FifoDemo client:visible /><noscript><p>The interactive model requires JavaScript. The handshake rules and verification approach are documented above.</p></noscript></section>}
+        {project.id==='fpga-arithmetic'&&<section id="interactive-model"><FpgaDemo client:visible /><noscript><p>The interactive model requires JavaScript. The register and arithmetic behavior is documented above.</p></noscript></section>}
+        <div class="case-source">{project.source?<><p class="eyebrow">Primary evidence</p><a class="text-link" href={project.source} target="_blank" rel="noopener noreferrer">Open the public repository ↗</a></>:<><p class="eyebrow">Evidence scope</p><p>This case study draws from the public portfolio summary. There is no available public implementation repository to link.</p></>}</div>
+      </article>
+    </div>
+    <section class="related-projects"><Eyebrow>Continue exploring</Eyebrow><div>{related.map(item=><a href={`/projects/${item.id}`}><span>{item.category}</span><h3>{item.title} <span aria-hidden="true">↗</span></h3></a>)}</div></section>
+  </div>
+</SiteLayout>
+<style>
+  .case-back { margin-top:32px; font-size:11px; }
+  .case-hero { display:grid; grid-template-columns:1fr 1fr; gap:60px; padding-block:50px 80px; align-items:center; }
+  .case-heading h1 { font-size:clamp(44px,5.3vw,80px); max-width:650px; margin-bottom:28px; }
+  .case-heading h1>span { color:var(--cyan); }
+  .case-heading>.lead { font-size:17px; margin-bottom:28px; }
+  .case-status { font:400 10px/1.8 var(--mono); color:var(--muted); margin-block:24px; }
+  .case-status>span { color:var(--cyan); margin-right:7px; }
+  .case-canvas { height:440px; }
+  .case-art figcaption { text-align:center; max-width:420px; margin:auto; font-size:9px; }
+  .case-content { display:grid; grid-template-columns:240px minmax(0,820px); gap:80px; padding-block:50px 80px; border-top:1px solid var(--line); }
+  .case-toc { align-self:start; position:sticky; top:calc(var(--header) + 30px); }
+  .case-toc>.eyebrow { font-size:9px; margin-bottom:18px; }
+  .case-toc>a { display:block; min-height:44px; padding-block:12px; font-size:11px; color:var(--muted); line-height:1.65; }
+  .case-toc>a:hover { color:var(--cyan); }
+  .case-prose h2 { font-size:clamp(29px,3vw,44px); margin-bottom:26px; }
+  .case-prose p,.case-prose li { font-size:14px; line-height:1.9; }
+  .case-section { margin-top:64px; }
+  .section-number { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:18px; }
+  .case-section ul { margin-top:24px; }
+  .case-source { margin-top:48px; padding-top:30px; border-top:1px solid var(--line); }
+  .case-source>.eyebrow { font-size:10px; margin-bottom:12px; }
+  .related-projects { padding-block:60px 90px; border-top:1px solid var(--line); }
+  .related-projects>div { display:grid; grid-template-columns:1fr 1fr; gap:50px; }
+  .related-projects a { padding-block:24px; }
+  .related-projects a>span { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:18px; }
+  .related-projects h3 { font-size:28px; }
+  .related-projects h3>span { color:var(--cyan); margin-left:14px; }
+  .related-projects a:hover h3 { color:var(--cyan); }
+  @media(max-width:1050px) { .case-hero { gap:30px; } .case-content { grid-template-columns:190px minmax(0,1fr); gap:40px; } }
+  @media(max-width:800px) { .case-hero { grid-template-columns:1fr; padding-top:30px; gap:20px; padding-bottom:50px; } .case-heading>.lead { max-width:670px; } .case-canvas { height:340px; } .case-content { display:block; padding-top:32px; } .case-toc { position:relative; top:0; margin-bottom:40px; display:flex; flex-wrap:wrap; gap:0 20px; } .case-toc>.eyebrow { width:100%; margin-bottom:6px; } .case-toc>a { max-width:250px; } }
+  @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading>.lead { font-size:15px; } .case-section { margin-top:48px; } .case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
+</style>
