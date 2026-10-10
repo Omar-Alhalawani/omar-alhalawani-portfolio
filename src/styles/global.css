@@ -55,7 +55,7 @@
   .desktop-nav>a.active::after { content:''; position:absolute; bottom:3px; left:0; width:18px; height:2px; background:var(--cyan); }
   .desktop-nav .nav-resume { border:1px solid var(--line); border-radius:4px; padding:9px 14px; color:var(--text); }
   .mobile-nav { display:none; }
-  .button { min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:20px; padding:12px 21px; border:1px solid var(--line); border-radius:4px; font-size:12px; font-weight:500; line-height:1.6; transition:transform .2s,border-color .2s,background .2s; }
+  .button { min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:20px; padding:12px 21px; border:1px solid var(--line); background:transparent; border-radius:4px; font-size:12px; font-weight:500; line-height:1.6; transition:transform .2s,border-color .2s,background .2s; }
   .button:hover { border-color:var(--cyan); transform:translateY(-2px); }
   .button:active { transform:scale(.985); }
   .button--primary { background:var(--cyan); border-color:var(--cyan); color:#07111b; }

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState, type RefObject } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import type { GraphicsTier, SceneKind, SceneProps } from './types';
 
@@ -13,6 +13,18 @@ const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.Compo
   cubex: lazy(() => import('./projects/CubexScene')),
   daq: lazy(() => import('./projects/DaqScene')),
 };
+
+function WarmShaders({onPrepared,onFailure}:{onPrepared:()=>void;onFailure:()=>void}) {
+  const {gl,scene,camera}=useThree();
+  useEffect(()=>{
+    let mounted=true;
+    // Keep the SVG visible while the actual scene compiles. On drivers with
+    // KHR_parallel_shader_compile this avoids a synchronous first-draw stall.
+    gl.compileAsync(scene,camera).then(()=>{if(mounted)onPrepared();}).catch(()=>{if(mounted)onFailure();});
+    return()=>{mounted=false;};
+  },[gl,scene,camera,onPrepared,onFailure]);
+  return null;
+}
 
 function RenderLifecycle({ onReady, onFailure, reducedMotion, tier }: SceneProps & { onReady: () => void; onFailure: () => void }) {
   const { gl, invalidate } = useThree();
@@ -50,6 +62,8 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   const [visible, setVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [tier, setTier] = useState<GraphicsTier>('medium');
+  const [prepared,setPrepared]=useState(false);
+  const preparedScene=useCallback(()=>setPrepared(true),[]);
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const updateMotion = () => setReducedMotion(media.matches);
@@ -69,11 +83,11 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   useEffect(()=>{
     if(host.current)host.current.dataset.renderLoop=visible?(reducedMotion?'demand':'always'):'paused';
   },[host,visible,reducedMotion]);
-  return <Canvas className="scene-canvas" dpr={[1,dpr]} frameloop={visible ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
+  return <Canvas className="scene-canvas" dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onFailure={onFailure} reducedMotion={reducedMotion} tier={tier} />
     <ambientLight intensity={.65} />
     <directionalLight position={[-3,5,4]} color="#b8f4ff" intensity={3} />
     <directionalLight position={[4,2,-3]} color="#9d81f0" intensity={3.5} />
-    <Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}</Suspense>
+    <Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
   </Canvas>;
 }

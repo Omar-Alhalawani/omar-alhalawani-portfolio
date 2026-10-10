@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 
-export async function launchQABrowser() {
+export function getQARuntime() {
   let executablePath=process.env.CHROME_PATH;
   let browserDirectory;
   if(!executablePath && fs.existsSync(chromium.executablePath())) executablePath=chromium.executablePath();
@@ -29,13 +29,14 @@ export async function launchQABrowser() {
       fs.chmodSync(executablePath,0o755);
     }
   }
-  return chromium.launch({
+  return {
     executablePath,
-    headless:true,
-    args:['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--in-process-gpu','--no-zygote'],
     env:{...process.env,...(browserDirectory?{LD_LIBRARY_PATH:`${browserDirectory}:${browserDirectory}/al2023/lib`,FONTCONFIG_PATH:`${browserDirectory}/fonts`}:{})},
-  });
+  };
 }
+
+export const qaChromeFlags=['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--in-process-gpu','--no-zygote'];
+export async function launchQABrowser(){return chromium.launch({...getQARuntime(),headless:true,args:qaChromeFlags});}
 
 export async function startQAServer(directory='dist') {
   const root=path.resolve(directory);

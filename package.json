@@ -14,7 +14,11 @@
     "lint": "eslint .",
     "test": "node --test tests/*.test.ts",
     "qa:browser": "node scripts/browser-qa.mjs",
-    "qa:static": "node scripts/static-qa.mjs"
+    "qa:static": "node scripts/static-qa.mjs",
+    "qa:network": "node scripts/network-qa.mjs",
+    "qa:lighthouse": "node scripts/lighthouse-qa.mjs",
+    "art": "node scripts/generate-art.mjs",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@astrojs/react": "7.0.1",
@@ -37,6 +41,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
     "axe-core": "^4.11.1",
+    "chrome-launcher": "^1.2.1",
     "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "globals": "^17.4.0",

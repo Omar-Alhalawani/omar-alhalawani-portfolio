@@ -33,6 +33,7 @@ try {
   await reduced.close();
   const fallback=await browser.newPage({viewport:{width:390,height:844}});
   await fallback.addInitScript(()=>{
+    window.Worker=undefined;
     const original=HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext=function(type,...args){return type==='webgl'||type==='webgl2'?null:original.call(this,type,...args);};
   });
