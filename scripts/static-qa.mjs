@@ -33,11 +33,17 @@ for(const file of htmlFiles){
   if(/^(about|resume|contact)\//.test(file))assert.ok(!html.includes('SceneIsland'),`${file}: content page excludes graphics island`);
 }
 assert.equal(htmlFiles.length,13);
+assert.deepEqual(files.filter(file=>file.endsWith('.pdf')),['resume/Omar_Alhalawani_ASIC_Resume.pdf']);
+for(const [name,size] of [['favicon-16x16.png',16],['favicon-32x32.png',32],['apple-touch-icon.png',180]]){
+  const icon=fs.readFileSync(`public/${name}`);assert.equal(icon.readUInt32BE(16),size);assert.equal(icon.readUInt32BE(20),size);
+}
+for(const file of htmlFiles){const html=fs.readFileSync(path.join(root,file),'utf8');assert.ok(!/Portfolio V2|omar-portfolio-v2|Master_Resume|Master Resume.*\.pdf/i.test(html));}
+
 assert.match(fs.readFileSync('public/robots.txt','utf8'),/Disallow: \/\s*$/);
 assert.ok(JSON.parse(fs.readFileSync('vercel.json')).headers[0].headers.some(header=>header.key==='X-Robots-Tag'&&header.value.includes('noindex')));
-const resume=fs.readFileSync('public/resume/Resume_Omar_Alhalawani.pdf');
+const resume=fs.readFileSync('public/resume/Omar_Alhalawani_ASIC_Resume.pdf');
 const resumeSHA=crypto.createHash('sha256').update(resume).digest('hex');
-assert.equal(resumeSHA,'0877264aa750bb38fc01f1f246fc07db39bf0f54d8f669db960291ceed460088');
+assert.equal(resumeSHA,'d08af79e099aee625ded17228042a7df109f1c6a919c3f9dc35acd5722d5a7f6');
 const og=fs.readFileSync('public/og.png');
 assert.equal(og.readUInt32BE(16),1200);assert.equal(og.readUInt32BE(20),630);
 const sitemap=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8');assert.equal((sitemap.match(/<url>/g)||[]).length,12);

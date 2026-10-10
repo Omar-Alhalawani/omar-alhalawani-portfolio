@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Performance budget
 
 ## Delivery

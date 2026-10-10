@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Accessibility plan
 
 WCAG AA target: semantic landmarks; one H1/page; ordered H2/H3 hierarchy; skip link to focusable main; real anchors; visible focus; no content hidden by animation; 44px control targets. Native details/summary gives mobile navigation keyboard behavior without a hydration dependency.

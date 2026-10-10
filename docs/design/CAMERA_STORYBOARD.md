@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Camera storyboard
 
 Coordinates are world units. Canvas FOV 36°, except project-floorplan FOV 40°. Positive Z points toward the viewer. Targets are damped; normal browser scroll sets a target state, never the wheel delta.

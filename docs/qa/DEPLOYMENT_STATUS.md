@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Vercel staging checkpoint
 
 Status on 2026-10-10: **implementation pushed and local production QA passed; Vercel deployment is waiting for user sign-in/authorization.** There is no verified staging URL and no live-site acceptance result yet.

@@ -7,7 +7,7 @@ const base=process.env.QA_BASE_URL||local.url;
 const output=process.env.QA_OUTPUT||'qa-artifacts';
 fs.mkdirSync(output,{recursive:true});
 const browser=await launchQABrowser();
-const result={date:new Date().toISOString(),base,pointer:false,nativeTabSwitch:false,physicalDeviceBenchmark:false,delayedControls:[],errors:[]};
+const result={date:new Date().toISOString(),applicationCommit:process.env.QA_SOURCE_COMMIT||null,base,pointer:false,nativeTabSwitch:false,physicalDeviceBenchmark:false,delayedControls:[],errors:[]};
 try{
   const context=await browser.newContext({viewport:{width:1440,height:900}});
   const page=await context.newPage();

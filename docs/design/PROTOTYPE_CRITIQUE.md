@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Prototype critique
 
 Reviewed the production-built hero and first transition in Chromium, and inspected V1's live hero for comparison. Tested 1440×900, 320×568, 390×844, and 768×1024. This is the prototype gate; it is not the final whole-site or live Vercel acceptance record.

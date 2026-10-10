@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Portfolio V2 implementation and QA report
 
 Repository: [Omar-Alhalawani/omar-portfolio-v2](https://github.com/Omar-Alhalawani/omar-portfolio-v2).

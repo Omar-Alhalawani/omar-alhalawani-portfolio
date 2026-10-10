@@ -39,7 +39,10 @@ export const qaChromeFlags=['--no-sandbox','--disable-dev-shm-usage','--use-gl=a
 export async function launchQABrowser(){return chromium.launch({...getQARuntime(),headless:true,args:qaChromeFlags});}
 
 export async function startQAServer(directory='dist') {
-  const root=path.resolve(directory);
+  // Test one immutable production build, even if a later build updates dist.
+  const snapshot=fs.mkdtempSync(path.join(os.tmpdir(),'oa-build-qa-'));
+  fs.cpSync(path.resolve(directory),snapshot,{recursive:true});
+  const root=snapshot;
   const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.pdf':'application/pdf','.xml':'application/xml','.woff2':'font/woff2','.txt':'text/plain'};
   const server=http.createServer((request,response)=>{
     const pathname=decodeURIComponent(new URL(request.url,'http://qa.local').pathname);
@@ -56,5 +59,5 @@ export async function startQAServer(directory='dist') {
     } else {response.writeHead(status,headers);response.end(bytes);}
   });
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-  return { url:`http://127.0.0.1:${server.address().port}`,close:()=>new Promise(resolve=>server.close(resolve)) };
+  return { url:`http://127.0.0.1:${server.address().port}`,close:()=>new Promise(resolve=>server.close(()=>{fs.rmSync(snapshot,{recursive:true,force:true});resolve();})) };
 }

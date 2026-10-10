@@ -7,8 +7,9 @@ const routes=['/','/experience','/projects','/projects/fifo','/projects/fpga-ari
 const artifactDirectory=process.env.QA_OUTPUT||'qa-artifacts';fs.mkdirSync(artifactDirectory,{recursive:true});
 const local=process.env.QA_BASE_URL?null:await startQAServer();
 const base=process.env.QA_BASE_URL||local.url;
+const behaviorOnly=process.env.QA_BEHAVIOR_ONLY==='1';
 const browser=await launchQABrowser();
-const result={date:new Date().toISOString(),base,renderer:'Chromium 153 / software WebGL in managed QA environment',matrix:[],accessibility:[],checks:[],errors:[]};
+const result={date:new Date().toISOString(),applicationCommit:process.env.QA_SOURCE_COMMIT||null,base,scope:behaviorOnly?'behavior':'full',renderer:'Chromium 153 / software WebGL in managed QA environment',matrix:[],accessibility:[],checks:[],errors:[]};
 const axeSource=fs.readFileSync('node_modules/axe-core/axe.min.js','utf8');
 const slug=route=>route==='/'?'home':route.replaceAll('/','-').slice(1);
 function watch(page){
@@ -36,7 +37,7 @@ async function verifyLayout(page){
 try{
   // Every requested size plus ultrawide and landscape; all routes at the
   // smallest mobile, tablet, and standard desktop sizes.
-  for(const [width,height] of viewports){
+  if(!behaviorOnly)for(const [width,height] of viewports){
     const selected=[320,768,1440].includes(width)?routes:['/','/projects','/projects/fifo','/projects/fpga-arithmetic','/contact'];
     const page=await browser.newPage({viewport:{width,height}});
     const errors=watch(page);
@@ -61,7 +62,7 @@ try{
     await page.close();
   }
   const page=await browser.newPage({viewport:{width:1440,height:900}});const errors=watch(page);
-  for(const route of routes.filter(route=>route!=='/missing-signal')){
+  if(!behaviorOnly)for(const route of routes.filter(route=>route!=='/missing-signal')){
     await page.goto(base+route,{waitUntil:'networkidle'});await ready(page);await page.addScriptTag({content:axeSource});
     const audit=await page.evaluate(async()=>{const r=await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa']}});return {violations:r.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>n.target)})),passes:r.passes.length};});
     result.accessibility.push({route,...audit});assert.deepEqual(audit.violations,[],`${route}: axe violations`);
@@ -100,7 +101,11 @@ try{
   await page.getByRole('button',{name:'Send message'}).click();await page.waitForFunction(()=>document.querySelector('#form-status')?.dataset.state==='success');assert.equal(await page.getByLabel('Message',{exact:true}).inputValue(),'');
   for(const [name,value] of [['Name','QA local mock'],['Email','qa@example.com'],['Message','Retain this local mock after a delivery failure.']])await page.getByLabel(name,{exact:true}).fill(value);
   await page.getByRole('button',{name:'Send message'}).click();await page.waitForFunction(()=>document.querySelector('#form-status')?.dataset.state==='error');assert.ok((await page.getByLabel('Message',{exact:true}).inputValue()).includes('Retain'));await page.screenshot({path:`${artifactDirectory}/contact-error.png`});result.checks.push('Contact native validation, mocked success/reset and failure/retention; zero real submissions');
-  await page.goto(base+'/resume',{waitUntil:'networkidle'});const pdf=await page.request.get(base+'/resume/Resume_Omar_Alhalawani.pdf');assert.equal(pdf.status(),200);assert.match(pdf.headers()['content-type'],/application\/pdf/);assert.equal((await pdf.body()).length,89116);assert.ok(await page.getByRole('link',{name:'Download PDF'}).getAttribute('download')!==null);result.checks.push('Original PDF embed URL, direct response, and download attribute');
+  await page.goto(base+'/resume',{waitUntil:'networkidle'});
+  // Use the browser's network path so this check shares its proxy and TLS
+  // configuration; Playwright's separate Node API client can bypass those.
+  const pdf=await page.evaluate(async()=>{const r=await fetch('/resume/Omar_Alhalawani_ASIC_Resume.pdf');return {status:r.status,type:r.headers.get('content-type'),bytes:(await r.arrayBuffer()).byteLength};});
+  assert.equal(pdf.status,200);assert.match(pdf.type,/application\/pdf/);assert.equal(pdf.bytes,90570);assert.ok(await page.getByRole('link',{name:'Download Resume'}).getAttribute('download')!==null);result.checks.push('ASIC PDF embed URL, browser GET response, and download attribute');
   for(let i=0;i<2;i++)for(const route of ['/','/projects','/projects/fifo','/projects','/experience','/about','/']){await page.goto(base+route,{waitUntil:'networkidle'});await ready(page);assert.ok(await page.locator('canvas').count()<=1||route==='/');}
   const unexpected=errors.filter(error=>!/^Failed to load resource: the server responded with a status of 500 \(.*\)$/.test(error));
   assert.deepEqual(unexpected,[]);result.checks.push('Two route stress cycles; no unexpected console/network errors or duplicate scene canvases. Mocked form failure intentionally returns 500.');await page.close();

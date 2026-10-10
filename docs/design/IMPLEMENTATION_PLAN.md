@@ -1,3 +1,5 @@
+> Historical checkpoint before the October 10 Amber + Steel upgrade. Current repository, deployment, and final measurements are documented in `docs/upgrade/FINAL_REPORT.md`. Version names and old hosts below are archival.
+
 # Implementation plan
 
 1. Initialize the empty V2 repository independently. Record the V1 source snapshot and project-claim corrections. Do not write to any reference repository.
