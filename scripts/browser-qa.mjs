@@ -74,13 +74,13 @@ try{
   for(const y of [300,600,1000,1600,500,2400,7000,0]){await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),y);await page.waitForTimeout(120);}
   await verifyLayout(page);assert.equal(await page.locator('.scene-island[data-scene="hero"]').getAttribute('data-state'),'ready');
   const hero=page.locator('.scene-island[data-scene="hero"]');
-  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(300);assert.equal(await hero.getAttribute('data-render-loop'),'always');
-  await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'instant'}));await page.waitForTimeout(300);assert.equal(await hero.getAttribute('data-render-loop'),'paused');
-  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(300);assert.equal(await hero.getAttribute('data-render-loop'),'always');
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForFunction(state=>document.querySelector('.scene-island[data-scene="hero"]')?.dataset.renderLoop===state,'always');assert.equal(await hero.getAttribute('data-render-loop'),'always');
+  await page.evaluate(()=>window.scrollTo({top:document.body.scrollHeight,behavior:'instant'}));await page.waitForFunction(state=>document.querySelector('.scene-island[data-scene="hero"]')?.dataset.renderLoop===state,'paused');assert.equal(await hero.getAttribute('data-render-loop'),'paused');
+  await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForFunction(state=>document.querySelector('.scene-island[data-scene="hero"]')?.dataset.renderLoop===state,'always');assert.equal(await hero.getAttribute('data-render-loop'),'always');
   // Emulate the document visibility API to deterministically inspect the
   // application's pause/resume contract; this is not a physical-tab benchmark.
-  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});await page.waitForTimeout(100);assert.equal(await hero.getAttribute('data-render-loop'),'paused');
-  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});await page.waitForTimeout(100);assert.equal(await hero.getAttribute('data-render-loop'),'always');
+  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});await page.waitForFunction(state=>document.querySelector('.scene-island[data-scene="hero"]')?.dataset.renderLoop===state,'paused');assert.equal(await hero.getAttribute('data-render-loop'),'paused');
+  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});await page.waitForFunction(state=>document.querySelector('.scene-island[data-scene="hero"]')?.dataset.renderLoop===state,'always');assert.equal(await hero.getAttribute('data-render-loop'),'always');
   for(const [width,height] of [[390,844],[1920,1080],[768,1024],[1440,900]]){await page.setViewportSize({width,height});await page.waitForTimeout(200);await verifyLayout(page);}
   result.checks.push('Keyboard skip link and skill focus; slow/fast/reverse scroll; offscreen pause/resume; emulated document visibility; live resize');
   await page.goto(base+'/projects',{waitUntil:'networkidle'});await ready(page);await page.locator('[data-project="emg"]').focus();assert.equal(await page.locator('[data-project="emg"]').getAttribute('data-active'),'true');
