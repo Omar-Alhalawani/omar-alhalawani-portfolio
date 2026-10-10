@@ -31,7 +31,7 @@ import {site} from '../data/site';
   .contact-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:120px; padding-block:30px 110px; }
   .contact-details { display:grid; gap:44px; align-content:start; padding-top:10px; }
   .contact-label { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:16px; letter-spacing:.09em; }
-  .contact-details a { display:flex; width:fit-content; gap:14px; align-items:center; font-size:16px; color:var(--cyan); min-height:44px; overflow-wrap:anywhere; }
+  .contact-details a { display:flex; width:fit-content; gap:14px; align-items:center; font-size:16px; color:var(--amber); min-height:44px; overflow-wrap:anywhere; }
   .contact-details a:hover { color:var(--text); }
   .contact-details p { font-size:14px; line-height:1.9; }
   form { border:1px solid var(--line); padding:clamp(22px,4vw,48px); border-radius:5px; background:var(--bg-raised); }
@@ -44,8 +44,8 @@ import {site} from '../data/site';
   .form-field>p { font-size:10px; color:var(--muted); margin-top:8px; }
   .form-trap { display:none; }
   .form-status { font-size:13px; margin-top:22px; line-height:1.85; min-height:24px; }
-  .form-status[data-state='success'] { color:var(--cyan); }
-  .form-status[data-state='error'] { color:#ffb6c6; }
+  .form-status[data-state='success'] { color:var(--amber); }
+  .form-status[data-state='error'] { color:#ffc2a4; }
   .form-note { font-size:10px; color:var(--muted); margin-top:16px; line-height:1.85; }
   button:disabled { opacity:.7; cursor:wait; }
   @media(max-width:1000px) { .contact-grid { gap:60px; } }

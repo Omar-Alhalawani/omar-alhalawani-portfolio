@@ -7,20 +7,20 @@
   .demo button:disabled,.demo input:disabled { cursor:wait; opacity:.55; }
   .demo fieldset:disabled label { cursor:wait; }
   .checkbox-label { min-height:44px; display:flex; gap:10px; align-items:center; font:400 12px var(--mono); }
-  input[type='checkbox'] { accent-color:var(--cyan); width:18px; height:18px; }
+  input[type='checkbox'] { accent-color:var(--amber); width:18px; height:18px; }
   .number-label { display:flex; align-items:center; flex-wrap:wrap; gap:12px; font-size:12px; }
   .number-label input { min-height:44px; background:var(--bg); border:1px solid var(--line); color:var(--text); width:90px; padding:8px 12px; font-family:var(--mono); }
   .memory-cells { display:grid; grid-template-columns:repeat(8,1fr); gap:8px; margin-block:32px; }
   .memory-cell { display:grid; gap:12px; background:#0c1424; border:1px solid var(--line); padding:10px; text-align:center; font-family:var(--mono); }
-  .memory-cell.occupied { border-color:#75e4f680; background:#12334060; }
+  .memory-cell.occupied { border-color:#ffbd5980; background:#12334060; }
   .slot-index { font-size:9px; color:var(--muted); }
   .memory-cell strong { font-size:16px; font-weight:400; color:var(--muted); }
-  .memory-cell.occupied strong { color:var(--cyan); }
-  .pointer-label { min-height:12px; font-size:8px; color:var(--violet); }
+  .memory-cell.occupied strong { color:var(--amber); }
+  .pointer-label { min-height:12px; font-size:8px; color:var(--read); }
   .demo-status { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:28px 0; }
   .demo-status dt { color:var(--muted); font-size:10px; margin-bottom:9px; }
   .demo-status dd { font:400 14px var(--mono); color:var(--text); margin:0; }
-  .demo-message { border-top:1px solid var(--line); padding-top:22px; color:var(--cyan); font-size:13px; }
+  .demo-message { border-top:1px solid var(--line); padding-top:22px; color:var(--amber); font-size:13px; }
   .demo-note { font-size:10px; color:var(--muted); line-height:1.8; margin-top:16px; }
   .dip-switches { border:0; padding:0; margin:0 0 24px; }
   .dip-switches legend { font:400 11px var(--mono); margin-bottom:18px; color:var(--soft); }
@@ -29,6 +29,6 @@
   .led-bank { display:grid; grid-template-columns:repeat(8,1fr); max-width:570px; gap:12px; margin-block:30px; }
   .led-bank>div { display:grid; gap:12px; justify-items:center; font:400 9px var(--mono); color:var(--muted); }
   .led { display:grid; place-items:center; width:36px; height:36px; border-radius:50%; color:var(--muted); background:#1a2638; border:1px solid var(--line); }
-  .led.on { background:var(--cyan); color:var(--bg); border-color:var(--cyan); }
+  .led.on { background:var(--amber); color:var(--bg); border-color:var(--amber); }
   @media(max-width:600px) { .memory-cells { grid-template-columns:repeat(4,1fr); } .demo-status { grid-template-columns:repeat(2,1fr); gap:20px; } .dip-switches>div { grid-template-columns:repeat(4,1fr); } .led-bank { gap:6px; } .led { width:25px; height:25px; } .demo .button { padding-inline:14px; font-size:11px; } }
 }

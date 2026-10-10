@@ -2,7 +2,7 @@ import {useEffect,useMemo,useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {BufferAttribute,BufferGeometry,Line,LineBasicMaterial} from 'three';
 
-export default function Waveform({position=[0,.4,0],width=2.6,amplitude=.3,noisy=false,color='#75e4f6',reducedMotion=false,active=true}:{position?:[number,number,number];width?:number;amplitude?:number;noisy?:boolean;color?:string;reducedMotion?:boolean;active?:boolean}) {
+export default function Waveform({position=[0,.4,0],width=2.6,amplitude=.3,noisy=false,color='#ffbd59',reducedMotion=false,active=true}:{position?:[number,number,number];width?:number;amplitude?:number;noisy?:boolean;color?:string;reducedMotion?:boolean;active?:boolean}) {
   const time=useRef(0);
   const line=useMemo(()=>{
     const geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(new Float32Array(128*3),3));

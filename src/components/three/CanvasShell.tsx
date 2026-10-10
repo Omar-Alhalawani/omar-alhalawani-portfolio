@@ -1,5 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import {PMREMGenerator,ACESFilmicToneMapping} from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import type { GraphicsTier, SceneKind, SceneProps } from './types';
 
 const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.ComponentType<SceneProps>>>>> = {
@@ -13,6 +15,19 @@ const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.Compo
   cubex: lazy(() => import('./projects/CubexScene')),
   daq: lazy(() => import('./projects/DaqScene')),
 };
+
+function SteelEnvironment() {
+  const {gl,scene,invalidate}=useThree();
+  useEffect(()=>{
+    const room=new RoomEnvironment(),generator=new PMREMGenerator(gl);
+    const environment=generator.fromScene(room,.04);
+    scene.environment=environment.texture;scene.environmentIntensity=.45;
+    gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.12;
+    room.dispose();generator.dispose();invalidate();
+    return()=>{scene.environment=null;environment.dispose();};
+  },[gl,scene,invalidate]);
+  return null;
+}
 
 function WarmShaders({onPrepared,onFailure}:{onPrepared:()=>void;onFailure:()=>void}) {
   const {gl,scene,camera}=useThree();
@@ -85,9 +100,9 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   },[host,visible,reducedMotion]);
   return <Canvas className="scene-canvas" dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onFailure={onFailure} reducedMotion={reducedMotion} tier={tier} />
-    <ambientLight intensity={.65} />
-    <directionalLight position={[-3,5,4]} color="#b8f4ff" intensity={3} />
-    <directionalLight position={[4,2,-3]} color="#9d81f0" intensity={3.5} />
-    <Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
+    <SteelEnvironment/><ambientLight intensity={.3} />
+    <directionalLight position={[-3,5,4]} color="#e7edef" intensity={2.4} />
+    <directionalLight position={[4,2,-3]} color="#ffcb83" intensity={2.5} />
+    <pointLight position={[1,1.4,2]} color="#ffb443" intensity={6} distance={8} decay={2}/><Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
   </Canvas>;
 }
