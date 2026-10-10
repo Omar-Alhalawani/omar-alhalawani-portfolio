@@ -1,0 +1,5 @@
+---
+interface Props { href: string; variant?: 'primary' | 'secondary' | 'text'; external?: boolean; download?: boolean; }
+const { href, variant = 'secondary', external = false, download = false } = Astro.props;
+---
+<a class:list={['button', `button--${variant}`]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} download={download || undefined}><slot /></a>

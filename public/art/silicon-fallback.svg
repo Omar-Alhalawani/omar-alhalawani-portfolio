@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900">
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#143b4b"/><stop offset=".38" stop-color="#71e7f4"/><stop offset=".7" stop-color="#594883"/><stop offset="1" stop-color="#0a1429"/></linearGradient>
+    <linearGradient id="body" x1=".1" y1=".1" x2=".9" y2=".8"><stop stop-color="#0a2034"/><stop offset=".27" stop-color="#1f657b"/><stop offset=".46" stop-color="#80c4db"/><stop offset=".53" stop-color="#131d36"/><stop offset=".76" stop-color="#6d518e"/><stop offset="1" stop-color="#172038"/></linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ff7f4"/><stop offset=".5" stop-color="#758dde"/><stop offset="1" stop-color="#dc9dc5"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#293c70" stop-opacity=".4"/><stop offset="1" stop-color="#030610" stop-opacity="0"/></radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <ellipse cx="470" cy="535" rx="350" ry="260" fill="url(#glow)"/>
+  <path d="M147 492Q109 469 147 439L415 242Q453 217 492 238L747 398Q782 422 755 452L535 643Q500 675 450 655Z" fill="#07101e" stroke="url(#edge)" stroke-width="2"/>
+  <path d="M151 467Q116 442 153 413L418 221Q454 198 493 220L747 377Q782 401 754 431L535 621Q500 653 449 633Z" fill="#111a30" stroke="url(#edge)" stroke-width="2"/>
+  <path d="M151 440Q111 410 152 380L410 194Q453 164 503 192L742 341Q788 372 752 408L532 596Q494 630 445 601Z" fill="url(#body)" stroke="url(#edge)" stroke-width="3"/>
+  <path d="M223 386Q332 296 419 307T582 411Q658 451 706 398M187 420Q300 330 401 349T578 455Q625 478 669 459" fill="none" stroke="url(#ribbon)" stroke-width="18" opacity=".4" filter="url(#soft)"/>
+  <path d="M223 386Q332 296 419 307T582 411Q658 451 706 398M187 420Q300 330 401 349T578 455Q625 478 669 459" fill="none" stroke="url(#ribbon)" stroke-width="2" opacity=".9"/>
+  <g fill="none" stroke="#a9eaf2" stroke-width="1" opacity=".24"><path d="m292 463 97-74 67 40 86-62M332 487l100-75 66 42 88-63M372 512l103-79 65 40 87-61M356 295l85 50 113-75M312 326l85 50 116-77"/></g>
+</svg>
