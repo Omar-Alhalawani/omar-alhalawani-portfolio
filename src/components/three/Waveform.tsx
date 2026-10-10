@@ -6,7 +6,11 @@ export default function Waveform({position=[0,.4,0],width=2.6,amplitude=.3,noisy
   const time=useRef(0);
   const line=useMemo(()=>{
     const geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(new Float32Array(128*3),3));
-    return new Line(geometry,new LineBasicMaterial({color,transparent:true,opacity:.9}));
+    const waveform=new Line(geometry,new LineBasicMaterial({color,transparent:true,opacity:.9}));
+    // Decorative signal lines must not steal module hits: THREE.Line's default
+    // one-world-unit ray threshold is much wider than this instrumentation tile.
+    waveform.raycast=()=>{};
+    return waveform;
   },[color]);
   useEffect(()=>()=>{line.geometry.dispose();line.material.dispose();},[line]);
   useFrame((_,delta)=>{

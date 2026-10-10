@@ -10,8 +10,8 @@ import {selectProject} from '../../lib/project-selection';
 import type {SceneProps} from './types';
 
 const regions=[
-  {id:'fifo',label:'FIFO',x:-1.65,z:-1}, {id:'fpga-arithmetic',label:'FPGA',x:0,z:-1}, {id:'lumalink',label:'LUMALINK',x:1.65,z:-1},
-  {id:'emg',label:'EMG',x:-1.65,z:1}, {id:'mini-lysimeter',label:'DAQ',x:0,z:1}, {id:'cubex',label:'CUBEX',x:1.65,z:1},
+  {id:'fifo',label:'FIFO',x:-1.65,z:-1}, {id:'fpga-arithmetic',label:'FPGA',x:0,z:-1}, {id:'lumalink',label:'LUMALINK',x:1.65,z:1},
+  {id:'emg',label:'EMG',x:-1.65,z:1}, {id:'mini-lysimeter',label:'DAQ',x:0,z:1}, {id:'cubex',label:'CUBEX',x:1.65,z:-1},
 ];
 export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   const [active,setActive]=useState('fifo'),[opening,setOpening]=useState<string|null>(null);
@@ -48,7 +48,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     selectProject(id);setOpening(id);
     timer.current=setTimeout(()=>{window.location.assign(`/projects/${id}`);},reducedMotion?0:320);
   };
-  const start=(event:ThreeEvent<PointerEvent>,id:string)=>{event.stopPropagation();down.current={x:event.clientX,y:event.clientY,id,time:performance.now()};};
+  const start=(event:ThreeEvent<PointerEvent>,id:string)=>{if(event.button!==0)return;event.stopPropagation();down.current={x:event.clientX,y:event.clientY,id,time:performance.now()};};
   const end=(event:ThreeEvent<PointerEvent>,id:string)=>{
     event.stopPropagation();const gesture=down.current;down.current=null;
     if(!gesture||gesture.id!==id||Math.hypot(event.clientX-gesture.x,event.clientY-gesture.y)>8||performance.now()-gesture.time>700)return;
@@ -77,7 +77,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
         </>}
         {region.id==='emg'&&<>
           <Block position={[0,.22,-.18]} size={[1.06,.32,.57]}/>
-          <group rotation={[-.25,0,0]} position={[0,.44,-.1]}><Waveform width={.9} amplitude={.12} noisy color={READ} active={selected} reducedMotion={reducedMotion}/></group>
+          <group rotation={[-Math.PI/2,0,0]} position={[0,.392,-.18]}><Waveform position={[0,0,0]} width={.9} amplitude={.12} noisy color={READ} active={selected} reducedMotion={reducedMotion}/></group>
           {[-.38,-.19,0,.19,.38].map(x=><mesh key={x} position={[x,.1,.25]}><cylinderGeometry args={[.035,.035,.11,8]}/><meshStandardMaterial color="#a9adaf" metalness={.9} roughness={.3}/></mesh>)}
         </>}
         {region.id==='lumalink'&&<>

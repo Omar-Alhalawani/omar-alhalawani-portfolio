@@ -23,7 +23,7 @@ export function Chip({width=.8,depth=.8,active=false}:{width?:number;depth?:numb
   </group>;
 }
 // Texture labels are local, static, and disposed with their scene. No font requests.
-export function Label({text,position=[0,.1,0],width=.9,color='#dadbd7'}:{text:string;position?:[number,number,number];width?:number;color?:string}) {
+export function Label({text,position=[0,.1,0],width=.9,color='#dadbd7',rotation=[-Math.PI/2,0,0]}:{text:string;position?:[number,number,number];width?:number;color?:string;rotation?:[number,number,number]}) {
   const texture=useMemo(()=>{
     const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
     const ctx=canvas.getContext('2d')!;
@@ -31,7 +31,7 @@ export function Label({text,position=[0,.1,0],width=.9,color='#dadbd7'}:{text:st
     return new CanvasTexture(canvas);
   },[text,color]);
   useEffect(()=>()=>texture.dispose(),[texture]);
-  return <mesh position={position} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[width,width/4]}/><meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false}/></mesh>;
+  return <mesh position={position} rotation={rotation}><planeGeometry args={[width,width/4]}/><meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false}/></mesh>;
 }
 export function ContactShade({width=4,depth=3,position=[0,-.3,0]}:{width?:number;depth?:number;position?:[number,number,number]}) {
   return <mesh position={position} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[width*1.3,depth*1.3]}/><shaderMaterial transparent depthWrite={false} vertexShader="varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}" fragmentShader="varying vec2 vUv; void main(){float d=length((vUv-.5)*2.);gl_FragColor=vec4(0.,0.,0.,.5*(1.-smoothstep(.15,.95,d)));}"/></mesh>;
