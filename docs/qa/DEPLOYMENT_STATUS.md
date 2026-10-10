@@ -8,7 +8,9 @@ Stopped before **Continue with GitHub**, as Omar's specification requires: “If
 
 ## User step
 
-Use the prepared browser import page. Click **Continue with GitHub** and complete the sign-in/authorization personally. If Vercel requests repository access, use the V2 repository. Any account creation or terms acceptance belongs to Omar. No paid plan or infrastructure is needed for this static portfolio.
+Use the prepared browser import page. Click **Login** and sign in to your existing Vercel account personally. If that account uses GitHub sign-in, choose **Continue with GitHub**. Complete any repository authorization personally and select the V2 repository if Vercel asks for access. No paid plan or infrastructure is needed for this static portfolio.
+
+The [captured sign-in checkpoint](vercel-signin.jpg) shows the actual import page with the V2 repository URL entered. No project has been deployed from that page yet.
 
 ## Resume after authentication
 
