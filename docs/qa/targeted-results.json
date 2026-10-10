@@ -1,0 +1,85 @@
+[
+  {
+    "scene": "hero",
+    "ready": true,
+    "stats": {
+      "engine": "three.js r186",
+      "graphicsTier": "medium",
+      "frames": "60",
+      "dpr": "1",
+      "drawCalls": "17",
+      "triangles": "8144",
+      "textures": "1",
+      "geometries": "17"
+    }
+  },
+  {
+    "scene": "verification",
+    "ready": true,
+    "stats": {
+      "engine": "three.js r186",
+      "graphicsTier": "medium",
+      "frames": "3",
+      "dpr": "1",
+      "drawCalls": "14",
+      "triangles": "3844",
+      "textures": "1",
+      "geometries": "11"
+    }
+  },
+  {
+    "scene": "floorplan",
+    "ready": true,
+    "stats": {
+      "engine": "three.js r186",
+      "graphicsTier": "medium",
+      "frames": "60",
+      "dpr": "1",
+      "drawCalls": "38",
+      "triangles": "17404",
+      "textures": "1",
+      "geometries": "38"
+    }
+  },
+  {
+    "viewport": [
+      1920,
+      1080
+    ],
+    "deviceScaleFactor": 3,
+    "cap": 1.75,
+    "width": 1795,
+    "cssWidth": 1026,
+    "pixelRatio": 1.7495126705653021,
+    "tier": "high"
+  },
+  {
+    "viewport": [
+      1440,
+      900
+    ],
+    "deviceScaleFactor": 3,
+    "cap": 1.35,
+    "width": 1108,
+    "cssWidth": 821,
+    "pixelRatio": 1.3495736906211937,
+    "tier": "medium"
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "deviceScaleFactor": 3,
+    "cap": 1,
+    "width": 390,
+    "cssWidth": 390,
+    "pixelRatio": 1,
+    "tier": "low"
+  },
+  {
+    "javascriptDisabled": true,
+    "routes": 6,
+    "contentAndNavigation": true
+  }
+]

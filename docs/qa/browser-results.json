@@ -1,0 +1,1824 @@
+{
+  "date": "2026-10-10T19:18:23.800Z",
+  "base": "http://127.0.0.1:41907",
+  "renderer": "Chromium 153 / software WebGL in managed QA environment",
+  "matrix": [
+    {
+      "route": "/",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "8144",
+          "textures": "1",
+          "geometries": "5",
+          "width": 729,
+          "height": 634
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 581,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "21",
+          "width": 546,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 546,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "8144",
+          "textures": "1",
+          "geometries": "5",
+          "width": 778,
+          "height": 682
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 623,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 584,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 584,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "8144",
+          "textures": "1",
+          "geometries": "5",
+          "width": 820,
+          "height": 814
+        }
+      ]
+    },
+    {
+      "route": "/experience",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Build the system.Question its behavior.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "14",
+          "triangles": "3844",
+          "textures": "1",
+          "geometries": "14",
+          "width": 735,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "38",
+          "width": 658,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/emg",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "EMG Signal Acquisition & Processing.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "7",
+          "triangles": "1554",
+          "textures": "1",
+          "geometries": "5",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/lumalink",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "LumaLink.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "2522",
+          "textures": "1",
+          "geometries": "7",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/cubex",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "CubeX Trio Revival.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "1530",
+          "textures": "1",
+          "geometries": "9",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/mini-lysimeter",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Mini-Lysimeter Research GUI.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "8",
+          "triangles": "3714",
+          "textures": "1",
+          "geometries": "8",
+          "width": 618,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Curiosity,close to the hardware.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/resume",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "The work,on one page.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/contact",
+      "width": 1440,
+      "height": 900,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/missing-signal",
+      "width": 1440,
+      "height": 900,
+      "status": 404,
+      "overflow": false,
+      "heading": "A broken connection.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 1920,
+      "height": 1080,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "15248",
+          "textures": "1",
+          "geometries": "17",
+          "width": 1026,
+          "height": 994
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 1920,
+      "height": 1080,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 736,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 1920,
+      "height": 1080,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 1920,
+      "height": 1080,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 1920,
+      "height": 1080,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 2560,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "15248",
+          "textures": "1",
+          "geometries": "17",
+          "width": 1026,
+          "height": 1354
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 2560,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "38",
+          "width": 736,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 2560,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 2560,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 2560,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4992",
+          "textures": "1",
+          "geometries": "5",
+          "width": 320,
+          "height": 380
+        }
+      ]
+    },
+    {
+      "route": "/experience",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Build the system.Question its behavior.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "14",
+          "triangles": "3844",
+          "textures": "1",
+          "geometries": "11",
+          "width": 280,
+          "height": 270
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 280,
+          "height": 280
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/emg",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "EMG Signal Acquisition & Processing.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "7",
+          "triangles": "1554",
+          "textures": "1",
+          "geometries": "5",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/lumalink",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "LumaLink.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "2522",
+          "textures": "1",
+          "geometries": "7",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/cubex",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "CubeX Trio Revival.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "1530",
+          "textures": "1",
+          "geometries": "9",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/mini-lysimeter",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Mini-Lysimeter Research GUI.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "8",
+          "triangles": "3714",
+          "textures": "1",
+          "geometries": "6",
+          "width": 280,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Curiosity,close to the hardware.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/resume",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "The work,on one page.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/contact",
+      "width": 320,
+      "height": 568,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/missing-signal",
+      "width": 320,
+      "height": 568,
+      "status": 404,
+      "overflow": false,
+      "heading": "A broken connection.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4992",
+          "textures": "1",
+          "geometries": "5",
+          "width": 375,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 335,
+          "height": 280
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 335,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 335,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 375,
+      "height": 812,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4992",
+          "textures": "1",
+          "geometries": "17",
+          "width": 390,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 350,
+          "height": 280
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "21",
+          "width": 350,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 350,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 430,
+      "height": 932,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4992",
+          "textures": "1",
+          "geometries": "5",
+          "width": 430,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 430,
+      "height": 932,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 387,
+          "height": 280
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 430,
+      "height": 932,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 387,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 430,
+      "height": 932,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "low",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 387,
+          "height": 290
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 430,
+      "height": 932,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "8144",
+          "textures": "1",
+          "geometries": "5",
+          "width": 768,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/experience",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Build the system.Question its behavior.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "14",
+          "triangles": "3844",
+          "textures": "1",
+          "geometries": "11",
+          "width": 691,
+          "height": 320
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "34",
+          "width": 691,
+          "height": 280
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "21",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/projects/emg",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "EMG Signal Acquisition & Processing.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "7",
+          "triangles": "1554",
+          "textures": "1",
+          "geometries": "5",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/projects/lumalink",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "LumaLink.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "2522",
+          "textures": "1",
+          "geometries": "10",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/projects/cubex",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "CubeX Trio Revival.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "10",
+          "triangles": "1530",
+          "textures": "1",
+          "geometries": "9",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/projects/mini-lysimeter",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Mini-Lysimeter Research GUI.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "8",
+          "triangles": "3714",
+          "textures": "1",
+          "geometries": "6",
+          "width": 691,
+          "height": 340
+        }
+      ]
+    },
+    {
+      "route": "/about",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Curiosity,close to the hardware.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/resume",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "The work,on one page.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/contact",
+      "width": 768,
+      "height": 1024,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/missing-signal",
+      "width": 768,
+      "height": 1024,
+      "status": 404,
+      "overflow": false,
+      "heading": "A broken connection.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 3440,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "15248",
+          "textures": "1",
+          "geometries": "17",
+          "width": 1026,
+          "height": 1354
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 3440,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "38",
+          "width": 736,
+          "height": 520
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 3440,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "21",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 3440,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "high",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 690,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 3440,
+      "height": 1440,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    },
+    {
+      "route": "/",
+      "width": 844,
+      "height": 390,
+      "status": 200,
+      "overflow": false,
+      "heading": "OmarAlhalawani.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "8144",
+          "textures": "1",
+          "geometries": "5",
+          "width": 844,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 844,
+      "height": 390,
+      "status": 200,
+      "overflow": false,
+      "heading": "Ideas becomeinterfaces.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "38",
+          "triangles": "17404",
+          "textures": "1",
+          "geometries": "38",
+          "width": 363,
+          "height": 390
+        }
+      ]
+    },
+    {
+      "route": "/projects/fifo",
+      "width": 844,
+      "height": 390,
+      "status": 200,
+      "overflow": false,
+      "heading": "Synchronous FIFO.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "21",
+          "triangles": "6520",
+          "textures": "1",
+          "geometries": "19",
+          "width": 364,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "width": 844,
+      "height": 390,
+      "status": 200,
+      "overflow": false,
+      "heading": "FPGA Arithmetic System.",
+      "brokenImages": [],
+      "canvases": 1,
+      "graphics": [
+        {
+          "engine": "three.js r186",
+          "graphicsTier": "medium",
+          "frames": "3",
+          "dpr": "1",
+          "drawCalls": "17",
+          "triangles": "4440",
+          "textures": "1",
+          "geometries": "14",
+          "width": 364,
+          "height": 440
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 844,
+      "height": 390,
+      "status": 200,
+      "overflow": false,
+      "heading": "Let’s buildsomething useful.",
+      "brokenImages": [],
+      "canvases": 0,
+      "graphics": []
+    }
+  ],
+  "accessibility": [
+    {
+      "route": "/",
+      "violations": [],
+      "passes": 20
+    },
+    {
+      "route": "/experience",
+      "violations": [],
+      "passes": 17
+    },
+    {
+      "route": "/projects",
+      "violations": [],
+      "passes": 15
+    },
+    {
+      "route": "/projects/fifo",
+      "violations": [],
+      "passes": 26
+    },
+    {
+      "route": "/projects/fpga-arithmetic",
+      "violations": [],
+      "passes": 26
+    },
+    {
+      "route": "/projects/emg",
+      "violations": [],
+      "passes": 17
+    },
+    {
+      "route": "/projects/lumalink",
+      "violations": [],
+      "passes": 17
+    },
+    {
+      "route": "/projects/cubex",
+      "violations": [],
+      "passes": 17
+    },
+    {
+      "route": "/projects/mini-lysimeter",
+      "violations": [],
+      "passes": 17
+    },
+    {
+      "route": "/about",
+      "violations": [],
+      "passes": 19
+    },
+    {
+      "route": "/resume",
+      "violations": [],
+      "passes": 18
+    },
+    {
+      "route": "/contact",
+      "violations": [],
+      "passes": 24
+    }
+  ],
+  "checks": [
+    "Keyboard skip link and skill focus; slow/fast/reverse scroll; offscreen pause/resume; emulated document visibility; live resize",
+    "Project keyboard focus; FIFO write/simultaneous/read/reset; FPGA independent capture/subtract/output",
+    "Contact native validation, mocked success/reset and failure/retention; zero real submissions",
+    "Original PDF embed URL, direct response, and download attribute",
+    "Two route stress cycles; no unexpected console/network errors or duplicate scene canvases. Mocked form failure intentionally returns 500.",
+    "Mobile menu and project navigation",
+    "Reduced motion renders an intentional static composition and responds to focus",
+    "WebGL unavailable: scene-specific SVG, complete HTML, no blank canvas",
+    "Context loss safely disposes canvas and returns to static artwork"
+  ],
+  "errors": []
+}

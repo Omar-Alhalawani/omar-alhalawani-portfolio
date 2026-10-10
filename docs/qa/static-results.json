@@ -1,0 +1,139 @@
+{
+  "builtAt": "2026-10-10T19:22:50.494Z",
+  "htmlPages": 13,
+  "internalLinksChecked": 348,
+  "resumeBytes": 89116,
+  "resumeSHA": "0877264aa750bb38fc01f1f246fc07db39bf0f54d8f669db960291ceed460088",
+  "og": [
+    1200,
+    630
+  ],
+  "sitemapRoutes": 12,
+  "chunks": [
+    {
+      "file": "_astro/CanvasShell.DYPtQhfL.js",
+      "bytes": 914641,
+      "gzip": 240997
+    },
+    {
+      "file": "_astro/client.C3EcZRW1.js",
+      "bytes": 209376,
+      "gzip": 64613
+    },
+    {
+      "file": "_astro/RoundedBox.Bszwi1p-.js",
+      "bytes": 21940,
+      "gzip": 6830
+    },
+    {
+      "file": "_astro/react.DB-4Zxce.js",
+      "bytes": 8529,
+      "gzip": 3280
+    },
+    {
+      "file": "_astro/HeroScene.ZoipVi30.js",
+      "bytes": 6431,
+      "gzip": 2643
+    },
+    {
+      "file": "_astro/scheduler.Bt9tAVCi.js",
+      "bytes": 3555,
+      "gzip": 1557
+    },
+    {
+      "file": "_astro/FifoDemo.BnTiTtWG.js",
+      "bytes": 3577,
+      "gzip": 1402
+    },
+    {
+      "file": "_astro/FpgaDemo.vs-1MRbc.js",
+      "bytes": 2824,
+      "gzip": 1175
+    },
+    {
+      "file": "_astro/SceneIsland.CgXOn3xM.js",
+      "bytes": 2162,
+      "gzip": 1152
+    },
+    {
+      "file": "_astro/ProjectFloorplan.D8-XOG17.js",
+      "bytes": 2516,
+      "gzip": 1030
+    },
+    {
+      "file": "_astro/preload-helper.DHhhL8Zf.js",
+      "bytes": 1665,
+      "gzip": 852
+    },
+    {
+      "file": "_astro/Board.C6KZJ5Rk.js",
+      "bytes": 1461,
+      "gzip": 803
+    },
+    {
+      "file": "_astro/CubexScene.CtnwoZNF.js",
+      "bytes": 1533,
+      "gzip": 722
+    },
+    {
+      "file": "_astro/FifoScene.DSv2F4aq.js",
+      "bytes": 1337,
+      "gzip": 635
+    },
+    {
+      "file": "_astro/Waveform.DEMlqAfV.js",
+      "bytes": 921,
+      "gzip": 598
+    },
+    {
+      "file": "_astro/FpgaScene.MT5DjKhn.js",
+      "bytes": 1064,
+      "gzip": 551
+    },
+    {
+      "file": "_astro/SignalTrace.A9du5PQO.js",
+      "bytes": 843,
+      "gzip": 543
+    },
+    {
+      "file": "_astro/ExperienceScene.BTdHBXcy.js",
+      "bytes": 985,
+      "gzip": 516
+    },
+    {
+      "file": "_astro/LumaScene.D7B7PAaV.js",
+      "bytes": 1027,
+      "gzip": 496
+    },
+    {
+      "file": "_astro/fifo.CG8PX359.js",
+      "bytes": 831,
+      "gzip": 475
+    },
+    {
+      "file": "_astro/EmgScene.Owt0ZdmO.js",
+      "bytes": 705,
+      "gzip": 403
+    },
+    {
+      "file": "_astro/DaqScene.C3RoSdHI.js",
+      "bytes": 534,
+      "gzip": 357
+    },
+    {
+      "file": "_astro/jsx-runtime.BzgyUtJl.js",
+      "bytes": 424,
+      "gzip": 293
+    },
+    {
+      "file": "_astro/fpga.IAP8_hZ5.js",
+      "bytes": 386,
+      "gzip": 214
+    },
+    {
+      "file": "_astro/webgl.worker-YVyx_F_h.js",
+      "bytes": 167,
+      "gzip": 155
+    }
+  ]
+}

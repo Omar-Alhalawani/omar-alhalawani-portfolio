@@ -1,0 +1,38 @@
+[
+  {
+    "project": "portfolio-v1",
+    "url": "https://github.com/Omar-Alhalawani/omar-portfolio",
+    "auditedCommit": "743a055d707521ecbd031f85cec06022260d2cca",
+    "referenceUnmodified": true
+  },
+  {
+    "project": "fifo",
+    "url": "https://github.com/Omar-Alhalawani/sync-fifo-rtl-verification",
+    "auditedCommit": "89d001147d2b0298c8392bb94df0e884b1d4a063",
+    "referenceUnmodified": true
+  },
+  {
+    "project": "fpga",
+    "url": "https://github.com/Omar-Alhalawani/FPGA-Based-Arithmetic-Display-System",
+    "auditedCommit": "399b3ad2b34b51b9a2f9d7921b46ba94388827ca",
+    "referenceUnmodified": true
+  },
+  {
+    "project": "emg",
+    "url": "https://github.com/Omar-Alhalawani/EMG-Signal-Acquisition-and-Processing",
+    "auditedCommit": "e08acc2bb7dec1547ac54812245ddd7181b22729",
+    "referenceUnmodified": true
+  },
+  {
+    "project": "lumalink",
+    "url": "https://github.com/Omar-Alhalawani/lumalink",
+    "auditedCommit": "40fd946c0bfaa4ba9e1fcc3b47300ebd0ecf5ad7",
+    "referenceUnmodified": true
+  },
+  {
+    "project": "cubex",
+    "url": "https://github.com/Omar-Alhalawani/CubeX-Trio-Revival",
+    "auditedCommit": "a3a166726635426161da9886117716086a6d84b4",
+    "referenceUnmodified": true
+  }
+]

@@ -1,0 +1,233 @@
+[
+  {
+    "name": "desktop",
+    "url": "http://127.0.0.1:41235",
+    "date": "2026-10-10T19:10:49.357Z",
+    "environment": "Local production output, Chromium 153, software WebGL. Lighthouse emulation is not a physical-device measurement.",
+    "scores": {
+      "performance": 72,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 66
+    },
+    "metrics": {
+      "first-contentful-paint": {
+        "value": 367.99350000000004,
+        "display": "0.4 s"
+      },
+      "largest-contentful-paint": {
+        "value": 567.9934999999999,
+        "display": "0.6 s"
+      },
+      "speed-index": {
+        "value": 699.324854749915,
+        "display": "0.7 s"
+      },
+      "total-blocking-time": {
+        "value": 868.0000000000001,
+        "display": "870 ms"
+      },
+      "cumulative-layout-shift": {
+        "value": 0.007381824250809487,
+        "display": "0.007"
+      }
+    },
+    "failed": [
+      {
+        "key": "total-blocking-time",
+        "score": 0.08,
+        "title": "Total Blocking Time",
+        "description": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. [Learn more about the Total Blocking Time metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/).",
+        "display": "870 ms"
+      },
+      {
+        "key": "max-potential-fid",
+        "score": 0,
+        "title": "Max Potential First Input Delay",
+        "description": "The maximum potential First Input Delay that your users could experience is the duration of the longest task. [Learn more about the Maximum Potential First Input Delay metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-max-potential-fid/).",
+        "display": "940 ms"
+      },
+      {
+        "key": "interactive",
+        "score": 0.99,
+        "title": "Time to Interactive",
+        "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
+        "display": "1.5 s"
+      },
+      {
+        "key": "valid-source-maps",
+        "score": 0,
+        "title": "Missing source maps for large first-party JavaScript",
+        "description": "Source maps translate minified code to the original source code. This helps developers debug in production. In addition, Lighthouse is able to provide further insights. Consider deploying source maps to take advantage of these benefits. [Learn more about source maps](https://developer.chrome.com/docs/devtools/javascript/source-maps/)."
+      },
+      {
+        "key": "label-content-name-mismatch",
+        "score": 0,
+        "title": "Elements with visible text labels do not have matching accessible names.",
+        "description": "Visible text labels that do not match the accessible name can result in a confusing experience for screen reader users. [Learn more about accessible names](https://dequeuniversity.com/rules/axe/4.13/label-content-name-mismatch)."
+      },
+      {
+        "key": "unused-javascript",
+        "score": 0,
+        "title": "Reduce unused JavaScript",
+        "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
+        "display": "Est savings of 139 KiB"
+      },
+      {
+        "key": "is-crawlable",
+        "score": 0,
+        "title": "Page is blocked from indexing",
+        "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/)."
+      },
+      {
+        "key": "cache-insight",
+        "score": 0,
+        "title": "Use efficient cache lifetimes",
+        "description": "A long cache lifetime can speed up repeat visits to your page. [Learn more about caching](https://developer.chrome.com/docs/performance/insights/cache).",
+        "display": "Est savings of 421 KiB"
+      },
+      {
+        "key": "network-dependency-tree-insight",
+        "score": 0,
+        "title": "Network dependency tree",
+        "description": "[Avoid chaining critical requests](https://developer.chrome.com/docs/performance/insights/network-dependency-tree) by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load."
+      },
+      {
+        "key": "render-blocking-insight",
+        "score": 0,
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "display": "Est savings of 190 ms"
+      }
+    ]
+  },
+  {
+    "name": "mobile",
+    "url": "http://127.0.0.1:41235",
+    "date": "2026-10-10T19:11:01.191Z",
+    "environment": "Local production output, Chromium 153, software WebGL. Lighthouse emulation is not a physical-device measurement.",
+    "scores": {
+      "performance": 75,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 66
+    },
+    "metrics": {
+      "first-contentful-paint": {
+        "value": 903.586,
+        "display": "0.9 s"
+      },
+      "largest-contentful-paint": {
+        "value": 2555.3790000000004,
+        "display": "2.6 s"
+      },
+      "speed-index": {
+        "value": 903.586,
+        "display": "0.9 s"
+      },
+      "total-blocking-time": {
+        "value": 970,
+        "display": "970 ms"
+      },
+      "cumulative-layout-shift": {
+        "value": 0.0026345929310399364,
+        "display": "0.003"
+      }
+    },
+    "failed": [
+      {
+        "key": "largest-contentful-paint",
+        "score": 0.88,
+        "title": "Largest Contentful Paint",
+        "description": "Largest Contentful Paint marks the time at which the largest text or image is painted. [Learn more about the Largest Contentful Paint metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/)",
+        "display": "2.6 s"
+      },
+      {
+        "key": "total-blocking-time",
+        "score": 0.28,
+        "title": "Total Blocking Time",
+        "description": "Sum of all time periods between FCP and Time to Interactive, when task length exceeded 50ms, expressed in milliseconds. [Learn more about the Total Blocking Time metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/).",
+        "display": "970 ms"
+      },
+      {
+        "key": "max-potential-fid",
+        "score": 0.01,
+        "title": "Max Potential First Input Delay",
+        "description": "The maximum potential First Input Delay that your users could experience is the duration of the longest task. [Learn more about the Maximum Potential First Input Delay metric](https://developer.chrome.com/docs/lighthouse/performance/lighthouse-max-potential-fid/).",
+        "display": "770 ms"
+      },
+      {
+        "key": "interactive",
+        "score": 0.86,
+        "title": "Time to Interactive",
+        "description": "Time to Interactive is the amount of time it takes for the page to become fully interactive. [Learn more about the Time to Interactive metric](https://developer.chrome.com/docs/lighthouse/performance/interactive/).",
+        "display": "4.1 s"
+      },
+      {
+        "key": "mainthread-work-breakdown",
+        "score": 0,
+        "title": "Minimize main-thread work",
+        "description": "Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to minimize main-thread work](https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/)",
+        "display": "2.2 s"
+      },
+      {
+        "key": "bootup-time",
+        "score": 0,
+        "title": "Reduce JavaScript execution time",
+        "description": "Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. [Learn how to reduce Javascript execution time](https://developer.chrome.com/docs/lighthouse/performance/bootup-time/).",
+        "display": "1.6 s"
+      },
+      {
+        "key": "valid-source-maps",
+        "score": 0,
+        "title": "Missing source maps for large first-party JavaScript",
+        "description": "Source maps translate minified code to the original source code. This helps developers debug in production. In addition, Lighthouse is able to provide further insights. Consider deploying source maps to take advantage of these benefits. [Learn more about source maps](https://developer.chrome.com/docs/devtools/javascript/source-maps/)."
+      },
+      {
+        "key": "label-content-name-mismatch",
+        "score": 0,
+        "title": "Elements with visible text labels do not have matching accessible names.",
+        "description": "Visible text labels that do not match the accessible name can result in a confusing experience for screen reader users. [Learn more about accessible names](https://dequeuniversity.com/rules/axe/4.13/label-content-name-mismatch)."
+      },
+      {
+        "key": "unused-javascript",
+        "score": 0,
+        "title": "Reduce unused JavaScript",
+        "description": "Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. [Learn how to reduce unused JavaScript](https://developer.chrome.com/docs/lighthouse/performance/unused-javascript/).",
+        "display": "Est savings of 139 KiB"
+      },
+      {
+        "key": "is-crawlable",
+        "score": 0,
+        "title": "Page is blocked from indexing",
+        "description": "Search engines are unable to include your pages in search results if they don't have permission to crawl them. [Learn more about crawler directives](https://developer.chrome.com/docs/lighthouse/seo/is-crawlable/)."
+      },
+      {
+        "key": "cache-insight",
+        "score": 0,
+        "title": "Use efficient cache lifetimes",
+        "description": "A long cache lifetime can speed up repeat visits to your page. [Learn more about caching](https://developer.chrome.com/docs/performance/insights/cache).",
+        "display": "Est savings of 421 KiB"
+      },
+      {
+        "key": "lcp-discovery-insight",
+        "score": 0,
+        "title": "LCP request discovery",
+        "description": "[Optimize LCP](https://developer.chrome.com/docs/performance/insights/lcp-discovery) by making the LCP image discoverable from the HTML immediately, and avoiding lazy-loading"
+      },
+      {
+        "key": "network-dependency-tree-insight",
+        "score": 0,
+        "title": "Network dependency tree",
+        "description": "[Avoid chaining critical requests](https://developer.chrome.com/docs/performance/insights/network-dependency-tree) by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load."
+      },
+      {
+        "key": "render-blocking-insight",
+        "score": 0,
+        "title": "Render-blocking requests",
+        "description": "Requests are blocking the page's initial render, which may delay LCP. [Deferring or inlining](https://developer.chrome.com/docs/performance/insights/render-blocking) can move these network requests out of the critical path.",
+        "display": "Est savings of 270 ms"
+      }
+    ]
+  }
+]

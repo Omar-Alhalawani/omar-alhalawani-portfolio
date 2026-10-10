@@ -1,0 +1,162 @@
+[
+  {
+    "milliseconds": 985,
+    "functionName": "",
+    "scriptId": "9",
+    "url": "http://127.0.0.1:36635/_astro/SceneIsland.DmotYXJq.js",
+    "lineNumber": 1,
+    "columnNumber": 662
+  },
+  {
+    "milliseconds": 972,
+    "functionName": "(idle)",
+    "scriptId": "0",
+    "url": "",
+    "lineNumber": -1,
+    "columnNumber": -1
+  },
+  {
+    "milliseconds": 84,
+    "functionName": "(program)",
+    "scriptId": "0",
+    "url": "",
+    "lineNumber": -1,
+    "columnNumber": -1
+  },
+  {
+    "milliseconds": 52,
+    "functionName": "C",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4162,
+    "columnNumber": 291
+  },
+  {
+    "milliseconds": 10,
+    "functionName": "(garbage collector)",
+    "scriptId": "0",
+    "url": "",
+    "lineNumber": -1,
+    "columnNumber": -1
+  },
+  {
+    "milliseconds": 10,
+    "functionName": "n",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4072,
+    "columnNumber": 2018
+  },
+  {
+    "milliseconds": 8,
+    "functionName": "setSize",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4220,
+    "columnNumber": 25908
+  },
+  {
+    "milliseconds": 6,
+    "functionName": "",
+    "scriptId": "31",
+    "url": "http://127.0.0.1:36635/_astro/RoundedBox.BoTTUeQt.js",
+    "lineNumber": 408,
+    "columnNumber": 7469
+  },
+  {
+    "milliseconds": 5,
+    "functionName": "Ne",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4220,
+    "columnNumber": 23787
+  },
+  {
+    "milliseconds": 5,
+    "functionName": "",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 0,
+    "columnNumber": 0
+  },
+  {
+    "milliseconds": 5,
+    "functionName": "tt",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4220,
+    "columnNumber": 24681
+  },
+  {
+    "milliseconds": 3,
+    "functionName": "E",
+    "scriptId": "31",
+    "url": "http://127.0.0.1:36635/_astro/RoundedBox.BoTTUeQt.js",
+    "lineNumber": 0,
+    "columnNumber": 511
+  },
+  {
+    "milliseconds": 3,
+    "functionName": "n",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 5,
+    "columnNumber": 148258
+  },
+  {
+    "milliseconds": 3,
+    "functionName": "__vite__mapDeps",
+    "scriptId": "9",
+    "url": "http://127.0.0.1:36635/_astro/SceneIsland.DmotYXJq.js",
+    "lineNumber": 0,
+    "columnNumber": 22
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "dot",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 1,
+    "columnNumber": 19834
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "mg",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4220,
+    "columnNumber": 58293
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "Y_",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4231,
+    "columnNumber": 1602
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "n_",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 4220,
+    "columnNumber": 65088
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "e",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 1,
+    "columnNumber": 218193
+  },
+  {
+    "milliseconds": 2,
+    "functionName": "setXYZ",
+    "scriptId": "25",
+    "url": "http://127.0.0.1:36635/_astro/CanvasShell.6QyqKyo3.js",
+    "lineNumber": 1,
+    "columnNumber": 94397
+  }
+]

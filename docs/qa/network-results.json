@@ -1,0 +1,536 @@
+[
+  {
+    "route": "/",
+    "requests": 22,
+    "transferBytes": 432847,
+    "sceneFiles": [
+      "/_astro/SceneIsland.CgXOn3xM.js",
+      "/_astro/CanvasShell.DYPtQhfL.js",
+      "/_astro/HeroScene.ZoipVi30.js",
+      "/_astro/RoundedBox.Bszwi1p-.js"
+    ],
+    "stats": [
+      {
+        "engine": "three.js r186",
+        "graphicsTier": "medium",
+        "frames": "30",
+        "dpr": "1",
+        "drawCalls": "17",
+        "triangles": "8144",
+        "textures": "1",
+        "geometries": "17"
+      }
+    ],
+    "entries": [
+      {
+        "name": "/_astro/space-grotesk-latin-500-normal.lFbtlQH6.woff2",
+        "type": "link",
+        "transfer": 13612,
+        "decoded": 13312,
+        "duration": 9.099999999627471
+      },
+      {
+        "name": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+        "type": "link",
+        "transfer": 23964,
+        "decoded": 23664,
+        "duration": 16.299999999813735
+      },
+      {
+        "name": "/_astro/Eyebrow.Dgzf0oul.css",
+        "type": "link",
+        "transfer": 3061,
+        "decoded": 8603,
+        "duration": 10.299999999813735
+      },
+      {
+        "name": "/_astro/experience.BkLW9kS8.css",
+        "type": "link",
+        "transfer": 943,
+        "decoded": 2288,
+        "duration": 11.300000000745058
+      },
+      {
+        "name": "/_astro/ProjectExplorer.B9Uj44ZN.css",
+        "type": "link",
+        "transfer": 1105,
+        "decoded": 2906,
+        "duration": 13.900000000372529
+      },
+      {
+        "name": "/_astro/index.ISG2dbeS.css",
+        "type": "link",
+        "transfer": 2115,
+        "decoded": 8471,
+        "duration": 14.799999999813735
+      },
+      {
+        "name": "/art/silicon-fallback.svg",
+        "type": "img",
+        "transfer": 1144,
+        "decoded": 2188,
+        "duration": 15.200000000186265
+      },
+      {
+        "name": "/art/floorplan-fallback.svg",
+        "type": "img",
+        "transfer": 1068,
+        "decoded": 3539,
+        "duration": 18.600000000558794
+      },
+      {
+        "name": "/art/verification-fallback.svg",
+        "type": "img",
+        "transfer": 839,
+        "decoded": 1396,
+        "duration": 18.5
+      },
+      {
+        "name": "/_astro/space-grotesk-latin-600-normal.DjKNqYRj.woff2",
+        "type": "css",
+        "transfer": 13584,
+        "decoded": 13284,
+        "duration": 2.400000000372529
+      },
+      {
+        "name": "/_astro/jetbrains-mono-latin-400-normal.V6pRDFza.woff2",
+        "type": "css",
+        "transfer": 21468,
+        "decoded": 21168,
+        "duration": 3.199999999254942
+      },
+      {
+        "name": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+        "type": "css",
+        "transfer": 24572,
+        "decoded": 24272,
+        "duration": 4.099999999627471
+      },
+      {
+        "name": "/_astro/SceneIsland.CgXOn3xM.js",
+        "type": "script",
+        "transfer": 1452,
+        "decoded": 2162,
+        "duration": 1.8999999994412065
+      },
+      {
+        "name": "/_astro/client.C3EcZRW1.js",
+        "type": "script",
+        "transfer": 64913,
+        "decoded": 209376,
+        "duration": 11.299999999813735
+      },
+      {
+        "name": "/_astro/react.DB-4Zxce.js",
+        "type": "script",
+        "transfer": 3580,
+        "decoded": 8529,
+        "duration": 7.7999999998137355
+      },
+      {
+        "name": "/_astro/jsx-runtime.BzgyUtJl.js",
+        "type": "script",
+        "transfer": 593,
+        "decoded": 424,
+        "duration": 7.8999999994412065
+      },
+      {
+        "name": "/_astro/preload-helper.DHhhL8Zf.js",
+        "type": "script",
+        "transfer": 1152,
+        "decoded": 1665,
+        "duration": 7.8999999994412065
+      },
+      {
+        "name": "/_astro/scheduler.Bt9tAVCi.js",
+        "type": "script",
+        "transfer": 1857,
+        "decoded": 3555,
+        "duration": 2.5
+      },
+      {
+        "name": "/_astro/webgl.worker-YVyx_F_h.js",
+        "type": "other",
+        "transfer": 455,
+        "decoded": 167,
+        "duration": -2.2000000001862645
+      },
+      {
+        "name": "/_astro/CanvasShell.DYPtQhfL.js",
+        "type": "script",
+        "transfer": 241297,
+        "decoded": 914641,
+        "duration": 25.100000000558794
+      },
+      {
+        "name": "/_astro/HeroScene.ZoipVi30.js",
+        "type": "script",
+        "transfer": 2943,
+        "decoded": 6431,
+        "duration": 3.800000000745058
+      },
+      {
+        "name": "/_astro/RoundedBox.Bszwi1p-.js",
+        "type": "script",
+        "transfer": 7130,
+        "decoded": 21940,
+        "duration": 3.8999999994412065
+      }
+    ]
+  },
+  {
+    "route": "/about",
+    "requests": 8,
+    "transferBytes": 213439,
+    "sceneFiles": [],
+    "stats": [],
+    "entries": [
+      {
+        "name": "/_astro/space-grotesk-latin-500-normal.lFbtlQH6.woff2",
+        "type": "link",
+        "transfer": 13612,
+        "decoded": 13312,
+        "duration": 11.199999999254942
+      },
+      {
+        "name": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+        "type": "link",
+        "transfer": 23964,
+        "decoded": 23664,
+        "duration": 11.100000000558794
+      },
+      {
+        "name": "/_astro/Eyebrow.Dgzf0oul.css",
+        "type": "link",
+        "transfer": 3061,
+        "decoded": 8603,
+        "duration": 8
+      },
+      {
+        "name": "/_astro/about.BAXEB1aV.css",
+        "type": "link",
+        "transfer": 968,
+        "decoded": 2644,
+        "duration": 10.599999999627471
+      },
+      {
+        "name": "/images/omar.webp",
+        "type": "img",
+        "transfer": 112210,
+        "decoded": 111910,
+        "duration": 11.299999999813735
+      },
+      {
+        "name": "/_astro/space-grotesk-latin-600-normal.DjKNqYRj.woff2",
+        "type": "css",
+        "transfer": 13584,
+        "decoded": 13284,
+        "duration": 30.5
+      },
+      {
+        "name": "/_astro/jetbrains-mono-latin-400-normal.V6pRDFza.woff2",
+        "type": "css",
+        "transfer": 21468,
+        "decoded": 21168,
+        "duration": 30.899999999441206
+      },
+      {
+        "name": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+        "type": "css",
+        "transfer": 24572,
+        "decoded": 24272,
+        "duration": 31
+      }
+    ]
+  },
+  {
+    "route": "/resume",
+    "requests": 7,
+    "transferBytes": 100877,
+    "sceneFiles": [],
+    "stats": [],
+    "entries": [
+      {
+        "name": "/_astro/space-grotesk-latin-500-normal.lFbtlQH6.woff2",
+        "type": "link",
+        "transfer": 13612,
+        "decoded": 13312,
+        "duration": 8.399999999441206
+      },
+      {
+        "name": "/_astro/Eyebrow.Dgzf0oul.css",
+        "type": "link",
+        "transfer": 3061,
+        "decoded": 8603,
+        "duration": 6.5
+      },
+      {
+        "name": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+        "type": "link",
+        "transfer": 23964,
+        "decoded": 23664,
+        "duration": 8.5
+      },
+      {
+        "name": "/_astro/resume.C2HgtBuO.css",
+        "type": "link",
+        "transfer": 616,
+        "decoded": 695,
+        "duration": 7.2000000001862645
+      },
+      {
+        "name": "/_astro/space-grotesk-latin-600-normal.DjKNqYRj.woff2",
+        "type": "css",
+        "transfer": 13584,
+        "decoded": 13284,
+        "duration": 24.799999999813735
+      },
+      {
+        "name": "/_astro/jetbrains-mono-latin-400-normal.V6pRDFza.woff2",
+        "type": "css",
+        "transfer": 21468,
+        "decoded": 21168,
+        "duration": 25.299999999813735
+      },
+      {
+        "name": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+        "type": "css",
+        "transfer": 24572,
+        "decoded": 24272,
+        "duration": 25.5
+      }
+    ]
+  },
+  {
+    "route": "/contact",
+    "requests": 7,
+    "transferBytes": 101257,
+    "sceneFiles": [],
+    "stats": [],
+    "entries": [
+      {
+        "name": "/_astro/space-grotesk-latin-500-normal.lFbtlQH6.woff2",
+        "type": "link",
+        "transfer": 13612,
+        "decoded": 13312,
+        "duration": 5.5
+      },
+      {
+        "name": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+        "type": "link",
+        "transfer": 23964,
+        "decoded": 23664,
+        "duration": 10.300000000745058
+      },
+      {
+        "name": "/_astro/Eyebrow.Dgzf0oul.css",
+        "type": "link",
+        "transfer": 3061,
+        "decoded": 8603,
+        "duration": 7.7999999998137355
+      },
+      {
+        "name": "/_astro/contact.ea5_Q85I.css",
+        "type": "link",
+        "transfer": 996,
+        "decoded": 2395,
+        "duration": 9.900000000372529
+      },
+      {
+        "name": "/_astro/space-grotesk-latin-600-normal.DjKNqYRj.woff2",
+        "type": "css",
+        "transfer": 13584,
+        "decoded": 13284,
+        "duration": 5.2999999998137355
+      },
+      {
+        "name": "/_astro/jetbrains-mono-latin-400-normal.V6pRDFza.woff2",
+        "type": "css",
+        "transfer": 21468,
+        "decoded": 21168,
+        "duration": 5.400000000372529
+      },
+      {
+        "name": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+        "type": "css",
+        "transfer": 24572,
+        "decoded": 24272,
+        "duration": 6.2999999998137355
+      }
+    ]
+  },
+  {
+    "route": "/projects/fifo",
+    "requests": 21,
+    "transferBytes": 429432,
+    "sceneFiles": [
+      "/_astro/SceneIsland.CgXOn3xM.js",
+      "/_astro/CanvasShell.DYPtQhfL.js",
+      "/_astro/FifoScene.DSv2F4aq.js",
+      "/_astro/Board.C6KZJ5Rk.js",
+      "/_astro/RoundedBox.Bszwi1p-.js",
+      "/_astro/SignalTrace.A9du5PQO.js"
+    ],
+    "stats": [
+      {
+        "engine": "three.js r186",
+        "graphicsTier": "medium",
+        "frames": "30",
+        "dpr": "1",
+        "drawCalls": "21",
+        "triangles": "6520",
+        "textures": "1",
+        "geometries": "21"
+      }
+    ],
+    "entries": [
+      {
+        "name": "/_astro/space-grotesk-latin-500-normal.lFbtlQH6.woff2",
+        "type": "link",
+        "transfer": 13612,
+        "decoded": 13312,
+        "duration": 10.5
+      },
+      {
+        "name": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+        "type": "link",
+        "transfer": 23964,
+        "decoded": 23664,
+        "duration": 10.299999999813735
+      },
+      {
+        "name": "/_astro/Eyebrow.Dgzf0oul.css",
+        "type": "link",
+        "transfer": 3061,
+        "decoded": 8603,
+        "duration": 6.2000000001862645
+      },
+      {
+        "name": "/_astro/_slug_.BM3Qbsqv.css",
+        "type": "link",
+        "transfer": 2207,
+        "decoded": 9617,
+        "duration": 9.700000000186265
+      },
+      {
+        "name": "/art/fifo-fallback.svg",
+        "type": "img",
+        "transfer": 879,
+        "decoded": 1960,
+        "duration": 9.900000000372529
+      },
+      {
+        "name": "/_astro/space-grotesk-latin-600-normal.DjKNqYRj.woff2",
+        "type": "css",
+        "transfer": 13584,
+        "decoded": 13284,
+        "duration": 28.40000000037253
+      },
+      {
+        "name": "/_astro/jetbrains-mono-latin-400-normal.V6pRDFza.woff2",
+        "type": "css",
+        "transfer": 21468,
+        "decoded": 21168,
+        "duration": 29.799999999813735
+      },
+      {
+        "name": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+        "type": "css",
+        "transfer": 24572,
+        "decoded": 24272,
+        "duration": 31.200000000186265
+      },
+      {
+        "name": "/_astro/SceneIsland.CgXOn3xM.js",
+        "type": "script",
+        "transfer": 1452,
+        "decoded": 2162,
+        "duration": 7.5
+      },
+      {
+        "name": "/_astro/client.C3EcZRW1.js",
+        "type": "script",
+        "transfer": 64913,
+        "decoded": 209376,
+        "duration": 20.59999999962747
+      },
+      {
+        "name": "/_astro/jsx-runtime.BzgyUtJl.js",
+        "type": "script",
+        "transfer": 593,
+        "decoded": 424,
+        "duration": 8.800000000745058
+      },
+      {
+        "name": "/_astro/preload-helper.DHhhL8Zf.js",
+        "type": "script",
+        "transfer": 1152,
+        "decoded": 1665,
+        "duration": 9
+      },
+      {
+        "name": "/_astro/react.DB-4Zxce.js",
+        "type": "script",
+        "transfer": 3580,
+        "decoded": 8529,
+        "duration": 8.600000000558794
+      },
+      {
+        "name": "/_astro/scheduler.Bt9tAVCi.js",
+        "type": "script",
+        "transfer": 1857,
+        "decoded": 3555,
+        "duration": 2.2000000001862645
+      },
+      {
+        "name": "/_astro/webgl.worker-YVyx_F_h.js",
+        "type": "other",
+        "transfer": 455,
+        "decoded": 167,
+        "duration": -3.6000000005587935
+      },
+      {
+        "name": "/_astro/CanvasShell.DYPtQhfL.js",
+        "type": "script",
+        "transfer": 241297,
+        "decoded": 914641,
+        "duration": 25.100000000558794
+      },
+      {
+        "name": "/_astro/FifoScene.DSv2F4aq.js",
+        "type": "script",
+        "transfer": 935,
+        "decoded": 1337,
+        "duration": 5.400000000372529
+      },
+      {
+        "name": "/_astro/fifo.CG8PX359.js",
+        "type": "script",
+        "transfer": 775,
+        "decoded": 831,
+        "duration": 7.099999999627471
+      },
+      {
+        "name": "/_astro/Board.C6KZJ5Rk.js",
+        "type": "script",
+        "transfer": 1103,
+        "decoded": 1461,
+        "duration": 7.2000000001862645
+      },
+      {
+        "name": "/_astro/RoundedBox.Bszwi1p-.js",
+        "type": "script",
+        "transfer": 7130,
+        "decoded": 21940,
+        "duration": 7.6000000005587935
+      },
+      {
+        "name": "/_astro/SignalTrace.A9du5PQO.js",
+        "type": "script",
+        "transfer": 843,
+        "decoded": 843,
+        "duration": 7.2000000001862645
+      }
+    ]
+  }
+]
