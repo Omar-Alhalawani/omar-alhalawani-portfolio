@@ -4,6 +4,7 @@ import {launchQABrowser,startQAServer} from './qa-runtime.mjs';
 
 const local=process.env.QA_BASE_URL?null:await startQAServer();const base=process.env.QA_BASE_URL||local.url;
 const browser=await launchQABrowser();const results=[];
+const output=process.env.QA_OUTPUT||'qa-artifacts';fs.mkdirSync(output,{recursive:true});
 try{
   for(const route of ['/','/about','/resume','/contact','/projects/fifo']){
     const page=await browser.newPage({viewport:{width:1440,height:900}});
@@ -19,4 +20,4 @@ try{
     const stats=await page.locator('canvas').evaluateAll(canvases=>canvases.map(canvas=>canvas.dataset));
     const row={route,requests:entries.length,transferBytes:entries.reduce((sum,r)=>sum+r.transfer,0),sceneFiles,stats,entries};results.push(row);console.log(JSON.stringify({...row,entries:undefined}));await page.close();
   }
-}finally{fs.mkdirSync('qa-artifacts',{recursive:true});fs.writeFileSync('qa-artifacts/network-results.json',JSON.stringify(results,null,2));await browser.close();await local?.close();}
+}finally{fs.writeFileSync(`${output}/network-results.json`,JSON.stringify(results,null,2));await browser.close();await local?.close();}

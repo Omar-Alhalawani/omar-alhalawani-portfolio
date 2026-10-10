@@ -37,7 +37,7 @@ The site is static. No server, database, AI service, API key, or secret needs co
 | `npm run art` | Regenerate original static SVG scene artwork |
 | `npm run og` | Regenerate the 1200×630 social preview using built self-hosted fonts |
 
-Build before QA. Browser scripts use an ephemeral production server by default. Set `QA_BASE_URL=https://actual-staging-url.vercel.app` to test a deployment. `QA_OUTPUT` separates live browser evidence. Contact tests intercept Formspree requests and do not send email.
+Build before QA. Browser scripts use an ephemeral production server by default. Set `QA_BASE_URL=https://actual-staging-url.vercel.app` to test a deployment. `QA_OUTPUT` separates browser, network, targeted, and Lighthouse evidence. `QA_PROXY_SERVER` optionally uses an environment's existing proxy; certificate validation remains enabled. Contact tests intercept Formspree requests and do not send email.
 
 Playwright uses installed Chromium, then the bundled Chromium QA dependency. `CHROME_PATH` can select a local executable. The managed QA environment uses software WebGL; these results are not physical-device GPU measurements.
 
@@ -81,7 +81,7 @@ Case studies distinguish primary source from public summaries. FIFO has a regist
 
 ## Vercel staging
 
-Import **`Omar-Alhalawani/omar-portfolio-v2`** as a separate project. Use Astro defaults, root `./`, `npm install`, `npm run build`, and `dist`. No environment variables or paid add-ons are needed. `VERCEL_URL`, when supplied by Vercel, sets the metadata/sitemap origin; the fallback is a staging hostname, never V1’s production identity.
+Import **`Omar-Alhalawani/omar-portfolio-v2`** as a separate project. Use Astro defaults, root `./`, `npm install`, `npm run build`, and `dist`. No manually configured environment variables or paid add-ons are needed. Vercel's system variable `VERCEL_PROJECT_PRODUCTION_URL` sets the metadata/sitemap origin to the public project domain. The fallback is `https://omar-portfolio-v2.vercel.app`, never V1's production identity. Do not use the potentially protected immutable deployment hostname for canonical or social-image links.
 
 Staging has HTML `noindex, nofollow, noarchive`, `robots.txt` disallowing crawling, and Vercel `X-Robots-Tag`. Do not remove these or configure domains/DNS until Omar explicitly chooses to launch. The resulting lower SEO audit score is intentional.
 

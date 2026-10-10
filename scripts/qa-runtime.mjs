@@ -35,7 +35,7 @@ export function getQARuntime() {
   };
 }
 
-export const qaChromeFlags=['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--in-process-gpu','--no-zygote'];
+export const qaChromeFlags=['--no-sandbox','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--in-process-gpu','--no-zygote',...(process.env.QA_PROXY_SERVER?[`--proxy-server=${process.env.QA_PROXY_SERVER}`]:[])];
 export async function launchQABrowser(){return chromium.launch({...getQARuntime(),headless:true,args:qaChromeFlags});}
 
 export async function startQAServer(directory='dist') {
