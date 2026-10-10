@@ -13,17 +13,17 @@ import { featuredProjects } from '../data/projects';
 ---
 <SiteLayout>
   <div id="silicon-sequence" class="silicon-sequence">
-    <div class="world-stage" aria-hidden="true"><div class="world-window"><SceneIsland scene="hero" client:idle /><div class="world-label"><span class="world-label-line"></span>01 / COMPUTATIONAL MATTER</div></div></div>
+    <div class="world-stage" aria-hidden="true"><div class="world-window"><SceneIsland scene="hero" client:idle /><div class="world-label"><span class="world-label-line"></span>01 / CONCEPTUAL COMPUTING ASSEMBLY</div></div></div>
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
         <Eyebrow>Computer Systems Engineering<br class="eyebrow-break" /> // ASIC Verification</Eyebrow>
         <h1 id="hero-title"><span>Omar</span><span>Alhalawani<span class="name-period">.</span></span></h1>
-        <p class="hero-statement">I build and verify systems<br class="desktop-break" /> close to the hardware.</p>
-        <p class="hero-description">Computer Systems Engineering at Carleton University. Focused on ASIC verification, RTL / digital design, embedded systems, and engineering automation.</p>
-        <div class="hero-experience"><span class="status-dot" aria-hidden="true"></span><span>Ciena <span class="muted">/ ASIC Engineer I Co-op · Summer 2026</span></span></div>
-        <div class="actions"><Button href="/projects" variant="primary">Explore work <span aria-hidden="true">↗</span></Button><Button href="/resume">View resume <span aria-hidden="true">↗</span></Button><Button href={site.github} variant="text" external>GitHub <span aria-hidden="true">↗</span></Button></div>
+        <p class="hero-statement">ASIC Verification, RTL Design,<br class="desktop-break" /> and Embedded Systems</p>
+        <p class="hero-description">Computer Systems Engineering student at Carleton University with experience in ASIC verification methodology, digital design, embedded systems, and engineering automation.</p>
+        <div class="hero-experience"><span class="status-dot" aria-hidden="true"></span><span>ASIC Engineer I Co-op <span class="muted">· Ciena · Summer 2026</span></span></div>
+        <div class="actions"><Button href="/projects" variant="primary">View Projects <span aria-hidden="true">↗</span></Button><Button href="/resume">View Resume <span aria-hidden="true">↗</span></Button><Button href={site.github} variant="text" external>GitHub <span aria-hidden="true">↗</span></Button></div>
       </div>
-      <div class="hero-bottom"><span>OTTAWA, CANADA // CARLETON UNIVERSITY</span><a href="#engineering-stack">Scroll to trace the system <span aria-hidden="true">↓</span></a></div>
+      <div class="hero-bottom"><span>OTTAWA, CANADA // CARLETON UNIVERSITY</span><a href="#engineering-stack">Scroll to explore <span aria-hidden="true">↓</span></a></div>
     </section>
     <div class="proof-strip container">
       <div><strong>ASIC verification</strong><span>PyUVM · cocotb · SystemVerilog UVM</span></div>
@@ -32,16 +32,16 @@ import { featuredProjects } from '../data/projects';
       <div><strong>Embedded systems</strong><span>C / C++ · sensors · DAQ</span></div>
     </div>
     <section id="engineering-stack" class="engineering-stack container" aria-labelledby="stack-title">
-      <div class="stack-copy"><Eyebrow>02 // From material to architecture</Eyebrow><h2 id="stack-title">Every layer<br />has a purpose.</h2><p class="stack-intro">The work lives between disciplines. From a physical signal to the logic that handles it, the tests that verify it, and the tools that make it repeatable.</p>
+      <div class="stack-copy"><Eyebrow>02 // Engineering disciplines</Eyebrow><h2 id="stack-title">Technical Focus</h2><p class="stack-intro">RTL, verification, embedded hardware, and the tools used to develop and test them. Select a category to inspect its conceptual layer.</p>
         <div class="skill-list">{skills.map(skill=><button class="skill-row" data-layer={skill.index} data-active={skill.index===2 ? 'true':undefined} aria-pressed={skill.index===2} type="button"><span class="skill-number">0{5-skill.index}</span><span><strong>{skill.name}</strong><span>{skill.tech}</span><span class="skill-detail">{skill.detail}</span></span><span class="skill-arrow" aria-hidden="true">↗</span></button>)}</div>
         <p class="concept-note">Five conceptual engineering layers.<br />An illustration of my work, not a fabrication stack.</p>
       </div>
     </section>
   </div>
-  <section class="home-experience container section" aria-labelledby="experience-title"><div class="section-heading"><div><Eyebrow>03 // Verification in practice</Eyebrow><h2 id="experience-title">Test the assumptions.<br />Trust the evidence.</h2></div><a href="/experience" class="text-link">All experience ↗</a></div><div class="experience-grid"><ExperienceCard item={experience[0]} compact/><VerificationVisual /></div></section>
-  <section class="home-projects container section" aria-labelledby="projects-title"><div class="section-heading"><div><Eyebrow>04 // Selected systems</Eyebrow><h2 id="projects-title">From a clock edge<br />to a physical signal.</h2></div><a href="/projects" class="text-link">All projects ↗</a></div><ProjectExplorer projects={featuredProjects}/></section>
-  <section class="home-about container section" aria-labelledby="about-title"><div><Eyebrow>05 // The engineer behind the work</Eyebrow><h2 id="about-title">Curiosity follows<br />the signal.</h2></div><div><p>I’m a Computer Systems Engineering student at Carleton University in Ottawa. My work connects hardware verification, embedded instrumentation, and tools that make engineering repeatable.</p><p>From research labs to digital-system classrooms, I enjoy making complicated behavior easier to understand.</p><a href="/about" class="text-link">More about me ↗</a></div></section>
-  <section class="cta-band container"><div><Eyebrow>06 // Open a channel</Eyebrow><h2>Have a system<br />worth building?</h2></div><Button href="/contact" variant="primary">Let’s connect ↗</Button></section>
+  <section class="home-experience container section" aria-labelledby="experience-title"><div class="section-heading"><div><Eyebrow>03 // Engineering work</Eyebrow><h2 id="experience-title">Experience</h2></div><a href="/experience" class="text-link">All experience ↗</a></div><div class="experience-grid"><ExperienceCard item={experience[0]} compact/><VerificationVisual /></div></section>
+  <section class="home-projects container section" aria-labelledby="projects-title"><div class="section-heading"><div><Eyebrow>04 // Hardware & software</Eyebrow><h2 id="projects-title">Selected Projects</h2></div><a href="/projects" class="text-link">All projects ↗</a></div><ProjectExplorer projects={featuredProjects}/></section>
+  <section class="home-about container section" aria-labelledby="about-title"><div><Eyebrow>05 // Carleton University</Eyebrow><h2 id="about-title">Education & Background</h2></div><div><p>B.Eng. Computer Systems Engineering, Honours Co-op at Carleton University. Expected graduation: 2029.</p><p>Experience includes ASIC verification at Ciena, research instrumentation, teaching, electronics repair, and independent hardware/software projects.</p><a href="/about" class="text-link">View background ↗</a></div></section>
+  <section class="cta-band container"><div><Eyebrow>06 // Engineering inquiries</Eyebrow><h2>Contact</h2></div><Button href="/contact" variant="primary">Let’s connect ↗</Button></section>
 </SiteLayout>
 <script>
   document.querySelectorAll<HTMLButtonElement>('[data-layer]').forEach(button=>{

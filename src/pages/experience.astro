@@ -7,11 +7,11 @@ import Button from '../components/Button.astro';
 import {experience} from '../data/experience';
 ---
 <SiteLayout title="Experience — Omar Alhalawani" description="ASIC verification methodology at Ciena, research instrumentation at Carleton, and teaching digital systems. Public-safe engineering experience.">
-  <div class="container"><section class="page-intro"><Eyebrow>Experience // Verification & instrumentation</Eyebrow><h1>Build the system.<br />Question its behavior.</h1><p class="lead">Verification, embedded instrumentation, and teaching. Different environments, with the same emphasis on clear interfaces and repeatable evidence.</p></section>
+  <div class="container"><section class="page-intro"><Eyebrow>Experience // Verification & instrumentation</Eyebrow><h1>Experience</h1><p class="lead">ASIC verification methodology, laboratory instrumentation, teaching, and hands-on electronics repair.</p></section>
     <div class="experience-opening"><p>At Ciena, my work focused on verification methodology: how a specification becomes a self-checking environment, and how to evaluate the usefulness of that environment.</p><VerificationVisual /></div>
     <section aria-label="Engineering experience"><h2 class="sr-only">Engineering experience</h2>{experience.map(item=><ExperienceCard item={item}/>)}</section>
     <div class="experience-note"><span class="eyebrow">Public scope</span><p>These summaries describe responsibilities and methods. They do not expose internal RTL, specifications, benchmarks, or confidential employer designs.</p></div>
-    <section class="cta-band"><div><Eyebrow>From method to implementation</Eyebrow><h2>Explore the work<br />behind the interfaces.</h2></div><Button href="/projects" variant="primary">View projects ↗</Button></section>
+    <section class="cta-band"><div><Eyebrow>Project case studies</Eyebrow><h2>Selected Projects</h2></div><Button href="/projects" variant="primary">View projects ↗</Button></section>
   </div>
 </SiteLayout>
 <style>

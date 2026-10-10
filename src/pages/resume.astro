@@ -4,10 +4,10 @@ import Eyebrow from '../components/Eyebrow.astro';
 import Button from '../components/Button.astro';
 import {site} from '../data/site';
 ---
-<SiteLayout title="Resume — Omar Alhalawani" description="View or download Omar Alhalawani’s original resume PDF. Computer Systems Engineering, ASIC verification, digital design, and embedded systems.">
-  <div class="container"><section class="page-intro"><Eyebrow>Resume // Engineering experience</Eyebrow><h1>The work,<br />on one page.</h1><p class="lead">Education, experience, and selected engineering projects.</p><div class="actions resume-actions"><Button href={site.resume} variant="primary" download>Download PDF ↓</Button><Button href={site.resume} external>Open PDF ↗</Button></div></section>
-    <section class="resume-document" aria-label="Resume PDF"><iframe src={site.resume} title="Omar Alhalawani’s resume PDF" loading="lazy"><p><a href={site.resume}>Open the resume PDF</a></p></iframe><p class="resume-help">If your browser does not display embedded PDFs, <a href={site.resume} target="_blank" rel="noopener noreferrer">open the PDF in a new tab</a> or use the download link above.</p></section>
-    <section class="cta-band"><div><Eyebrow>Let’s connect</Eyebrow><h2>Have a system<br />worth building?</h2></div><Button href="/contact">Get in touch ↗</Button></section>
+<SiteLayout title="Resume — Omar Alhalawani" description="View or download Omar Alhalawani’s ASIC-focused resume PDF. Computer Systems Engineering, ASIC verification, digital design, and embedded systems.">
+  <div class="container"><section class="page-intro"><Eyebrow>Resume // Engineering experience</Eyebrow><h1>ASIC Resume</h1><p class="lead">The September 2026 ASIC-focused resume, including verification experience, RTL work, and selected projects.</p><div class="actions resume-actions"><Button href={site.resume} variant="primary" download>Download Resume ↓</Button><Button href={site.resume} external>Open PDF ↗</Button></div></section>
+    <section class="resume-document" aria-label="Resume PDF"><iframe src={site.resume} title="Omar Alhalawani’s ASIC resume PDF" loading="lazy"><p><a href={site.resume}>Open the resume PDF</a></p></iframe><p class="resume-help">If your browser does not display embedded PDFs, <a href={site.resume} target="_blank" rel="noopener noreferrer">open the PDF in a new tab</a> or use the download link above.</p></section>
+    <section class="cta-band"><div><Eyebrow>Let’s connect</Eyebrow><h2>Contact</h2></div><Button href="/contact">Get in touch ↗</Button></section>
   </div>
 </SiteLayout>
 <style>

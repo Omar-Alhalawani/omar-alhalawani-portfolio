@@ -3,12 +3,12 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import Eyebrow from '../../components/Eyebrow.astro';
 import ProjectExplorer from '../../components/ProjectExplorer.astro';
 import Button from '../../components/Button.astro';
-import {projects} from '../../data/projects';
+import {featuredProjects,additionalProjects} from '../../data/projects';
 ---
 <SiteLayout title="Projects — Omar Alhalawani" description="Source-backed projects in synchronous FIFO verification, FPGA arithmetic, EMG acquisition, optical communication, and embedded research instrumentation.">
-  <div class="container"><section class="page-intro"><Eyebrow>Projects // Silicon, signal, system</Eyebrow><h1>Ideas become<br />interfaces.</h1><p class="lead">Digital logic, physical signals, and the tools that connect them. Each project has its own constraints, architecture, and evidence.</p></section>
-    <section class="projects-body" aria-label="Project case studies"><h2 class="sr-only">Project case studies</h2><ProjectExplorer projects={projects}/></section>
-    <section class="cta-band"><div><Eyebrow>Read the implementation</Eyebrow><h2>The source matters.</h2><p>Public repositories are linked in each case study.<br />Illustrations explain the architecture; they are not measurements.</p></div><Button href="https://github.com/Omar-Alhalawani" external>Explore GitHub ↗</Button></section>
+  <div class="container"><section class="page-intro"><Eyebrow>Projects // Engineering implementations</Eyebrow><h1>Projects</h1><p class="lead">RTL, FPGA, real-time communication, instrumentation, and mechanical hardware. Select a module or a project entry to open its case study.</p></section>
+    <section class="projects-body" aria-label="Project case studies"><h2 class="sr-only">Project case studies</h2><ProjectExplorer projects={featuredProjects}/></section>
+    <section class="additional-projects" aria-labelledby="additional-title"><Eyebrow>Software, embedded hardware & automation</Eyebrow><h2 id="additional-title">Additional Projects</h2><div>{additionalProjects.map(project=><article><p class="eyebrow">{project.status}</p><h3>{project.title}</h3><p>{project.description}</p><p class="art-caption">{project.tags}</p></article>)}</div></section><section class="cta-band"><div><Eyebrow>Read the implementation</Eyebrow><h2>The source matters.</h2><p>Public repositories are linked in each case study.<br />Illustrations explain the architecture; they are not measurements.</p></div><Button href="https://github.com/Omar-Alhalawani" external>Explore GitHub ↗</Button></section>
   </div>
 </SiteLayout>
-<style>.projects-body{padding-bottom:80px}.cta-band p{font-size:14px;margin-top:24px}</style>
+<style>.additional-projects{padding-bottom:80px}.additional-projects h2{margin-bottom:32px}.additional-projects>div{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}.additional-projects article{border-top:1px solid var(--line);padding-block:32px}.additional-projects article>.eyebrow{font-size:9px;margin-bottom:14px}.additional-projects h3{font-size:25px;margin-bottom:18px}.additional-projects article>p:not(.eyebrow){font-size:13px;line-height:1.9;margin-top:18px}@media(max-width:700px){.additional-projects>div{grid-template-columns:1fr}}.projects-body{padding-bottom:80px}.cta-band p{font-size:14px;margin-top:24px}</style>

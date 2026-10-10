@@ -4,7 +4,7 @@ export const site = {
   email: 'omar.alhalawani2006@gmail.com',
   github: 'https://github.com/Omar-Alhalawani',
   linkedin: 'https://www.linkedin.com/in/omar-alhalawani',
-  resume: '/resume/Resume_Omar_Alhalawani.pdf',
+  resume: '/resume/Omar_Alhalawani_ASIC_Resume.pdf',
   formAction: 'https://formspree.io/f/xkgekqrw',
   location: 'Ottawa, Canada',
   university: 'Carleton University',
