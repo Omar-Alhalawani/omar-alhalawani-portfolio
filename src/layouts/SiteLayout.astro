@@ -11,7 +11,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 interface Props { title?: string; description?: string; project?: { title: string; description: string; source?: string }; }
-const { title = 'Omar Alhalawani — Computer Systems Engineering & ASIC Verification', description = 'Computer Systems Engineering at Carleton University. ASIC verification experience at Ciena, RTL design, embedded systems, and engineering automation.', project } = Astro.props;
+const { title = 'Omar Alhalawani | ASIC Verification & Computer Systems Engineering', description = 'Computer Systems Engineering at Carleton University. ASIC verification experience at Ciena, RTL design, embedded systems, and engineering automation.', project } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL('/og.png', Astro.site);
 const schema = {
@@ -28,7 +28,7 @@ const schema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#030610" />
+    <meta name="theme-color" content="#07090b" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={site.name} />
@@ -37,6 +37,9 @@ const schema = {
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -45,7 +48,7 @@ const schema = {
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Omar Alhalawani — ASIC Verification and Computer Systems Engineering, with original silicon artwork" />
+    <meta property="og:image:alt" content="Omar Alhalawani — ASIC Verification and Computer Systems Engineering, with conceptual amber-and-steel hardware artwork" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
