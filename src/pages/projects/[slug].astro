@@ -32,8 +32,11 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
   </div>
 </SiteLayout>
 <script>
+ import {onPage} from '../../lib/page-lifecycle';
+ onPage(()=>{
  const nav=document.querySelector<HTMLElement>('.case-toc');
- if(nav){const links=[...nav.querySelectorAll<HTMLAnchorElement>('a')];const sections=links.map(a=>document.getElementById(a.hash.slice(1))).filter((s):s is HTMLElement=>Boolean(s));const update=(id:string)=>links.forEach(a=>{if(a.hash===`#${id}`)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});if(sections[0])update(sections[0].id);const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible[0])update(visible[0].target.id);},{rootMargin:'-120px 0px -55% 0px'});sections.forEach(section=>observer.observe(section));}
+ if(nav){const links=[...nav.querySelectorAll<HTMLAnchorElement>('a')];const sections=links.map(a=>document.getElementById(a.hash.slice(1))).filter((s):s is HTMLElement=>Boolean(s));const update=(id:string)=>links.forEach(a=>{if(a.hash===`#${id}`)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});if(sections[0])update(sections[0].id);const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible[0])update(visible[0].target.id);},{rootMargin:'-120px 0px -55% 0px'});sections.forEach(section=>observer.observe(section));return()=>observer.disconnect();}
+ });
 </script>
 <style>
   .case-toc>a[aria-current="location"]{color:var(--amber);border-bottom-color:var(--amber)}

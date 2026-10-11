@@ -40,6 +40,8 @@ import { featuredProjects } from '../data/projects';
   <section class="cta-band container"><div><Eyebrow>06 // Engineering inquiries</Eyebrow><h2>Contact</h2></div><Button href="/contact" variant="primary">Let’s connect ↗</Button></section>
 </SiteLayout>
 <script>
+  import {onPage} from '../lib/page-lifecycle';
+  onPage(signal=>{
   document.querySelectorAll<HTMLButtonElement>('[data-layer]').forEach(button=>{
     const select=()=>{
       document.querySelectorAll('[data-layer]').forEach(row=>{row.removeAttribute('data-active');row.setAttribute('aria-pressed','false');});
@@ -47,7 +49,8 @@ import { featuredProjects } from '../data/projects';
       button.setAttribute('aria-pressed','true');
       window.dispatchEvent(new CustomEvent('portfolio:layer',{detail:Number(button.dataset.layer)}));
     };
-    button.addEventListener('pointerenter',select);button.addEventListener('focus',select);button.addEventListener('click',select);
+    button.addEventListener('pointerenter',select,{signal});button.addEventListener('focus',select,{signal});button.addEventListener('click',select,{signal});
+  });
   });
 </script>
 <style>

@@ -1,4 +1,5 @@
-import { Component, Suspense, lazy, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Component, Suspense, lazy, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import {navigationMark} from '../lib/navigation-metrics';
 import type { SceneKind } from './three/types';
 
 const loadCanvas = () => import('./three/CanvasShell');
@@ -17,8 +18,10 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
   const [generation,setGeneration]=useState(0);
   const recovery=useRef({attempted:false,timer:0});
-  const ready=useCallback(()=>{setStatus('ready');if(window.__PROJECT_HANDOFF__)window.dispatchEvent(new Event('portfolio:destination-ready'));},[]);
-  const fail=useCallback(()=>{setStatus('fallback');if(window.__PROJECT_HANDOFF__)window.dispatchEvent(new Event('portfolio:destination-ready'));},[]);
+  const destination=()=>Boolean(window.__PROJECT_HANDOFF__&&location.pathname===`/projects/${window.__PROJECT_HANDOFF__.id}`&&scene!=='floorplan'&&scene!=='hero'&&scene!=='verification');
+  const ready=useCallback(()=>{setStatus('ready');if(destination())navigationMark('destination-first-frame');},[scene]);
+  const fail=useCallback(()=>{setStatus('fallback');},[]);
+  useLayoutEffect(()=>{if(status!=='loading'&&destination())window.dispatchEvent(new Event('portfolio:destination-ready'));},[status,scene]);
   const recover=useCallback(()=>{
     setLoad(false);fail();
     if(recovery.current.attempted)return;
@@ -30,8 +33,9 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   useEffect(() => {
     const element = host.current;
     if (!element) return;
+    if(destination()){element.dataset.handoff='true';navigationMark('scene-mount');}
     if (new URLSearchParams(location.search).get('graphics') === 'static') {
-      setStatus('fallback');
+      fail();
       return;
     }
     // The real renderer is the capability check; a separate temporary WebGL

@@ -1,0 +1,77 @@
+{
+  "renderer": "ANGLE SwiftShader; local immutable production build",
+  "timings": [
+    {
+      "id": "fifo",
+      "cameraEndToSwapMs": 24.5,
+      "swapToFirstFrameMs": 12621.099999999627,
+      "captureMs": 1,
+      "marks": [
+        {
+          "name": "project:click",
+          "time": 7235.899999999441
+        },
+        {
+          "name": "project:camera-start",
+          "time": 7236.399999999441
+        },
+        {
+          "name": "project:capture-start",
+          "time": 8829.099999999627
+        },
+        {
+          "name": "project:capture-end",
+          "time": 8830
+        },
+        {
+          "name": "project:camera-end",
+          "time": 8830.200000000186
+        },
+        {
+          "name": "project:navigate",
+          "time": 8830.5
+        },
+        {
+          "name": "project:before-preparation",
+          "time": 8831.599999999627
+        },
+        {
+          "name": "project:after-preparation",
+          "time": 8832.599999999627
+        },
+        {
+          "name": "project:route-swap",
+          "time": 8854.700000000186
+        },
+        {
+          "name": "project:html-ready",
+          "time": 20024.599999999627
+        },
+        {
+          "name": "project:scene-mount",
+          "time": 20025.200000000186
+        },
+        {
+          "name": "project:destination-first-frame",
+          "time": 21475.799999999814
+        },
+        {
+          "name": "project:handoff-removed",
+          "time": 21628.099999999627
+        }
+      ]
+    }
+  ],
+  "stress": [
+    {
+      "canvases": 1,
+      "listeners": 7,
+      "heap": 37300000
+    }
+  ],
+  "checks": [
+    "FIFO demo and current-section observer work after client entry",
+    "1-route stress loop: same document, one canvas, stable global listeners, no overlay/lock, selection and Back scroll restored"
+  ],
+  "errors": []
+}

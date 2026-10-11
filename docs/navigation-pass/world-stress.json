@@ -1,0 +1,272 @@
+{
+  "renderer": "ANGLE SwiftShader; local immutable production build",
+  "timings": [
+    {
+      "id": "fifo",
+      "cameraEndToSwapMs": 18.799999999813735,
+      "swapToFirstFrameMs": 11790.200000000186,
+      "captureMs": 0.5,
+      "marks": [
+        {
+          "name": "project:click",
+          "time": 7222.5
+        },
+        {
+          "name": "project:camera-start",
+          "time": 7223.100000000559
+        },
+        {
+          "name": "project:capture-start",
+          "time": 9018.200000000186
+        },
+        {
+          "name": "project:capture-end",
+          "time": 9018.700000000186
+        },
+        {
+          "name": "project:camera-end",
+          "time": 9018.900000000373
+        },
+        {
+          "name": "project:navigate",
+          "time": 9019.100000000559
+        },
+        {
+          "name": "project:before-preparation",
+          "time": 9020.100000000559
+        },
+        {
+          "name": "project:after-preparation",
+          "time": 9020.799999999814
+        },
+        {
+          "name": "project:route-swap",
+          "time": 9037.700000000186
+        },
+        {
+          "name": "project:html-ready",
+          "time": 19398.900000000373
+        },
+        {
+          "name": "project:scene-mount",
+          "time": 19399.700000000186
+        },
+        {
+          "name": "project:destination-first-frame",
+          "time": 20827.900000000373
+        },
+        {
+          "name": "project:handoff-removed",
+          "time": 20978.400000000373
+        }
+      ]
+    },
+    {
+      "id": "fpga-arithmetic",
+      "cameraEndToSwapMs": 19.799999999813735,
+      "swapToFirstFrameMs": 12194.200000000186,
+      "captureMs": 0.39999999944120646,
+      "marks": [
+        {
+          "name": "project:click",
+          "time": 30727.60000000056
+        },
+        {
+          "name": "project:camera-start",
+          "time": 30727.900000000373
+        },
+        {
+          "name": "project:capture-start",
+          "time": 32551.10000000056
+        },
+        {
+          "name": "project:capture-end",
+          "time": 32551.5
+        },
+        {
+          "name": "project:camera-end",
+          "time": 32551.5
+        },
+        {
+          "name": "project:navigate",
+          "time": 32551.700000000186
+        },
+        {
+          "name": "project:before-preparation",
+          "time": 32552.5
+        },
+        {
+          "name": "project:after-preparation",
+          "time": 32553.10000000056
+        },
+        {
+          "name": "project:route-swap",
+          "time": 32571.299999999814
+        },
+        {
+          "name": "project:html-ready",
+          "time": 43536.700000000186
+        },
+        {
+          "name": "project:scene-mount",
+          "time": 43546.700000000186
+        },
+        {
+          "name": "project:destination-first-frame",
+          "time": 44765.60000000056
+        },
+        {
+          "name": "project:handoff-removed",
+          "time": 44916.200000000186
+        }
+      ]
+    },
+    {
+      "id": "lumalink",
+      "cameraEndToSwapMs": 16,
+      "swapToFirstFrameMs": 13162.399999999441,
+      "captureMs": 0.19999999925494194,
+      "marks": [
+        {
+          "name": "project:click",
+          "time": 56243.60000000056
+        },
+        {
+          "name": "project:camera-start",
+          "time": 56244.10000000056
+        },
+        {
+          "name": "project:capture-start",
+          "time": 57623
+        },
+        {
+          "name": "project:capture-end",
+          "time": 57623.299999999814
+        },
+        {
+          "name": "project:camera-end",
+          "time": 57623.40000000037
+        },
+        {
+          "name": "project:navigate",
+          "time": 57623.40000000037
+        },
+        {
+          "name": "project:before-preparation",
+          "time": 57624
+        },
+        {
+          "name": "project:after-preparation",
+          "time": 57624.40000000037
+        },
+        {
+          "name": "project:route-swap",
+          "time": 57639.40000000037
+        },
+        {
+          "name": "project:html-ready",
+          "time": 69692
+        },
+        {
+          "name": "project:scene-mount",
+          "time": 69698.20000000019
+        },
+        {
+          "name": "project:destination-first-frame",
+          "time": 70801.79999999981
+        },
+        {
+          "name": "project:handoff-removed",
+          "time": 71321.10000000056
+        }
+      ]
+    },
+    {
+      "id": "cubex",
+      "cameraEndToSwapMs": 8.5,
+      "swapToFirstFrameMs": 12430.900000000373,
+      "captureMs": 0.2999999998137355,
+      "marks": [
+        {
+          "name": "project:click",
+          "time": 80103.90000000037
+        },
+        {
+          "name": "project:camera-start",
+          "time": 80104.5
+        },
+        {
+          "name": "project:capture-start",
+          "time": 80780
+        },
+        {
+          "name": "project:capture-end",
+          "time": 80780.29999999981
+        },
+        {
+          "name": "project:camera-end",
+          "time": 80780.29999999981
+        },
+        {
+          "name": "project:navigate",
+          "time": 80780.5
+        },
+        {
+          "name": "project:before-preparation",
+          "time": 80781.10000000056
+        },
+        {
+          "name": "project:after-preparation",
+          "time": 80781.5
+        },
+        {
+          "name": "project:route-swap",
+          "time": 80788.79999999981
+        },
+        {
+          "name": "project:html-ready",
+          "time": 91992.5
+        },
+        {
+          "name": "project:scene-mount",
+          "time": 92004.5
+        },
+        {
+          "name": "project:destination-first-frame",
+          "time": 93219.70000000019
+        },
+        {
+          "name": "project:handoff-removed",
+          "time": 93370.5
+        }
+      ]
+    }
+  ],
+  "stress": [
+    {
+      "canvases": 1,
+      "listeners": 7,
+      "heap": 35100000
+    },
+    {
+      "canvases": 1,
+      "listeners": 7,
+      "heap": 35100000
+    },
+    {
+      "canvases": 1,
+      "listeners": 7,
+      "heap": 35100000
+    },
+    {
+      "canvases": 1,
+      "listeners": 7,
+      "heap": 35100000
+    }
+  ],
+  "checks": [
+    "FIFO demo and current-section observer work after client entry",
+    "FPGA demo works after client entry"
+  ],
+  "errors": []
+}

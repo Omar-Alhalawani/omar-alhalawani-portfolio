@@ -1,4 +1,4 @@
-import {useCallback,useEffect,useRef,useState} from 'react';
+import {useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {useFrame,useThree,type ThreeEvent} from '@react-three/fiber';
 import {Group,MathUtils,Vector3} from 'three';
 import {Html,Line} from '@react-three/drei';
@@ -10,6 +10,7 @@ import {PortBank,PowerShelf} from './EngineeringDetails';
 import {Printer} from './projects/CubexScene';
 import {setProjectIntent,activeProjectIntent} from '../../lib/project-selection';
 import {openProject,projectNavigationHolding,type ProjectOpening} from '../../lib/project-navigation';
+import {navigationMark} from '../../lib/navigation-metrics';
 import ProjectMount,{type ModelMount} from './ProjectMount';
 import type {SceneProps} from './types';
 
@@ -33,6 +34,14 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   const groups=useRef<(Group|null)[]>([]),transition=useRef<CameraOpening|null>(null);
   const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),lastTouch=useRef<string|null>(null),look=useRef(new Vector3(0,.25,0));
   const {invalidate,camera,size,gl,scene}=useThree();
+  const [labelLayer]=useState(()=>document.createElement('div')),labels=useRef(labelLayer);
+  useLayoutEffect(()=>{
+    // Drei owns these portal nodes. Keep them outside React's canvas children
+    // so deferred island disposal after an Astro swap cannot remove them twice.
+    const layer=labels.current;layer.style.cssText='position:absolute;inset:0;pointer-events:none';
+    gl.domElement.closest('.scene-island')?.append(layer);
+    return()=>layer.remove();
+  },[gl]);
   const fit=Math.max(1,1.16/(size.width/size.height));
   const base=useRef(new Vector3(0,6.3*fit,6.8*fit));
   useEffect(()=>{gl.domElement.dataset.selectedProject=active;gl.domElement.dataset.transition=opening||'idle';},[active,opening,gl]);
@@ -63,7 +72,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
       request.claim();setActive(request.id);setPhysical(request.id);setOpening(request.id);
       const motion:CameraOpening={request,started:performance.now(),ready:false,complete:false,progress:0,from:camera.position.clone(),to,target,midCaptured:false};
       transition.current=motion;
-      void request.ready.then(()=>{motion.ready=true;invalidate();});invalidate();
+      void request.ready.then(()=>{if(transition.current===motion){motion.ready=true;invalidate();}});invalidate();
     };
     const cancel=()=>{transition.current=null;setOpening(null);setPhysical(null);camera.position.copy(base.current);look.current.set(0,.25,0);camera.lookAt(look.current);groups.current.forEach(group=>{if(group)group.rotation.y=0;});invalidate();};
     const previous=scene.onAfterRender;
@@ -71,17 +80,19 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
       previous.apply(scene,args);
       const motion=transition.current;if(!motion||motion.complete)return;
       const sample=window.__PORTFOLIO_PROFILE__?.scenes.floorplan;
-      const midpoint=Boolean(sample&&!motion.midCaptured&&motion.progress>=.25&&motion.progress<1);
-      const final=motion.progress>=1&&(motion.ready||performance.now()-motion.started>=motion.request.duration+400);
-      if(midpoint)motion.midCaptured=true;
+
+      const final=motion.progress>=1;
+
       if(final)motion.complete=true;
       // Capture after all synchronous composer passes, before the browser discards
       // the drawing buffer. The picture is the actual camera's final frame.
-      if(midpoint||final)queueMicrotask(()=>{
+      if(final)queueMicrotask(()=>{
         if(transition.current!==motion)return;
-        let image:string|undefined;try{const picture=document.createElement('canvas');picture.width=Math.min(1000,gl.domElement.width);picture.height=Math.round(picture.width*gl.domElement.height/gl.domElement.width);picture.getContext('2d')?.drawImage(gl.domElement,0,0,picture.width,picture.height);image=picture.toDataURL('image/webp',.86);}catch{/* Safe normal navigation. */}
-        if(midpoint&&sample)sample.navigationMidFrame=image;
-        if(final)motion.request.finish(image);
+        navigationMark('capture-start');const started=performance.now();let picture:HTMLCanvasElement|undefined;
+        try{picture=document.createElement('canvas');picture.width=Math.min(1000,size.width);picture.height=Math.round(picture.width*gl.domElement.height/gl.domElement.width);picture.getContext('2d')?.drawImage(gl.domElement,0,0,picture.width,picture.height);}catch{/* Safe normal navigation. */}
+
+        if(final){navigationMark('capture-end');if(sample)sample.captureMs=performance.now()-started;motion.request.finish(picture,{enteredFromProjectWorld:true,graphicsStage:Number(gl.domElement.dataset.graphicsStage||0),cameraOffset:motion.to.clone().sub(motion.target).divideScalar(views[motion.request.id].scale).toArray(),sourceFit:Math.max(1,1.2/(size.width/size.height)),sourceAspect:size.width/size.height,sourceFov:36});}
+
       });
     };
     window.addEventListener('portfolio:open-project',begin);window.addEventListener('portfolio:cancel-opening',cancel);
@@ -143,7 +154,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
         <group position={[0,.07,0]}><CircuitBoard width={region.dockWidth-.12} depth={region.dockDepth-.12} tier={tier} seed={i+70}/></group>
         <group position={[0,.17,-region.dockDepth/2+.13]}><Connector width={region.dockWidth*.5} count={10}/></group>
         <Line points={[[region.dockWidth*.38,.19,-region.dockDepth*.33],[region.dockWidth*.38,labelY-.07,-region.dockDepth*.33]]} color={selected?'#9e763f':'#576b73'} lineWidth={.55} raycast={()=>{}}/>
-        <Html position={[region.dockWidth*.38,labelY,-region.dockDepth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening ? .3 : 1}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'4px 8px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'2px',background:'#0b1013e0',color:selected?'#ffc36a':'#c0c8c9',font:'10px monospace',letterSpacing:'.04em',boxShadow:selected?'0 0 22px #ffac291c':'none'}}>{region.label}</span></Html>
+        <Html portal={labels} position={[region.dockWidth*.38,labelY,-region.dockDepth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening ? .3 : 1}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'4px 8px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'2px',background:'#0b1013e0',color:selected?'#ffc36a':'#c0c8c9',font:'10px monospace',letterSpacing:'.04em',boxShadow:selected?'0 0 22px #ffac291c':'none'}}>{region.label}</span></Html>
         <ProjectMount dock={region} onMeasure={onMeasure}>
           {region.id==='fifo'&&<MemoryBank occupied={selected?[true,true,true,false,false,false,false,false]:[true,false,false,false,false,false,false,false]}/>}
           {region.id==='fpga-arithmetic'&&<ArithmeticTile a={21} b={8} result={29} active={selected} reducedMotion={reducedMotion}/>}

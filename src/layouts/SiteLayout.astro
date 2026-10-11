@@ -1,4 +1,5 @@
 ---
+import {ClientRouter} from 'astro:transitions';
 import '@fontsource/inter/latin-400.css';
 import '@fontsource/inter/latin-500.css';
 import '@fontsource/space-grotesk/latin-500.css';
@@ -24,35 +25,15 @@ const schema = {
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#07090b" />
-    <script is:inline>
-      // Install the real WebGL handoff before first paint; loading/error states
-      // retain it until the destination can show its scene or static fallback.
-      try {
-        const raw=sessionStorage.getItem('portfolio:project-handoff');
-        if(raw){
-          const handoff=JSON.parse(raw);
-          if(location.pathname.replace(/\/$/,'')===`/projects/${handoff.id}`&&Date.now()-handoff.timestamp<15000&&/^data:image\/(webp|png);base64,/.test(handoff.image)){
-            window.__PROJECT_HANDOFF__=handoff;
-            const overlay=document.createElement('div');overlay.id='project-handoff';overlay.className='project-handoff';overlay.setAttribute('aria-hidden','true');
-            overlay.style.cssText='position:fixed;inset:0;z-index:50;background:#07090b;pointer-events:none;display:grid;place-items:center;view-transition-name:project-handoff';
-            const image=document.createElement('img');image.src=handoff.image;image.alt='';image.style.cssText='width:100%;height:100%;object-fit:contain';overlay.append(image);document.documentElement.append(overlay);
-            const reveal=()=>{
-              window.dispatchEvent(new Event('portfolio:handoff-reveal'));
-              const hero=document.querySelector('.case-canvas')?.getBoundingClientRect();
-              if(hero){image.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;transition:left 240ms ease,top 240ms ease,width 240ms ease,height 240ms ease';image.getBoundingClientRect();image.style.left=`${hero.left}px`;image.style.top=`${hero.top}px`;image.style.width=`${hero.width}px`;image.style.height=`${hero.height}px`;}
-              overlay.classList.add('project-handoff-revealing');setTimeout(()=>overlay.remove(),260);
-            };
-            const deadline=setTimeout(reveal,6000);
-            window.addEventListener('portfolio:destination-ready',()=>{clearTimeout(deadline);setTimeout(reveal,100);},{once:true});
-          }
-          sessionStorage.removeItem('portfolio:project-handoff');
-        }
-      }catch { /* Normal navigation works without session storage. */ }
+    <ClientRouter fallback="swap" />
+    <script>
+      import {initializeProjectNavigation} from '../lib/project-navigation';
+      initializeProjectNavigation();
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -80,7 +61,7 @@ const schema = {
     <meta name="twitter:image" content={socialImage} />
     <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')} />
   </head>
-  <body>
+  <body transition:animate="none">
     <SiteHeader />
     <main id="main" tabindex="-1"><slot /></main>
     <Footer />

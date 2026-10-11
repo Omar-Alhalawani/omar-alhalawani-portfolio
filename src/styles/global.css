@@ -3,7 +3,7 @@
 ::view-transition-old(root),::view-transition-new(root) { animation-duration:90ms; }
 ::view-transition-group(project-handoff) { animation:none; }
 ::view-transition-old(project-handoff),::view-transition-new(project-handoff) { animation:none; mix-blend-mode:normal; }
-.project-handoff { position:fixed;inset:0;z-index:50;background:#07090b;pointer-events:none;display:grid;place-items:center;view-transition-name:project-handoff;transition:opacity 240ms ease; }
+.project-handoff { position:fixed;inset:0;z-index:50;background:#07090b;pointer-events:none;display:grid;place-items:center;view-transition-name:project-handoff;transition:opacity 140ms ease; }
 .project-handoff>img { width:100%;height:100%;object-fit:contain; }
 .project-handoff.project-handoff-revealing { opacity:0; }
 
@@ -80,6 +80,7 @@
   .scene-island[data-state='ready'] .scene-fallback { opacity:0; }
   .scene-canvas { position:absolute!important; inset:0; opacity:0; transition:opacity .22s; }
   .scene-island[data-state='ready'] .scene-canvas { opacity:1; }
+  .scene-island[data-handoff='true'] .scene-canvas { transition:none; }
   .scene-island[data-state='fallback'] .scene-canvas { display:none; }
   .art-caption { font:400 10px/1.8 var(--mono); color:var(--muted); letter-spacing:.05em; }
   .site-footer { padding-block:48px 24px; border-top:1px solid var(--line); display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:24px; }

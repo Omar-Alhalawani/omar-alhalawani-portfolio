@@ -1,0 +1,14 @@
+{
+  "renderer": "ANGLE SwiftShader; local immutable production build",
+  "timings": [],
+  "stress": [],
+  "checks": [
+    "FPGA → Next Project and Project → All Projects use client swaps",
+    "Home Technical Focus reinitializes; Home → Projects uses client navigation",
+    "Projects → Contact → Projects; exactly one mocked submission, no email sent",
+    "Reduced motion uses immediate client navigation without handoff",
+    "Unavailable WebGL: normal client links, no fake camera or stale overlay",
+    "Mobile touch: select then open, client swap and handoff cleanup"
+  ],
+  "errors": []
+}

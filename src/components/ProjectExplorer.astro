@@ -19,6 +19,8 @@ const {projects}=Astro.props;
 <script>
   import {setProjectIntent,selectProject} from '../lib/project-selection';
   import {openProject,lastSelectedProject} from '../lib/project-navigation';
+  import {onPage} from '../lib/page-lifecycle';
+  onPage(signal=>{
   const worlds=document.querySelectorAll<HTMLElement>('[data-project-world]');
   const update=(id:string)=>worlds.forEach(world=>{
     world.dataset.selected=id;
@@ -27,15 +29,16 @@ const {projects}=Astro.props;
   });
   worlds.forEach(world=>{
     const selected=lastSelectedProject()||world.dataset.selected||'fifo';update(selected);selectProject(selected);
-    world.addEventListener('click',event=>{const link=(event.target as Element).closest<HTMLAnchorElement>('a[href^="/projects/"]');if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.altKey||event.shiftKey||link.target==='_blank')return;event.preventDefault();openProject(link.pathname.split('/')[2]);});
+    world.addEventListener('click',event=>{const link=(event.target as Element).closest<HTMLAnchorElement>('a[href^="/projects/"]');if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.altKey||event.shiftKey||link.target==='_blank')return;event.preventDefault();openProject(link.pathname.split('/')[2]);},{signal});
     world.querySelectorAll<HTMLAnchorElement>('[data-project]').forEach(card=>{
-      card.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')setProjectIntent(card.dataset.project!,'hover');});
-      card.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse')setProjectIntent(null,'hover');});
-      card.addEventListener('focus',()=>setProjectIntent(card.dataset.project!,'focus'));
-      card.addEventListener('blur',()=>setProjectIntent(null,'focus'));
+      card.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')setProjectIntent(card.dataset.project!,'hover');},{signal});
+      card.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse')setProjectIntent(null,'hover');},{signal});
+      card.addEventListener('focus',()=>setProjectIntent(card.dataset.project!,'focus'),{signal});
+      card.addEventListener('blur',()=>setProjectIntent(null,'focus'),{signal});
     });
   });
-  window.addEventListener('portfolio:project',event=>update((event as CustomEvent<string>).detail));
+  window.addEventListener('portfolio:project',event=>update((event as CustomEvent<string>).detail),{signal});
+  });
 </script>
 <style>
   .project-explorer{display:block;position:relative}

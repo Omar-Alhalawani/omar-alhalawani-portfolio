@@ -65,7 +65,7 @@ function RenderLifecycle({onReady,onContextLost,reducedMotion,tier,kind,stage,on
   if(!reducedMotion)onSlow(delta);
   const p=window.__PORTFOLIO_PROFILE__;if(p){time.current+=delta;if(time.current>.5){time.current=0;const sample=p.scenes[kind]??={};Object.assign(sample,{dpr:gl.getPixelRatio(),drawCalls:gl.info.render.calls,triangles:gl.info.render.triangles,textures:gl.info.memory.textures,geometries:gl.info.memory.geometries,stage});}}
  });
- useEffect(()=>{gl.domElement.dataset.graphicsTier=tier;},[gl,tier]);
+ useEffect(()=>{gl.domElement.dataset.graphicsTier=tier;gl.domElement.dataset.graphicsStage=String(stage);},[gl,tier,stage]);
  return null;
 }
 
@@ -73,7 +73,7 @@ export default function CanvasShell({ scene, host, onReady, onFailure, onContext
   scene: SceneKind; host: RefObject<HTMLDivElement | null>; onReady: () => void; onFailure: () => void; onContextLost:()=>void;
 }) {
   const visible=useRenderBudget(host);
-  const [stage,setStage]=useState(0);
+  const [stage,setStage]=useState(()=>typeof window==='undefined'?0:Math.max(0,Math.min(6,window.__PROJECT_HANDOFF__?.entry?.graphicsStage??0)));
   const monitor=useRef({elapsed:0,frames:0,poor:0,healthy:0,last:0});
   const onSlow=useCallback((delta:number)=>{const m=monitor.current;if(!Number.isFinite(delta)||delta<=0)return;m.elapsed+=Math.min(delta,1);m.frames++;if(m.elapsed<1)return;const mean=m.elapsed/m.frames;m.last++;m.poor=mean>.028?m.poor+1:0;m.healthy=mean<.019?m.healthy+1:0;if(m.poor>=4&&m.last>=4){setStage(value=>Math.min(6,value+1));m.poor=m.last=0;}else if(m.healthy>=25&&m.last>=25){setStage(value=>Math.max(0,value-1));m.healthy=m.last=0;}m.elapsed=m.frames=0;},[]);
   const [reducedMotion, setReducedMotion] = useState(()=>typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
