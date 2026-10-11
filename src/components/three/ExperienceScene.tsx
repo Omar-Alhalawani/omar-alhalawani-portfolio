@@ -23,7 +23,7 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
   materials.current.forEach((m,i)=>{const [a,b]=windows[i],p=phase.current;const value=reducedMotion?.55:p>=a&&p<b?MathUtils.smoothstep(p,a,a+.025)*(1-MathUtils.smoothstep(p,b-.025,b)):0;activity.current[i].current=value;if(m)m.emissiveIntensity=.035+value*.7;});
   const next=activity.current.map(a=>a.current>.12);
   if(next.some((on,i)=>on!==litState.current[i])){litState.current=next;setLit(next);}
-  if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.98?1.25:.035;
+  if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.98?.85:.035;
   const sample=window.__PORTFOLIO_PROFILE__?.scenes.verification;if(sample)sample.pose=[phase.current,sequence.stage];
  });
  return <group rotation={[0,-.2,0]}>
@@ -46,7 +46,7 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
    {i===1&&<group position={[0,.72,-.03]}><Processor width={.67} active={false}/><group position={[0,.276,0]}><SiliconDie width={.4}/></group><Label text='LOGIC / RTL' position={[0,.275,.38]} width={.8}/></group>}
    {i===2&&<>
     <group position={[-.25,.73,-.25]}><Processor width={.29} active={false}/></group><group position={[.25,.73,-.25]}><Processor width={.29} active={false}/></group>
-    <group position={[0,.81,.29]} rotation={[-Math.PI/2,0,0]}><Waveform position={[0,.1,0]} width={.84} amplitude={.035} noisy color={READ} reducedMotion={reducedMotion}/><Waveform position={[0,-.07,0]} width={.84} amplitude={.035} reducedMotion={reducedMotion}/></group>
+    <group position={[0,.81,.29]} rotation={[-Math.PI/2,0,0]}><Waveform position={[0,.1,0]} width={.84} amplitude={.035} noisy color={READ} reducedMotion={reducedMotion} active={sequence.running&&sequence.stage===2}/><Waveform position={[0,-.07,0]} width={.84} amplitude={.035} reducedMotion={reducedMotion} active={sequence.running&&sequence.stage===2}/></group>
     <Label text='STIM / MONITOR' position={[0,1.015,-.27]} width={.86} color={READ}/>
     <group position={[0,.14,-.76]}><Connector width={.87} count={10}/></group>
    </>}
@@ -60,8 +60,8 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
    <Label text={['SPEC','RTL','TESTBENCH','VERIFY'][i]} color={lit[i]?'#101719':'#e4dfce'} position={[0,.37,.66]} rotation={[0,0,0]} width={.9}/>
    <group position={[0,.15,.81]}><Connector width={.84}/></group>
    <SignalTrace strength={1.05} reducedMotion={reducedMotion} activityRef={activity.current[i]} speed={.18} offset={i*.25} points={[[0,.23,.84],[-.53,.23,.84],[-.53,.23,-.5],[-.53,.69,-.5],[0,.69,-.5],[0,.76,0]]}/>
-   <mesh position={[0,.12,.91]}><boxGeometry args={[1.1,.018,.014]}/><meshStandardMaterial color={AMBER} emissive='#ffac40' emissiveIntensity={2.6}/></mesh>
+   <mesh position={[0,.12,.91]}><boxGeometry args={[1.1,.018,.014]}/><meshStandardMaterial color={AMBER} emissive='#ffac40' emissiveIntensity={.35}/></mesh>
   </group>)}
-  {[0,1,2].map(n=><SignalTrace key={n} spill={n===1?1.7:0} strength={n===1?1.3:.75} reducedMotion={reducedMotion} duty={.45} period={24} progressRef={phase} offset={.08+n*.12} points={[[-2.65,.14,1.1+n*.11],[-2.05,.14,1.1+n*.11],[-2.05,.14,.94],[-.68,.14,.94],[-.68,.14,1.1+n*.11],[.68,.14,1.1+n*.11],[.68,.14,.94],[2.05,.14,.94],[2.05,.14,1.1+n*.11],[2.6,.14,1.1+n*.11]]}/>)}
+  {[0,1,2].map(n=><SignalTrace key={n} spill={n===1?.75:0} active={sequence.running} strength={n===1?1.3:.75} reducedMotion={reducedMotion} duty={.45} period={24} progressRef={phase} offset={.08+n*.12} points={[[-2.65,.14,1.1+n*.11],[-2.05,.14,1.1+n*.11],[-2.05,.14,.94],[-.68,.14,.94],[-.68,.14,1.1+n*.11],[.68,.14,1.1+n*.11],[.68,.14,.94],[2.05,.14,.94],[2.05,.14,1.1+n*.11],[2.6,.14,1.1+n*.11]]}/>)}
  </group>;
 }

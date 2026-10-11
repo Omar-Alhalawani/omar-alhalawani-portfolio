@@ -20,7 +20,7 @@ const data=parseFifoVcd(readFileSync('public/evidence/fifo/directed-tests.vcd','
  initializeWaveforms();
 </script>
 <style>
- .fifo-signals { margin-block:54px; padding:clamp(18px,3vw,32px); border:1px solid #7c603e88; background:#0b1013; border-radius:6px; }
+ .fifo-signals { margin-block:54px; padding:clamp(18px,3vw,32px); border:1px solid var(--edge); background:#0b1013; border-radius:var(--radius-panel); }
  .signal-title { display:flex; align-items:center; justify-content:space-between; gap:24px; }
  .signal-title h2 { margin-bottom:18px; }
  .signal-title .eyebrow { margin-bottom:12px; }
@@ -28,7 +28,8 @@ const data=parseFifoVcd(readFileSync('public/evidence/fifo/directed-tests.vcd','
  a { color:var(--amber); }
  .probe-list,.wave-events { display:flex; flex-wrap:wrap; gap:8px; margin-block:20px; }
  .probe-list[hidden] { display:none; }
- .probe-list button,.wave-events button { min-height:40px; padding:8px 12px; font:10px/1.6 var(--mono); border:1px solid var(--line); background:#151d20; border-radius:3px; }
+ .probe-list button,.wave-events button { min-height:40px; padding:8px 12px; font:10px/1.6 var(--mono); border:1px solid var(--line); background:#151d20; border-radius:var(--radius); transition:background var(--motion-micro) var(--ease-out),border-color var(--motion-micro) var(--ease-out); }
+ .probe-list button:hover,.wave-events button:hover { background:#20282b; border-color:#69757b80; }
  button[aria-pressed='true'] { border-color:var(--amber); color:var(--amber); }
  .signal-explanation { border-left:2px solid var(--amber); background:#182024; padding:14px 18px; font:12px/1.8 var(--body); margin-bottom:18px; min-height:70px; }
  .wave-event-description { font-size:12px!important; min-height:46px; }

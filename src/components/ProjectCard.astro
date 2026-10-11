@@ -9,13 +9,13 @@ const {project,index=0}=Astro.props;
   <span class="project-open" aria-hidden="true">↗</span>
 </a>
 <style>
-  .project-card { display:grid; grid-template-columns:25px 1fr 22px; gap:18px; padding:30px 6px 30px 0; border-top:1px solid var(--line); transition:border-color .2s; }
+  .project-card { display:grid; grid-template-columns:25px 1fr 22px; gap:18px; padding:30px 6px 30px 0; border-top:1px solid var(--line); transition:border-color var(--motion-micro) var(--ease-out); }
   .project-index { font:400 10px/1.8 var(--mono); color:var(--muted); padding-top:3px; }
   .project-category { font:400 9px/1.7 var(--mono); color:var(--amber); letter-spacing:.04em; margin-bottom:12px; }
   .project-card h3 { font-size:clamp(21px,1.7vw,26px); letter-spacing:-.035em; margin-bottom:14px; }
   .project-description { font-size:12px; line-height:1.9; max-width:440px; }
   .project-technologies { font:400 9px/1.7 var(--mono); color:var(--muted); margin-top:18px; }
-  .project-open { padding-top:22px; color:var(--muted); transition:color .2s,transform .2s; }
+  .project-open { padding-top:22px; color:var(--muted); transition:color var(--motion-micro) var(--ease-out),transform var(--motion-micro) var(--ease-out); }
   .project-card:hover,.project-card[data-active],.project-card:focus-visible { border-color:var(--amber); }
   .project-card:hover h3,.project-card[data-active] h3 { color:var(--amber); }
   .project-card:hover .project-open { color:var(--amber); transform:translate(2px,-2px); }

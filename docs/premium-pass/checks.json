@@ -1,0 +1,692 @@
+{
+  "renderer": "Chromium software SwiftShader; representative samples, no hardware FPS claim",
+  "checks": [
+    "Keyboard selection and local route activity settles",
+    "Retained document camera transition; FIFO keyboard probe and zero idle redraws",
+    "Contact drag/inertia retained; centered form and focus state; About calm",
+    "Mobile no overflow, Contact jump/focus, reduced-motion static hero and readable content",
+    "No page errors; background SVG/CSS only, no added canvas/RAF"
+  ],
+  "performance": {
+    "home": {
+      "activeRenderers": 1,
+      "pmremMs": 21.299999999813735,
+      "compileStartedMs": 3684.4000000003725,
+      "compileMs": 44,
+      "programs": 10,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "pose": [
+        0.22209728079533653,
+        -0.44784059171864,
+        -0.03867306851830696,
+        0,
+        0,
+        0,
+        1.1300999999996275
+      ],
+      "firstFrameMs": 4834,
+      "dpr": 1,
+      "drawCalls": 269,
+      "triangles": 41893,
+      "textures": 34,
+      "geometries": 84,
+      "stage": 0
+    },
+    "projectsIdle": {
+      "activeRenderers": 1,
+      "pmremMs": 21.799999999813735,
+      "footprints": {
+        "fifo": {
+          "offset": [
+            0.025739999637007727,
+            0.1579999991953373,
+            -0.04087499964237213
+          ],
+          "size": [
+            1.761480000168085,
+            0.6563400017023088,
+            1.3942499992847441
+          ],
+          "rawMin": [
+            -1.5107999995350838,
+            -0.05999999865889549,
+            -1.09375
+          ],
+          "rawMax": [
+            1.425000000745058,
+            1.0339000041782858,
+            1.2299999988079071
+          ],
+          "marginX": 0.2392599999159576,
+          "marginZ": 0.24287500035762788,
+          "fits": true,
+          "dockWidth": 2.24,
+          "dockDepth": 1.88,
+          "modelScale": 0.6
+        },
+        "fpga-arithmetic": {
+          "offset": [
+            0,
+            0.13369599935412407,
+            0
+          ],
+          "size": [
+            1.54800000064075,
+            0.23959599935412407,
+            1.0646800383552908
+          ],
+          "rawMin": [
+            -1.800000000745058,
+            -0.02719999849796295,
+            -1.2380000445991755
+          ],
+          "rawMax": [
+            1.800000000745058,
+            0.53,
+            1.2380000445991755
+          ],
+          "marginX": 0.185999999679625,
+          "marginZ": 0.29765998082235456,
+          "fits": true,
+          "dockWidth": 1.92,
+          "dockDepth": 1.66,
+          "modelScale": 0.43
+        },
+        "lumalink": {
+          "offset": [
+            0.031249998807907076,
+            0.10200000178813934,
+            -0.12124998867511749
+          ],
+          "size": [
+            1.712499990463257,
+            0.5300025039911271,
+            0.9074999988079071
+          ],
+          "rawMin": [
+            -1.774999988079071,
+            0.03999999642372132,
+            -0.6650000214576721
+          ],
+          "rawMax": [
+            1.6499999928474427,
+            1.1000050044059755,
+            1.149999976158142
+          ],
+          "marginX": 0.18375000476837156,
+          "marginZ": 0.43625000059604646,
+          "fits": true,
+          "dockWidth": 2.08,
+          "dockDepth": 1.78,
+          "modelScale": 0.5
+        },
+        "emg": {
+          "offset": [
+            0.03374887883663179,
+            0.1265000016093254,
+            -0.0731250001341105
+          ],
+          "size": [
+            1.4400022423267365,
+            0.6335221635118647,
+            1.0282499997317793
+          ],
+          "rawMin": [
+            -1.675,
+            -0.010000003576278685,
+            -0.9799999994039535
+          ],
+          "rawMax": [
+            1.5250049829483032,
+            1.3978270264500874,
+            1.3050000000000002
+          ],
+          "marginX": 0.26999887883663176,
+          "marginZ": 0.4558750001341103,
+          "fits": true,
+          "dockWidth": 1.98,
+          "dockDepth": 1.94,
+          "modelScale": 0.45
+        },
+        "mini-lysimeter": {
+          "offset": [
+            0,
+            0.14859999579191208,
+            0
+          ],
+          "size": [
+            1.2399999871850014,
+            0.7055375908303442,
+            1.6059999652206898
+          ],
+          "rawMin": [
+            -0.6199999935925007,
+            -0.02659999579191208,
+            -0.8029999826103449
+          ],
+          "rawMax": [
+            0.6199999935925007,
+            0.6789375950384321,
+            0.8029999826103449
+          ],
+          "marginX": 0.2400000064074993,
+          "marginZ": 0.21700001738965513,
+          "fits": true,
+          "dockWidth": 1.72,
+          "dockDepth": 2.04,
+          "modelScale": 1
+        },
+        "cubex": {
+          "offset": [
+            -0.014199986457824706,
+            0.1291000038087368,
+            0.1064999883621931
+          ],
+          "size": [
+            1.8743999898433685,
+            1.356100004337728,
+            1.3845000021159648
+          ],
+          "rawMin": [
+            -1.300000011920929,
+            -0.01000000536441803,
+            -1.1249999850988388
+          ],
+          "rawMax": [
+            1.3399999737739563,
+            1.9000000007450581,
+            0.8250000178813934
+          ],
+          "marginX": 0.21280000507831565,
+          "marginZ": 0.2827499989420176,
+          "fits": true,
+          "dockWidth": 2.3,
+          "dockDepth": 1.95,
+          "modelScale": 0.71
+        }
+      },
+      "compileStartedMs": 26661.89999999944,
+      "compileMs": 46,
+      "programs": 13,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "activity": {
+        "fifo": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "fpga": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "lumalink": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "emg": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "daq": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "cubex": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "bus": {
+          "stage": 3,
+          "progress": 1,
+          "running": false
+        },
+        "selection": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        }
+      },
+      "pose": [
+        1
+      ],
+      "mounts": [
+        {
+          "id": "fifo",
+          "restY": -0.06,
+          "x": -0.12,
+          "z": 0.9,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "fpga-arithmetic",
+          "restY": -0.06,
+          "x": -2.25,
+          "z": -1.02,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "lumalink",
+          "restY": -0.06,
+          "x": 2.33,
+          "z": -0.85,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "emg",
+          "restY": -0.06,
+          "x": -2.35,
+          "z": 1.55,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "mini-lysimeter",
+          "restY": -0.06,
+          "x": 2.3,
+          "z": 1.62,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "cubex",
+          "restY": -0.06,
+          "x": 0,
+          "z": -1.9,
+          "y": -0.06,
+          "activeLift": 0.22
+        }
+      ],
+      "targets": [
+        {
+          "id": "fifo",
+          "x": 602.4336393118485,
+          "y": 382.22215962833496
+        },
+        {
+          "id": "fpga-arithmetic",
+          "x": 449.2367375580811,
+          "y": 219.6231340284042
+        },
+        {
+          "id": "lumalink",
+          "x": 903.4990582211378,
+          "y": 295.4789920522371
+        },
+        {
+          "id": "emg",
+          "x": 325.94872742024194,
+          "y": 392.7181986338206
+        },
+        {
+          "id": "mini-lysimeter",
+          "x": 888.0043226045849,
+          "y": 499.65701977135916
+        },
+        {
+          "id": "cubex",
+          "x": 681.2710042498189,
+          "y": 200.44576025387462
+        }
+      ],
+      "firstFrameMs": 27556.699999999255,
+      "dpr": 1,
+      "drawCalls": 491,
+      "triangles": 57240,
+      "textures": 65,
+      "geometries": 201,
+      "stage": 3
+    },
+    "projectsSelected": {
+      "activeRenderers": 1,
+      "pmremMs": 21.799999999813735,
+      "footprints": {
+        "fifo": {
+          "offset": [
+            0.025739999637007727,
+            0.1579999991953373,
+            -0.04087499964237213
+          ],
+          "size": [
+            1.761480000168085,
+            0.6563400017023088,
+            1.3942499992847441
+          ],
+          "rawMin": [
+            -1.5107999995350838,
+            -0.05999999865889549,
+            -1.09375
+          ],
+          "rawMax": [
+            1.425000000745058,
+            1.0339000041782858,
+            1.2299999988079071
+          ],
+          "marginX": 0.2392599999159576,
+          "marginZ": 0.24287500035762788,
+          "fits": true,
+          "dockWidth": 2.24,
+          "dockDepth": 1.88,
+          "modelScale": 0.6
+        },
+        "fpga-arithmetic": {
+          "offset": [
+            0,
+            0.13369599935412407,
+            0
+          ],
+          "size": [
+            1.54800000064075,
+            0.23959599935412407,
+            1.0646800383552908
+          ],
+          "rawMin": [
+            -1.800000000745058,
+            -0.02719999849796295,
+            -1.2380000445991755
+          ],
+          "rawMax": [
+            1.800000000745058,
+            0.53,
+            1.2380000445991755
+          ],
+          "marginX": 0.185999999679625,
+          "marginZ": 0.29765998082235456,
+          "fits": true,
+          "dockWidth": 1.92,
+          "dockDepth": 1.66,
+          "modelScale": 0.43
+        },
+        "lumalink": {
+          "offset": [
+            0.031249998807907076,
+            0.10200000178813934,
+            -0.12124998867511749
+          ],
+          "size": [
+            1.712499990463257,
+            0.5300025039911271,
+            0.9074999988079071
+          ],
+          "rawMin": [
+            -1.774999988079071,
+            0.03999999642372132,
+            -0.6650000214576721
+          ],
+          "rawMax": [
+            1.6499999928474427,
+            1.1000050044059755,
+            1.149999976158142
+          ],
+          "marginX": 0.18375000476837156,
+          "marginZ": 0.43625000059604646,
+          "fits": true,
+          "dockWidth": 2.08,
+          "dockDepth": 1.78,
+          "modelScale": 0.5
+        },
+        "emg": {
+          "offset": [
+            0.03374887883663179,
+            0.1265000016093254,
+            -0.0731250001341105
+          ],
+          "size": [
+            1.4400022423267365,
+            0.6335221635118647,
+            1.0282499997317793
+          ],
+          "rawMin": [
+            -1.675,
+            -0.010000003576278685,
+            -0.9799999994039535
+          ],
+          "rawMax": [
+            1.5250049829483032,
+            1.3978270264500874,
+            1.3050000000000002
+          ],
+          "marginX": 0.26999887883663176,
+          "marginZ": 0.4558750001341103,
+          "fits": true,
+          "dockWidth": 1.98,
+          "dockDepth": 1.94,
+          "modelScale": 0.45
+        },
+        "mini-lysimeter": {
+          "offset": [
+            0,
+            0.14859999579191208,
+            0
+          ],
+          "size": [
+            1.2399999871850014,
+            0.7055375908303442,
+            1.6059999652206898
+          ],
+          "rawMin": [
+            -0.6199999935925007,
+            -0.02659999579191208,
+            -0.8029999826103449
+          ],
+          "rawMax": [
+            0.6199999935925007,
+            0.6789375950384321,
+            0.8029999826103449
+          ],
+          "marginX": 0.2400000064074993,
+          "marginZ": 0.21700001738965513,
+          "fits": true,
+          "dockWidth": 1.72,
+          "dockDepth": 2.04,
+          "modelScale": 1
+        },
+        "cubex": {
+          "offset": [
+            -0.014199986457824706,
+            0.1291000038087368,
+            0.1064999883621931
+          ],
+          "size": [
+            1.8743999898433685,
+            1.356100004337728,
+            1.3845000021159648
+          ],
+          "rawMin": [
+            -1.300000011920929,
+            -0.01000000536441803,
+            -1.1249999850988388
+          ],
+          "rawMax": [
+            1.3399999737739563,
+            1.9000000007450581,
+            0.8250000178813934
+          ],
+          "marginX": 0.21280000507831565,
+          "marginZ": 0.2827499989420176,
+          "fits": true,
+          "dockWidth": 2.3,
+          "dockDepth": 1.95,
+          "modelScale": 0.71
+        }
+      },
+      "compileStartedMs": 26661.89999999944,
+      "compileMs": 46,
+      "programs": 13,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "activity": {
+        "fifo": {
+          "stage": 3,
+          "progress": 0.629805555555504,
+          "running": true
+        },
+        "fpga": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "lumalink": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "emg": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "daq": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "cubex": {
+          "stage": -1,
+          "progress": 0,
+          "running": false
+        },
+        "bus": {
+          "stage": 3,
+          "progress": 1,
+          "running": false
+        },
+        "selection": {
+          "stage": 1,
+          "progress": 0.629805555555504,
+          "running": true
+        }
+      },
+      "pose": [
+        1
+      ],
+      "mounts": [
+        {
+          "id": "fifo",
+          "restY": -0.06,
+          "x": -0.12,
+          "z": 0.9,
+          "y": 0.16,
+          "activeLift": 0.22
+        },
+        {
+          "id": "fpga-arithmetic",
+          "restY": -0.06,
+          "x": -2.25,
+          "z": -1.02,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "lumalink",
+          "restY": -0.06,
+          "x": 2.33,
+          "z": -0.85,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "emg",
+          "restY": -0.06,
+          "x": -2.35,
+          "z": 1.55,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "mini-lysimeter",
+          "restY": -0.06,
+          "x": 2.3,
+          "z": 1.62,
+          "y": -0.06,
+          "activeLift": 0.22
+        },
+        {
+          "id": "cubex",
+          "restY": -0.06,
+          "x": 0,
+          "z": -1.9,
+          "y": -0.06,
+          "activeLift": 0.22
+        }
+      ],
+      "targets": [
+        {
+          "id": "fifo",
+          "x": 601.7912795343589,
+          "y": 363.5561521822463
+        },
+        {
+          "id": "fpga-arithmetic",
+          "x": 449.2367375580811,
+          "y": 219.6231340284042
+        },
+        {
+          "id": "lumalink",
+          "x": 903.4990582211378,
+          "y": 295.4789920522371
+        },
+        {
+          "id": "emg",
+          "x": 325.94872742024194,
+          "y": 392.7181986338206
+        },
+        {
+          "id": "mini-lysimeter",
+          "x": 888.0043226045849,
+          "y": 499.65701977135916
+        },
+        {
+          "id": "cubex",
+          "x": 681.2710042498189,
+          "y": 200.44576025387462
+        }
+      ],
+      "firstFrameMs": 27556.699999999255,
+      "dpr": 1,
+      "drawCalls": 418,
+      "triangles": 48584,
+      "textures": 65,
+      "geometries": 202,
+      "stage": 5
+    },
+    "contact": {
+      "activeRenderers": 1,
+      "pmremMs": 22.5,
+      "compileStartedMs": 16236.900000000373,
+      "compileMs": 19.399999999441206,
+      "programs": 11,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "activePaths": 6,
+      "landNodes": 1187,
+      "particles": 420,
+      "dragging": false,
+      "velocity": [
+        0,
+        0
+      ],
+      "autoRotation": 0.010659243328729456,
+      "clock": 1.1022000000001861,
+      "rotation": [
+        0.13962634015954636,
+        1.3166030692084572,
+        0,
+        "YXZ"
+      ],
+      "firstFrameMs": 16912.60000000056,
+      "dpr": 1,
+      "drawCalls": 38,
+      "triangles": 50919,
+      "textures": 19,
+      "geometries": 23,
+      "stage": 0
+    }
+  },
+  "errors": []
+}

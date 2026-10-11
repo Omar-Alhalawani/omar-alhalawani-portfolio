@@ -4,10 +4,10 @@ import SceneIsland from './SceneIsland';
 <figure class="verification-visual">
   <div class="verification-art"><SceneIsland scene="verification" client:visible /></div>
   <div class="verification-stages" aria-label="Verification workflow"><span>SPECIFICATION</span><span>RTL</span><span>TESTBENCH</span><span>VERIFY</span></div>
-  <figcaption class="art-caption">A general verification workflow.<br />A conceptual illustration, independent of any employer design.</figcaption>
+  <figcaption class="art-caption">Conceptual verification workflow; independent of employer designs.</figcaption>
 </figure>
 <style>
-  .verification-visual { display:grid; align-content:center; background:radial-gradient(ellipse at 55% 50%,#75471920,transparent 70%),#0a0d0e; border:1px solid #6b604648; border-radius:6px; padding:18px; box-shadow:inset 0 1px #ccd3d019; }
+  .verification-visual { display:grid; align-content:center; background:radial-gradient(ellipse at 55% 50%,#75471920,transparent 70%),#0a0d0e; border:1px solid var(--edge); border-radius:var(--radius-panel); padding:18px; box-shadow:inset 0 1px #ccd3d019; }
   .verification-art { height:480px; margin-inline:-18px; }
   .verification-stages { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; text-align:center; font:400 8px/1.7 var(--mono); color:var(--amber); max-width:540px; margin-inline:auto; width:100%; }
   figcaption { margin-top:24px; text-align:center; }
