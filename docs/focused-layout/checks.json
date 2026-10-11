@@ -1,0 +1,37 @@
+{
+  "animation": "Verification canvas visibly changes over time",
+  "desktop": {
+    "experience": {
+      "textX": 72,
+      "textBottom": 693.5625,
+      "modelX": 673.28125,
+      "modelTop": 140,
+      "overflow": false
+    },
+    "contact": {
+      "x": 320,
+      "width": 800,
+      "center": 720,
+      "viewport": 1440,
+      "overflow": false
+    },
+    "navigation": "Client navigation retained document"
+  },
+  "mobile": {
+    "experience": {
+      "textX": 20,
+      "textBottom": 736.15625,
+      "modelX": 20,
+      "modelTop": 768.15625,
+      "overflow": false
+    },
+    "contact": {
+      "x": 20,
+      "width": 350,
+      "center": 195,
+      "viewport": 390,
+      "overflow": false
+    },
+    "navigation": "Client navigation retained document"
+  }
+}

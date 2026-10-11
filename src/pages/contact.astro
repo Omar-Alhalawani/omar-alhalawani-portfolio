@@ -46,7 +46,7 @@ import {site} from '../data/site';
   .contact-globe :global(.scene-island) { height:100%; }
   .contact-globe figcaption { position:absolute; bottom:5px; left:10%; font:9px/1.8 var(--mono); color:var(--amber); letter-spacing:.08em; }
   .contact-globe figcaption span { display:block; color:var(--muted); font-size:8px; }
-  .contact-form-wrap { max-width:850px; padding:20px 0 100px; scroll-margin-top:100px; }
+  .contact-form-wrap { width:100%; max-width:800px; margin-inline:auto; padding:40px 0 100px; scroll-margin-top:100px; }
   form { border:1px solid var(--line); padding:clamp(22px,4vw,48px); border-radius:5px; background:linear-gradient(135deg,#151c20,var(--bg-raised)); }
   form h2 { font-size:32px; margin-bottom:16px; }
   .form-intro { font-size:12px; color:var(--muted); margin-bottom:30px; }
@@ -63,5 +63,5 @@ import {site} from '../data/site';
   .form-note { font-size:10px; color:var(--muted); margin-top:16px; line-height:1.85; }
   button:disabled { opacity:.7; cursor:wait; }
   @media(max-width:1000px) { .contact-hero { gap:20px; } .contact-globe { height:480px; } }
-  @media(max-width:800px) { .contact-hero { grid-template-columns:1fr; gap:20px; padding-block:42px 30px; } .contact-globe { height:340px; } .contact-form-wrap { padding-top:10px; } .contact-details { gap:30px; } .contact-details a { font-size:14px; } }
+  @media(max-width:800px) { .contact-hero { grid-template-columns:1fr; gap:20px; padding-block:42px 30px; } .contact-globe { height:340px; } .contact-form-wrap { padding-top:30px; padding-bottom:72px; } .contact-details { gap:30px; } .contact-details a { font-size:14px; } }
 </style>

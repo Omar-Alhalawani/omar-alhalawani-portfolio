@@ -1,11 +1,12 @@
 ---
 import {experience} from '../data/experience';
-interface Props { item:typeof experience[number]; compact?:boolean; }
-const {item,compact=false}=Astro.props;
+interface Props { item:typeof experience[number]; compact?:boolean; heading?:'h1'|'h3'; }
+const {item,compact=false,heading='h3'}=Astro.props;
+const Heading=heading;
 ---
 <article class:list={['experience-card',{'experience-card--compact':compact}]} id={compact?undefined:item.id}>
   <div class="experience-meta"><span>{item.period}</span><span>{item.location}</span></div>
-  <div class="experience-body"><p class="company-label">{item.company} <span>// {item.team}</span></p><h3>{item.role}</h3><p class="experience-summary">{item.summary}</p><ul>{(compact?item.points.slice(0,3):item.points).map(point=><li>{point}</li>)}</ul><div class="tech-tags">{item.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div></div>
+  <div class="experience-body"><p class="company-label">{item.company} <span>// {item.team}</span></p><Heading>{item.role}</Heading><p class="experience-summary">{item.summary}</p><ul>{(compact?item.points.slice(0,3):item.points).map(point=><li>{point}</li>)}</ul><div class="tech-tags">{item.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div></div>
 </article>
 <style>
   .experience-card { display:grid; grid-template-columns:240px 1fr; gap:60px; border-top:1px solid var(--line); padding-block:48px 56px; }
@@ -13,12 +14,12 @@ const {item,compact=false}=Astro.props;
   .experience-meta>span:first-child { color:var(--amber); }
   .company-label { font:400 12px/1.8 var(--mono); color:var(--amber); margin-bottom:20px; }
   .company-label>span { color:var(--muted); }
-  h3 { font-size:clamp(27px,3vw,40px); max-width:800px; margin-bottom:24px; }
+  h1,h3 { font-size:clamp(27px,3vw,40px); max-width:800px; margin-bottom:24px; }
   .experience-summary { font-size:16px; max-width:700px; margin-bottom:24px; }
   ul { font-size:14px; line-height:1.85; max-width:770px; margin-bottom:30px; }
   .experience-card--compact { display:block; border:0; padding:0; }
   .experience-card--compact .experience-meta { display:flex; flex-wrap:wrap; gap:24px; margin-bottom:28px; }
-  .experience-card--compact h3 { font-size:clamp(30px,3vw,44px); }
+  .experience-card--compact h1,.experience-card--compact h3 { font-size:clamp(30px,3vw,44px); }
   @media(max-width:900px) { .experience-card { grid-template-columns:160px 1fr; gap:32px; } }
   @media(max-width:600px) { .experience-card { display:block; padding-block:32px 40px; } .experience-meta { margin-bottom:24px; } .experience-card--compact { padding:0; } .company-label { font-size:10px; } ul { font-size:13px; } }
 </style>
