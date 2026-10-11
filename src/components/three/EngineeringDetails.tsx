@@ -1,4 +1,5 @@
-import {useMemo} from 'react';
+import {useLayoutEffect,useMemo,useRef} from 'react';
+import {Group,Mesh,MeshStandardMaterial} from 'three';
 import {Parts,Connector,CircuitBoard,Processor,ViaField} from './Circuitry';
 import {Plate,Label} from './Hardware';
 import {SiliconDie,Frame,PowerBank} from './ModuleHardware';
@@ -27,8 +28,29 @@ export function PortBank({width=3.8,count=5}:{width?:number;count?:number}) {
  return <group><Parts parts={bodies} color='#899297' metalness={.92} roughness={.27} beveled/><Parts parts={bodies.map(p=>({position:[p.position[0],.16,.192],size:[p.size[0]*.78,.17,.025]}))} color='#0b1418' metalness={.05} roughness={.7}/><Parts parts={bodies.flatMap(p=>Array.from({length:6},(_,n)=>({position:[p.position[0]+(n-2.5)*p.size[0]/9,.097,.209] as [number,number,number],size:[.021,.044,.038] as [number,number,number]})))} color='#bfa56b' roughness={.27}/><Parts parts={bodies.flatMap(p=>[-1,1].map(s=>({position:[p.position[0]+s*p.size[0]*.43,.145,.211] as [number,number,number],size:[.035,.2,.027] as [number,number,number]})))} color='#b5bec0' metalness={.94} roughness={.2}/><Parts parts={bodies.flatMap(p=>[-1,1].map(s=>({position:[p.position[0]+s*p.size[0]*.26,.31,.05] as [number,number,number],size:[.055,.008,.19] as [number,number,number]})))} color='#293f49' metalness={.4} roughness={.53}/></group>;
 }
 
-export function PowerShelf({tier,scale=1}:{tier:GraphicsTier;scale?:number}) {
- return <group scale={scale}>
+export function PowerShelf({tier,scale=1,muted=false}:{tier:GraphicsTier;scale?:number;muted?:boolean}) {
+ const shelf=useRef<Group>(null);
+ useLayoutEffect(()=>{
+  if(!muted||!shelf.current)return;
+  // Clone locally so dimming this backplane never changes shared materials
+  // used by the project hardware or the other scenes.
+  const copies=new Map<MeshStandardMaterial,MeshStandardMaterial>();
+  const changed:{mesh:Mesh;original:Mesh['material']}[]=[];
+  shelf.current.traverse(object=>{
+   if(!(object instanceof Mesh))return;
+   const original=object.material;
+   const dim=(material:MeshStandardMaterial)=>{
+    if(!material.isMeshStandardMaterial)return material;
+    let copy=copies.get(material);
+    if(!copy){copy=material.clone();copy.envMapIntensity=.08;copy.roughness=Math.max(.72,copy.roughness);copies.set(material,copy);}
+    return copy;
+   };
+   object.material=Array.isArray(original)?original.map(m=>dim(m as MeshStandardMaterial)):dim(original as MeshStandardMaterial);
+   changed.push({mesh:object,original});
+  });
+  return()=>{changed.forEach(({mesh,original})=>{mesh.material=original;});copies.forEach(material=>material.dispose());};
+ },[muted,tier]);
+ return <group ref={shelf} scale={scale}>
   <CircuitBoard width={4.5} depth={.92} seed={159} tier={tier}/>
   <group position={[-1.89,.17,0]}><PowerBank count={4}/></group><group position={[1.89,.17,0]}><PowerBank count={4}/></group>
   <Parts parts={Array.from({length:10},(_,i)=>({position:[(i-4.5)*.28,.17,0] as [number,number,number],size:[.18,.17,.28] as [number,number,number]}))} color='#26383c' metalness={.25} roughness={.6}/>

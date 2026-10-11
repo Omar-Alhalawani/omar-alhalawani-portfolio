@@ -125,7 +125,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   return <group rotation={[0,-.23,0]}>
     <group position={[0,-.37,-.28]}><SystemBed width={8.6} depth={7} peripherals={false} tier={tier} reducedMotion={reducedMotion}/></group>
     {[-1,1].map(s=><group key={`wing-${s}`} position={[s*1.72,-.17,s*.12]}><CircuitBoard width={2.9} depth={5.2} tier={tier} seed={56+s} components={false}/><Frame width={2.9} depth={5.2} height={.13}/></group>)}
-    <group position={[0,-.04,-3.4]} rotation={[Math.PI/3.5,0,0]}><PowerShelf tier={tier} scale={1.2}/></group>
+    <group position={[0,-.04,-3.4]} rotation={[Math.PI/3.5,0,0]}><PowerShelf tier={tier} scale={1.2} muted/></group>
     <group position={[0,-.16,2.9]}><PortBank width={5.4} count={8}/></group>
     <Parts parts={[-1,1].flatMap(s=>Array.from({length:tier==='low'?8:16},(_,i)=>({position:[s*3.93,-.04,(i-(tier==='low'?7:15)/2)*.27] as [number,number,number],size:[.32,.28,.07] as [number,number,number]})))} color='#687e89' metalness={.91} roughness={.3} beveled={tier==='high'}/>
     <group position={[0,-.165,0]}><Plate width={.22} depth={5.3} height={.09} color='#5b6d72'/></group>
