@@ -1,0 +1,5 @@
+VCD info: dumpfile dump.vcd opened for output.
+Test A: fill to full
+Test A: drain to empty
+Test B: wrap-around
+All directed tests + scoreboard passed.

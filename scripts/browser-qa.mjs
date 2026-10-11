@@ -8,8 +8,9 @@ const artifactDirectory=process.env.QA_OUTPUT||'qa-artifacts';fs.mkdirSync(artif
 const local=process.env.QA_BASE_URL?null:await startQAServer();
 const base=process.env.QA_BASE_URL||local.url;
 const behaviorOnly=process.env.QA_BEHAVIOR_ONLY==='1';
+const skipMatrix=process.env.QA_SKIP_MATRIX==='1';
 const browser=await launchQABrowser();
-const result={date:new Date().toISOString(),applicationCommit:process.env.QA_SOURCE_COMMIT||null,base,scope:behaviorOnly?'behavior':'full',renderer:'Chromium 153 / software WebGL in managed QA environment',matrix:[],accessibility:[],checks:[],errors:[]};
+const result={date:new Date().toISOString(),applicationCommit:process.env.QA_SOURCE_COMMIT||null,base,scope:behaviorOnly?'behavior':skipMatrix?'accessibility-behavior':'full',renderer:'Chromium 153 / software WebGL in managed QA environment',matrix:[],accessibility:[],checks:[],errors:[]};
 const axeSource=fs.readFileSync('node_modules/axe-core/axe.min.js','utf8');
 const slug=route=>route==='/'?'home':route.replaceAll('/','-').slice(1);
 function watch(page){
@@ -37,7 +38,7 @@ async function verifyLayout(page){
 try{
   // Every requested size plus ultrawide and landscape; all routes at the
   // smallest mobile, tablet, and standard desktop sizes.
-  if(!behaviorOnly)for(const [width,height] of viewports){
+  if(!behaviorOnly&&!skipMatrix)for(const [width,height] of viewports){
     const selected=[320,768,1440].includes(width)?routes:['/','/projects','/projects/fifo','/projects/fpga-arithmetic','/contact'];
     const page=await browser.newPage({viewport:{width,height}});
     const errors=watch(page);
@@ -113,7 +114,7 @@ try{
   const reduced=await browser.newPage({viewport:{width:1440,height:900},reducedMotion:'reduce'});await reduced.goto(base,{waitUntil:'networkidle'});await ready(reduced);assert.equal(await reduced.locator('.scene-island').first().getAttribute('data-render-loop'),'demand');await reduced.screenshot({path:`${artifactDirectory}/home-reduced.png`});await reduced.locator('[data-layer="3"]').focus();assert.equal(await reduced.locator('[data-layer="3"]').getAttribute('aria-pressed'),'true');result.checks.push('Reduced motion renders an intentional static composition and responds to focus');await reduced.close();
   const fallback=await browser.newPage({viewport:{width:390,height:844}});await fallback.addInitScript(()=>{window.Worker=undefined;const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/.test(type)?null:original.call(this,type,...args);};});
   for(const route of ['/','/projects','/projects/fifo']){await fallback.goto(base+route,{waitUntil:'networkidle'});await fallback.locator('.scene-island').first().scrollIntoViewIfNeeded();await fallback.waitForFunction(()=>document.querySelector('.scene-island')?.dataset.state==='fallback');assert.equal(await fallback.locator('canvas').count(),0);await verifyLayout(fallback);}
-  await fallback.screenshot({path:`${artifactDirectory}/fifo-fallback.png`});result.checks.push('WebGL unavailable: scene-specific SVG, complete HTML, no blank canvas');await fallback.close();
+  await fallback.screenshot({path:`${artifactDirectory}/fifo-fallback.png`});result.checks.push('WebGL unavailable: scene-specific rendered artwork, complete HTML, no blank canvas');await fallback.close();
   const lost=await browser.newPage({viewport:{width:1440,height:900}});await lost.goto(base+'/projects',{waitUntil:'networkidle'});await ready(lost);await lost.locator('canvas').evaluate(canvas=>canvas.dispatchEvent(new Event('webglcontextlost',{cancelable:true})));await lost.waitForFunction(()=>document.querySelector('.scene-island')?.dataset.state==='fallback');assert.equal(await lost.locator('canvas').count(),0);result.checks.push('Context loss safely disposes canvas and returns to static artwork');await lost.close();
 }catch(error){result.errors.push(error.stack||error.message);process.exitCode=1;console.error(error);}
 finally{fs.writeFileSync(`${artifactDirectory}/browser-results.json`,JSON.stringify(result,null,2));await browser.close();await local?.close();console.log(`QA complete: ${result.matrix.length} layouts, ${result.accessibility.length} axe audits, ${result.checks.length} behavior groups, ${result.errors.length} failures.`);}

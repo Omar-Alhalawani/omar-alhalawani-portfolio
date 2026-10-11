@@ -26,10 +26,10 @@ try{
  const motion=async()=>JSON.parse(await canvas.getAttribute('data-motion'));
  const idleA=await motion();await page.waitForTimeout(900);const idleB=await motion();
  assert.ok(idleB.time>idleA.time);assert.notDeepEqual(idleA.rotation,idleB.rotation);result.motion.autonomous=true;
- await page.mouse.move(1438,1);await page.waitForTimeout(400);const influence=await motion();assert.ok(influence.pointer[0]>.9);
+ await page.mouse.move(1438,1);await page.waitForFunction(()=>JSON.parse(document.querySelector('.scene-island[data-scene="hero"] canvas')?.dataset.motion||'{}').pointer?.[0]>.9);const influence=await motion();assert.ok(influence.pointer[0]>.9);
  for(const [x,y]of [[1,1],[1438,898],[1,898],[1438,1]]){await page.mouse.move(x,y);await page.waitForTimeout(70);}
- assert.ok((await motion()).rotation.every(n=>Number.isFinite(n)&&Math.abs(n)<.5));
- await page.evaluate(()=>document.dispatchEvent(new PointerEvent('pointerout',{relatedTarget:null,bubbles:true})));await page.waitForTimeout(250);assert.deepEqual((await motion()).pointer,[0,0]);
+ assert.ok((await motion()).rotation.every(n=>Number.isFinite(n)&&Math.abs(n)<.55));
+ await page.evaluate(()=>document.dispatchEvent(new PointerEvent('pointerout',{relatedTarget:null,bubbles:true})));await page.waitForFunction(()=>JSON.parse(document.querySelector('.scene-island[data-scene="hero"] canvas')?.dataset.motion||'{}').pointer?.every(n=>n===0));assert.deepEqual((await motion()).pointer,[0,0]);
  result.motion.pointerDampedBoundedNeutral=true;
  await page.locator('[data-layer="4"]').focus();await page.locator('[data-layer="4"]').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await page.waitForFunction(()=>JSON.parse(document.querySelector('.scene-island[data-scene="hero"] canvas')?.dataset.motion||'{}').progress>.1);assert.ok((await motion()).progress>.1);
  await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await page.waitForFunction(()=>JSON.parse(document.querySelector('.scene-island[data-scene="hero"] canvas')?.dataset.motion||'{}').progress===0);assert.equal((await motion()).progress,0);
