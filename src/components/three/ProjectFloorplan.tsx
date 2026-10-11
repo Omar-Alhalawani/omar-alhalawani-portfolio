@@ -153,7 +153,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
           {region.id==='cubex'&&<Printer reducedMotion={reducedMotion} active={selected}/>}
         </ProjectMount>
         <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={!opening||selected} offset={i*.13} points={[[0,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,region.dockDepth*.4],[region.dockWidth*.44,.145,region.dockDepth*.4]]}/>
-        {selected&&<pointLight position={[0,.4,.2]} color='#ffb34d' intensity={opening?2.6:1.8} distance={2.1} decay={2}/>}
+
       </group>;
     })}
     {regions.flatMap((r,i)=>[0,1].map(n=><SignalTrace key={`${r.id}-${n}`} spill={active===r.id&&n===0?1.3:0} strength={active===r.id?1.35:(opening ? .25 : .75)} reducedMotion={reducedMotion} active={!opening||active===r.id} offset={i*.13+n*.3} points={[[-3.9,-.25,-2.4+n*.13],[-3.35,-.25,-2.4+n*.13],[-3.35,.07,-2.13+n*.13],[-3.35,.07,n*.13],[r.x,.07,n*.13],[r.x,.07,r.z-r.dockDepth*.48],[r.x,r.restY+.18+(!reducedMotion&&physical===r.id?ACTIVE_LIFT:0),r.z-r.dockDepth*.48]]}/>))}
