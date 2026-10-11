@@ -1,0 +1,53 @@
+{
+  "desktop": {
+    "pmremMs": 54.199999999953434,
+    "compileStartedMs": 829.1000000000931,
+    "compileMs": 22.199999999953434,
+    "programs": 11,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "activePaths": 6,
+    "landNodes": 1627,
+    "particles": 110,
+    "clock": 5.615599999999629,
+    "rotation": [
+      -0.17446237823703886,
+      0.9621571608297543,
+      0,
+      "XYZ"
+    ],
+    "firstFrameMs": 1410.6999999999534,
+    "dpr": 1,
+    "drawCalls": 37,
+    "triangles": 59719,
+    "textures": 19,
+    "geometries": 22,
+    "stage": 2
+  },
+  "form": "one mocked request",
+  "offscreen": "paused",
+  "mobile": {
+    "pmremMs": 18.399999999906868,
+    "compileStartedMs": 803.4000000001397,
+    "compileMs": 20.199999999953434,
+    "programs": 11,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "activePaths": 3,
+    "landNodes": 665,
+    "particles": 36,
+    "clock": 0.8803000000000465,
+    "rotation": [
+      -0.16000000000000003,
+      0.8690524823383535,
+      0,
+      "XYZ"
+    ],
+    "firstFrameMs": 951.7000000001863,
+    "dpr": 1,
+    "drawCalls": 16,
+    "triangles": 27232,
+    "textures": 6,
+    "geometries": 15,
+    "stage": 0
+  },
+  "reduced": "demand; clock 0"
+}
