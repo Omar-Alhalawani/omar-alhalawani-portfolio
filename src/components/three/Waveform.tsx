@@ -3,7 +3,7 @@ import {useFrame} from '@react-three/fiber';
 import {BufferAttribute,BufferGeometry,Line,LineBasicMaterial} from 'three';
 
 export default function Waveform({position=[0,.4,0],width=2.6,amplitude=.3,noisy=false,color='#ffbd59',reducedMotion=false,active=true}:{position?:[number,number,number];width?:number;amplitude?:number;noisy?:boolean;color?:string;reducedMotion?:boolean;active?:boolean}) {
-  const time=useRef(0);
+  const time=useRef(0),update=useRef({initialized:false,elapsed:0});
   const line=useMemo(()=>{
     const geometry=new BufferGeometry();geometry.setAttribute('position',new BufferAttribute(new Float32Array(128*3),3));
     const waveform=new Line(geometry,new LineBasicMaterial({color,transparent:true,opacity:.9}));
@@ -12,9 +12,13 @@ export default function Waveform({position=[0,.4,0],width=2.6,amplitude=.3,noisy
     waveform.raycast=()=>{};
     return waveform;
   },[color]);
+  useEffect(()=>{update.current.initialized=false;},[line,width,amplitude,noisy]);
   useEffect(()=>()=>{line.geometry.dispose();line.material.dispose();},[line]);
   useFrame((_,delta)=>{
     if(active&&!reducedMotion)time.current+=Math.min(delta,.05);
+    const sample=update.current;sample.elapsed+=Math.min(delta,.05);
+    if(sample.initialized&&(!active||reducedMotion||sample.elapsed<1/30))return;
+    sample.initialized=true;sample.elapsed=0;
     const attribute=line.geometry.getAttribute('position');
     for(let i=0;i<128;i++) {
       const x=i/127;const t=x*18-time.current*1.5;

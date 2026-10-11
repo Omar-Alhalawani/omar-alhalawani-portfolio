@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import {launchQABrowser,startQAServer} from './qa-runtime.mjs';
-const output=process.env.QA_OUTPUT||'qa-artifacts/art-pass';fs.mkdirSync(output,{recursive:true});
+const output=process.env.QA_OUTPUT||'qa-artifacts/art-pass',heroOnly=process.env.QA_SCENES==='hero';fs.mkdirSync(output,{recursive:true});
 const local=process.env.QA_BASE_URL?null:await startQAServer(),base=process.env.QA_BASE_URL||local.url;
 const browser=await launchQABrowser(),page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[],results={base,date:new Date().toISOString(),scenes:[],checks:[],errors};
 page.on('pageerror',e=>errors.push(e.message));
@@ -16,13 +16,18 @@ async function capture(name,host){
 async function poster(kind,host){if(process.env.QA_BASE_URL)return;const data=await host.locator('canvas').evaluate(c=>c.toDataURL('image/png'));await sharp(Buffer.from(data.split(',')[1],'base64')).resize({width:1400,withoutEnlargement:true}).flatten({background:'#07090b'}).webp({quality:89}).toFile(`public/art/${kind}-render.webp`);}
 try{
  await page.goto(base,{waitUntil:'networkidle'});
- for(const [kind,name,thumb] of [['hero','homepage-hero','engineering'],['verification','verification','verification'],['floorplan','homepage-projects','project']]){
-  const host=await ready(kind);if(kind==='hero')await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await poster(kind,host);const bytes=await capture(name,host);results.scenes.push(kind);
+ for(const [kind,name,thumb] of [['hero','homepage-hero','engineering'],['verification','verification','verification'],['floorplan','homepage-projects','project']].filter(([kind])=>!heroOnly||kind==='hero')){
+ const host=await ready(kind);if(kind==='hero')await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));if(kind!=='floorplan')await poster(kind,host);const bytes=await capture(name,host);results.scenes.push(kind);
   if(!process.env.QA_BASE_URL)await sharp(bytes).resize(640,480,{fit:'contain',background:'#080c0e'}).webp({quality:87}).toFile(`public/images/${thumb}-overview.webp`);
  }
- await page.goto(base+'/projects',{waitUntil:'networkidle'});let host=await ready('floorplan');await capture('projects-world',host);
- await page.locator('[data-project="fpga-arithmetic"]').focus();await page.waitForFunction(()=>document.querySelector('.scene-island canvas')?.dataset.selectedProject==='fpga-arithmetic');assert.ok(await page.locator('[data-preview="fpga-arithmetic"]').isVisible());results.checks.push('HTML keyboard focus updates 3D selection and matching preview');
- await host.scrollIntoViewIfNeeded();await page.waitForTimeout(400);const canvas=host.locator('canvas'),bounds=await canvas.boundingBox(),point=await page.evaluate(()=>window.__PORTFOLIO_PROFILE__.scenes.floorplan.targets.find(p=>p.id==='fifo'));await page.mouse.move(bounds.x+point.x,bounds.y+point.y);await page.waitForFunction(()=>document.querySelector('[data-project="fifo"]')?.dataset.active==='true');results.checks.push('Actual 3D pointer hover updates HTML selection');await page.mouse.click(bounds.x+point.x,bounds.y+point.y);await page.waitForURL('**/projects/fifo');results.checks.push('Actual 3D click navigates to FIFO case study');await page.mouse.move(1,1);
+ if(!heroOnly){
+ await page.goto(base+'/projects',{waitUntil:'networkidle'});let host=await ready('floorplan');await page.mouse.move(1,1);
+ await page.waitForFunction(()=>window.__PORTFOLIO_PROFILE__.scenes.floorplan.mounts.every(m=>Math.abs(m.y-m.restY)<.001));
+ await poster('floorplan',host);await capture('projects-world-idle',host);
+ const canvas=host.locator('canvas'),bounds=await canvas.boundingBox(),point=await page.evaluate(()=>window.__PORTFOLIO_PROFILE__.scenes.floorplan.targets.find(p=>p.id==='fifo'));
+ await page.mouse.move(bounds.x+point.x,bounds.y+point.y);
+ await page.waitForFunction(()=>{const m=window.__PORTFOLIO_PROFILE__.scenes.floorplan.mounts.find(m=>m.id==='fifo');return Math.abs(m.y-m.restY-.22)<.002;});
+ await capture('projects-world-fifo-hover',host);results.checks.push('FIFO actual pointer hover: idle at rest, hover adds the preserved 0.22');await page.mouse.move(1,1);
  for(const [kind,route] of [['fifo','fifo'],['fpga','fpga-arithmetic'],['emg','emg'],['lumalink','lumalink'],['cubex','cubex']]){
   await page.goto(base+`/projects/${route}`,{waitUntil:'networkidle'});host=await ready(kind);
   if(kind==='fifo'){
@@ -31,6 +36,12 @@ try{
    await host.scrollIntoViewIfNeeded();await page.waitForTimeout(400);
   }
   if(kind!=='fifo')await poster(kind,host);await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));await capture(`${kind}-hero`,host);results.scenes.push(kind);
+ }
+ await page.goto(base+'/projects/mini-lysimeter',{waitUntil:'networkidle'});host=await ready('daq');await poster('daq',host);results.scenes.push('daq');
+ }else{
+  await page.evaluate(()=>{window.__RECOVERY_CANVAS__=document.querySelector('.scene-island[data-scene="hero"] canvas');window.__RECOVERY_CANVAS__.getContext('webgl2').getExtension('WEBGL_lose_context').loseContext();});
+  await page.waitForFunction(()=>{const host=document.querySelector('.scene-island[data-scene="hero"]');return host.dataset.state==='ready'&&host.querySelector('canvas')!==window.__RECOVERY_CANVAS__;},{},{timeout:60000});
+  results.checks.push('Actual context loss restores a ready scene with a new canvas');
  }
  await page.close();
  const mobile=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});await mobile.goto(base,{waitUntil:'networkidle'});await mobile.waitForFunction(()=>document.querySelector('.scene-island')?.dataset.state==='ready',{},{timeout:60000});assert.ok(await mobile.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await mobile.screenshot({path:`${output}/mobile-home.jpg`,quality:88});results.checks.push('One representative mobile homepage: ready scene and no horizontal overflow');await mobile.close();

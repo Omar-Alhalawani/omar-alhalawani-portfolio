@@ -1,5 +1,5 @@
 import {useLayoutEffect,useMemo,useRef} from 'react';
-import {CanvasTexture,InstancedMesh,Matrix4,Quaternion,Vector3,SRGBColorSpace} from 'three';
+import {CanvasTexture,InstancedMesh,Matrix4,Quaternion,Vector3,SRGBColorSpace,RingGeometry,Euler} from 'three';
 import {Plate,Label,AMBER} from './Hardware';
 import SignalTrace from './SignalTrace';
 import type {GraphicsTier} from './types';
@@ -7,6 +7,12 @@ import {useResource,useBox,useMetal} from './resources';
 import {useDetailTier} from './quality';
 
 type Box={position:[number,number,number];size:[number,number,number]};
+export function ViaField({positions}:{positions:[number,number,number][]}) {
+ const ref=useRef<InstancedMesh>(null),tier=useDetailTier(),geometry=useResource('plated-via',()=>new RingGeometry(.012,.023,8)),material=useMetal('#a89d72',.88,.3);
+ const points=tier==='low'?positions.filter((_,i)=>i%2===0):positions;
+ useLayoutEffect(()=>{const m=new Matrix4(),q=new Quaternion().setFromEuler(new Euler(-Math.PI/2,0,0));points.forEach((p,i)=>ref.current?.setMatrixAt(i,m.compose(new Vector3(...p),q,new Vector3(1,1,1))));if(ref.current)ref.current.instanceMatrix.needsUpdate=true;},[points]);
+ return <instancedMesh ref={ref} args={[geometry,material,points.length]} dispose={null} raycast={()=>{}}/>;
+}
 // Repeated physical parts share one draw call per material.
 export function Parts({parts,color='#202427',metalness=.75,roughness=.36,emissive=false,beveled=false}:{parts:Box[];beveled?:boolean;color?:string;metalness?:number;roughness?:number;emissive?:boolean}) {
  const ref=useRef<InstancedMesh>(null),geometry=useBox(beveled),material=useMetal(color,metalness,roughness,undefined,emissive);
@@ -86,6 +92,6 @@ export function SystemBed({reducedMotion,tier:requestedTier,width=7.8,depth=6}:{
   <Parts parts={[-1,1].flatMap(s=>Array.from({length:tier==='low'?8:15},(_,i)=>({position:[s*width*.43,.1,(i-7)*depth/18] as [number,number,number],size:[.25,.14,.16] as [number,number,number]})))} color='#17272c' metalness={.15} roughness={.67}/>
   <Parts parts={[-1,1].flatMap(s=>Array.from({length:18},(_,i)=>({position:[(i-8.5)*width/22,.11,s*depth*.43] as [number,number,number],size:[.17,.065,.19] as [number,number,number]})))} color='#28373b' metalness={.6} roughness={.4}/>
   {[-1,1].map(s=><group key={s} position={[s*width*.35,.07,-depth*.36]}><CircuitBoard width={1.2} depth={.85} tier={tier} seed={42+s}/><Processor width={.52} active={false}/><group position={[0,.1,.48]}><Connector width={.9}/></group></group>)}
-  {[-1,1].flatMap(side=>[0,1,2].map(n=><SignalTrace key={`${side}-${n}`} reducedMotion={reducedMotion} offset={n*.19+(side+1)*.18} strength={n===1?1.4:.8} points={[[side*width*.48,.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,depth*.23+n*.2],[side*width*.48,.074,depth*.23+n*.2]]}/>))}
+  {[-1,1].flatMap(side=>[0,1,2].map(n=><SignalTrace key={`${side}-${n}`} reducedMotion={reducedMotion} duty={n===1?.65:.22} period={n===1?17:11+n*3} offset={n*.19+(side+1)*.18} strength={n===1?1.4:.8} points={[[side*width*.48,.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,depth*.23+n*.2],[side*width*.48,.074,depth*.23+n*.2]]}/>))}
  </group>;
 }

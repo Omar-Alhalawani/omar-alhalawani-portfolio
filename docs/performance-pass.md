@@ -1,47 +1,46 @@
-# Performance and model review
+# Hardware and runtime refinement
 
-Measured at 1440 × 900 in headless Chromium using the SwiftShader **software GPU**, on a local gzip production server. One cold page load per version, followed by six seconds of frame sampling. These values describe this container, not a hardware GPU or a verified 60 fps desktop result. Frame intervals use browser requestAnimationFrame, not GPU timer queries. Heap figures are approximate JavaScript memory, not GPU memory.
+Continued from `5ed9094`. Its FIFO mounting fix, preserved 0.22 hover rise, project transitions, intent prefetch, source links, and case-study navigation remain in place. This pass completes the model, runtime and actual-render fallback gaps.
 
-| Measurement | Before | After |
+The hero has a larger die, retention hardware, plated vias, grouped power delivery, detailed port housings, and separate primary/secondary/occasional signal activity. The shared project models add FIFO control and full/empty hardware, five FPGA buttons and synchronizers, an EMG serial/Python path, screen-to-camera Morse timing and decode response, DAQ channel/log indicators, and printer carriage/rail/bed/controller detail. Verification has distinct document, logic, stimulus/monitor and checker forms with a 24-second sequence.
+
+Startup now uses the actual renderer as the capability check and reveals the scene after its first completed frame. Identical labels, pulse geometry, fasteners and capacitors share resources; inactive waveforms stop updating. Very slow frames now reach the existing adaptive-quality monitor. Actual context loss was exercised: one bounded retry restored a ready scene with a new canvas.
+
+## Measurements
+
+One isolated cold load per version at 1440 × 900, local gzip production server, headless Chromium using the **SwiftShader software GPU**. Work’s browser used the static fallback and did not expose a usable hardware scene. These figures do not establish desktop GPU FPS. Adaptive stages and animation affect complexity samples; heap is approximate JavaScript memory.
+
+| Measurement | Committed baseline | Refined |
 | --- | ---: | ---: |
-| Static hero image download (not paint) | 24.1 ms | 20.4 ms |
-| First WebGL frame | Not separately instrumented | 1976 ms |
-| Hero ready / interactive | 4434 ms | 2796 ms |
-| Initial scene JS downloaded, gzip | 339,629 B | 341,392 B |
-| Direct HeroScene / ChipLayers chunks, gzip | 3,363 B | 2,516 B |
+| First actual WebGL frame | 2011 ms | 1918 ms |
+| Hero ready | 2856 ms | 1919 ms |
+| Draw calls | 277 | 274 |
+| Triangles | 38,193 | 42,137 |
+| Textures | 40 | 34 |
+| Geometries | 120 | 84 |
+| DPR | 1 | 1 |
 | Active animated renderers | 1 | 1 |
-| Measured DPR | 1 | 1 |
-| Mean browser frame interval | 219.4 ms | 188.2 ms |
-| Approximate browser FPS | 4.56 | 5.31 |
-| Hero draw calls | 1284 | 278 |
-| Hero triangles | 333,100 | 38,273 |
-| Textures | 139 | 40 |
-| Geometries | 418 | 121 |
-| Approximate JS heap | 33.1 MB | 21.7 MB |
-| GPU memory | Unavailable | Unavailable |
+| Approximate JavaScript heap | 20.5 MB | 23.1 MB |
+| PMREM generation | 45 ms | 43 ms |
+| Shader preparation | 33 ms | 32 ms |
+| Shader programs | 10 | 10 |
 
-The baseline is GitHub source checkpoint `35f752f`. The static-image timing measures HTTP completion, not a first-paint timestamp. Initial scene JS counts scripts loaded through the sample; the hero chunk row excludes shared React, Three.js and renderer dependencies. Frame samples: 24 before, 31 after. Startup and rendering costs improved; initial scene JS increased slightly. Hardware GPU smoothness still needs confirmation.
+PMREM and shader preparation were small measured costs, so the environment was retained. Extra geometry increased triangle count and heap; shared labels and microgeometry reduced textures and geometry objects. The first frame still takes about 1.9 seconds in this software environment; the eager fallback supplies the initial composition.
 
-Hero hydration starts on page load. The hero module, renderer code and WebGL probe load in parallel. Shared grain, pulse, board and die textures avoid per-object copies; reusable materials and instanced capacitors, contacts, framing and bolts reduce draw calls. Depth-of-field is removed, bloom is downsampled, and antialiasing uses a single FXAA path on desktop. Only one visible island animates at a time. Desktop DPR is capped at 1.25 / 1.4; mobile uses 1. Sustained poor frame time reduces DPR, then postprocessing, shadows and finally microdetail, with slower recovery to prevent oscillation. Test-only measurements remain in memory; production animation loops do not write diagnostic datasets or stringify scene state.
+Build, typecheck, changed-file lint and all eight existing unit tests pass. Focused captures confirm FIFO idle/hover, accepted writes, a 390 × 844 mobile view, reduced-motion demand rendering and context recovery. No Lighthouse or exhaustive matrix. All nine verified public source links were already present and were preserved; private/unverified sources remain omitted.
 
-Validation: build and typecheck pass; eight desktop scenes captured; real 3D hover and click, HTML keyboard selection, three FIFO writes, one 390 × 844 mobile view, and one reduced-motion view passed without page errors. No Lighthouse or exhaustive matrix. Static fallbacks were exported from these interactive scenes.
+## Updated actual scene captures
 
-These are review checkpoints. The models have stronger project identity and engineered structure, but are not declared visually finished or equivalent to the Amber + Steel reference CGI.
-
-## Captured review scenes
-
-| Hero | Project world |
+| View | Screenshot |
 | --- | --- |
-| ![Hero](visual-review/hero.jpg) | ![Project world](visual-review/projects.jpg) |
+| Homepage | [View](visual-review/hero.jpg) |
+| Project world: idle | [View](visual-review/projects.jpg) |
+| Project world: FIFO hover | [View](visual-review/projects-fifo-hover.jpg) |
+| Verification | [View](visual-review/verification.jpg) |
+| FIFO: three writes | [View](visual-review/fifo.jpg) |
+| FPGA arithmetic | [View](visual-review/fpga.jpg) |
+| EMG | [View](visual-review/emg.jpg) |
+| LumaLink | [View](visual-review/lumalink.jpg) |
+| CubeX | [View](visual-review/cubex.jpg) |
 
-| Verification | FIFO: three accepted writes |
-| --- | --- |
-| ![Verification](visual-review/verification.jpg) | ![FIFO](visual-review/fifo.jpg) |
-
-| FPGA | EMG |
-| --- | --- |
-| ![FPGA](visual-review/fpga.jpg) | ![EMG](visual-review/emg.jpg) |
-
-| LumaLink | CubeX |
-| --- | --- |
-| ![LumaLink](visual-review/lumalink.jpg) | ![CubeX](visual-review/cubex.jpg) |
+The nine scene fallbacks and three overview thumbnails were exported from the real WebGL scenes. Mobile and reduced-motion captures are also available in `visual-review`. The models are materially refined; reference-level cinematic realism and hardware GPU smoothness remain unverified.
