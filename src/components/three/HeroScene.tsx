@@ -40,18 +40,19 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     const layer=MathUtils.smoothstep(p,.38,.94);
     const px=reducedMotion||tier==='low'?0:pointer.current.x;
     const py=reducedMotion||tier==='low'?0:pointer.current.y;
-    form.current.position.y=MathUtils.damp(form.current.position.y,layer*.72,4,dt);
-    form.current.scale.setScalar(Math.min(1.24,viewport.width/4.25));
-    form.current.rotation.x=MathUtils.damp(form.current.rotation.x,.22+layer*.06+py*.027+Math.sin(time.current*.19)*.012,4,dt);
-    form.current.rotation.y=MathUtils.damp(form.current.rotation.y,-.34+px*.04+Math.sin(time.current*.13)*.018,4,dt);
-    form.current.rotation.z=MathUtils.damp(form.current.rotation.z,-.09+Math.sin(time.current*.16)*.009,4,dt);
-    camera.position.x=MathUtils.damp(camera.position.x,layer*.2+px*.07,3,dt);
-    camera.position.y=MathUtils.damp(camera.position.y,1.35+layer*.5-py*.06,3,dt);
-    camera.position.z=MathUtils.damp(camera.position.z,7.5+layer*.2,3,dt);
-    camera.lookAt(0,-layer*.08,0);
+    const settle=(value:number,target:number,speed:number)=>reducedMotion?target:MathUtils.damp(value,target,speed,dt);
+    form.current.position.y=settle(form.current.position.y,layer*.72,4);
+    form.current.scale.setScalar(Math.min(1.18,viewport.width/5.25));
+    form.current.rotation.x=settle(form.current.rotation.x,.22+layer*.06+py*.027+Math.sin(time.current*.19)*.012,4);
+    form.current.rotation.y=settle(form.current.rotation.y,-.45+px*.04+Math.sin(time.current*.13)*.018,4);
+    form.current.rotation.z=settle(form.current.rotation.z,-.04+Math.sin(time.current*.16)*.009,4);
+    camera.position.x=settle(camera.position.x,layer*.2+px*.07,3);
+    camera.position.y=settle(camera.position.y,2.45+layer*.5-py*.06,3);
+    camera.position.z=settle(camera.position.z,7.5+layer*.2,3);
+    camera.lookAt(0,layer*.85,0);
     gl.domElement.dataset.motion=JSON.stringify({rotation:[form.current.rotation.x,form.current.rotation.y,form.current.rotation.z],pointer:[px,py],progress:layer,time:time.current});
   });
-  return <group ref={form} rotation={[.22,-.34,-.09]}>
+  return <group ref={form} rotation={[.22,-.45,-.04]}>
     <ChipLayers progress={progress} active={active} reducedMotion={reducedMotion} tier={tier} />
   </group>;
 }

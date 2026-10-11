@@ -10,7 +10,7 @@ export default function FpgaScene({reducedMotion}:SceneProps) {
   const state=useSceneData('fpga-demo','portfolio:fpga',initialFpga);
   const {result}=arithmetic(state);
   return <group rotation={[0,-.13,0]}>
-    <Board width={4.4} depth={2.8}/>
+    <Board reducedMotion={reducedMotion} width={4.4} depth={2.8}/>
     <Block position={[-1.4,.16,-.5]} size={[.72,.23,.7]} active/>
     <Block position={[-1.4,.16,.5]} size={[.72,.23,.7]} active color="#b5d6e2"/>
     <group position={[.05,.27,0]}><Chip width={1.05} depth={1.05} active/></group><Label text="ALU" position={[.05,.378,0]} width={.65}/><Label text="A REG" position={[-1.4,.281,-.5]} width={.55}/><Label text="B REG" position={[-1.4,.281,.5]} width={.55}/><Label text="LED[7:0]" position={[1.45,.017,1.2]} width={.8}/>

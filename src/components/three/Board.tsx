@@ -1,11 +1,12 @@
-import {RoundedBox,Line} from '@react-three/drei';
-import {Plate,ContactShade,AMBER} from './Hardware';
+import {RoundedBox} from '@react-three/drei';
+import {ContactShade,AMBER} from './Hardware';
+import {CircuitBoard,SystemBed} from './Circuitry';
 
-export function Board({width=4.4,depth=3,height=.12}:{width?:number;depth?:number;height?:number}) {
+export function Board({width=4.4,depth=3,height=.12,reducedMotion=false}:{width?:number;depth?:number;height?:number;reducedMotion?:boolean}) {
   return <group>
     <ContactShade width={width} depth={depth} position={[0,-height-.03,0]}/>
-    <group position={[0,-height/2,0]}><Plate width={width} depth={depth} height={height} color="#171b1d" bolts rim/></group>
-    <Line points={[[-width/2+.2,.006,-depth/2+.2],[width/2-.2,.006,-depth/2+.2],[width/2-.2,.006,depth/2-.2],[-width/2+.2,.006,depth/2-.2]]} color="#705734" lineWidth={.6} transparent opacity={.6}/>
+    <group position={[0,-height-.14,0]}><SystemBed width={width*1.45} depth={depth*1.5} reducedMotion={reducedMotion}/></group>
+    <group position={[0,-.06,0]}><CircuitBoard width={width} depth={depth} seed={81}/></group>
   </group>;
 }
 export function Block({position=[0,0,0],size=[.8,.18,.7],active=false,color=AMBER}:{position?:[number,number,number];size?:[number,number,number];active?:boolean;color?:string}) {

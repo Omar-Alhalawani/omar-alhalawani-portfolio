@@ -22,5 +22,5 @@ export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boole
 }
 export default function CubexScene({reducedMotion}:SceneProps) {
   useSceneCamera();
-  return <group position={[0,-.5,0]} rotation={[0,-.3,0]}><Board width={3.8} depth={2.9}/><Printer reducedMotion={reducedMotion}/></group>;
+  return <group position={[0,-.5,0]} rotation={[0,-.3,0]}><Board reducedMotion={reducedMotion} width={3.8} depth={2.9}/><Printer reducedMotion={reducedMotion}/></group>;
 }

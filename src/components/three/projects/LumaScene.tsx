@@ -6,7 +6,7 @@ import type {SceneProps} from '../types';
 export default function LumaScene({reducedMotion}:SceneProps) {
   useSceneCamera();
   return <group rotation={[0,-.15,0]}>
-    <Board width={4.5} depth={2.6}/>
+    <Board reducedMotion={reducedMotion} width={4.5} depth={2.6}/>
     <Block position={[-1.4,.2,0]} size={[.65,.4,.9]} active/>
     <Block position={[1.3,.2,0]} size={[.8,.4,.9]} active color="#b5d6e2"/>
     <mesh position={[-1.03,.35,0]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.15,.15,.05,20]}/><meshBasicMaterial color="#ffbd59"/></mesh>

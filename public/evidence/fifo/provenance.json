@@ -1,0 +1,17 @@
+{
+  "sourceRepository": "https://github.com/Omar-Alhalawani/sync-fifo-rtl-verification",
+  "sourceCommit": "89d001147d2b0298c8392bb94df0e884b1d4a063",
+  "simulator": "Icarus Verilog 11.0",
+  "width": 8,
+  "depth": 4,
+  "sourceVCDTimescale": "1s",
+  "physicalClockFrequencyClaim": false,
+  "result": "All directed tests + scoreboard passed.",
+  "exitCode": 0,
+  "files": {
+    "rtl/fifo_sync.sv": "82afcb8ffd77c5123b98c33ee551cbf2f1076b1906219ae8717a2e3be0698077",
+    "tb/tb_fifo_scoreboard.sv": "cd1d595da21269570088ab1caecfe7a31be9093803c2af5cfb00c1bd8df69fc1"
+  },
+  "vcdSHA256": "e4e8e1f19c2754af5068bfb175b5d7ba1471ae99ef4c4c072e373ee20f3e5e44",
+  "coverageLimit": "Public directed tests do not explicitly test simultaneous accepted transfers or blocked overflow/underflow."
+}

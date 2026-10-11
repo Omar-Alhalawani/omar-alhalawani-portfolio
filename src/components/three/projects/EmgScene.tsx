@@ -8,7 +8,7 @@ import type {SceneProps} from '../types';
 export default function EmgScene({reducedMotion}:SceneProps) {
   useSceneCamera();
   return <group rotation={[0,-.12,0]}>
-    <Board width={4.4} depth={2.6}/>
+    <Board reducedMotion={reducedMotion} width={4.4} depth={2.6}/>
     <Block position={[-1.65,.18,0]} size={[.5,.28,.65]} active color={READ}/>
     <Label text="SENSOR" position={[-1.65,.329,0]} width={.46}/>
     <Block position={[.3,.1,-.12]} size={[1.65,.13,.7]}/>

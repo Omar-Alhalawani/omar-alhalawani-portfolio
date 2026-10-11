@@ -13,7 +13,7 @@
     --line:#343a3e; --text:#f3f3ed; --soft:#bfc5c7; --muted:#989fa4;
     --amber:#ffbd59; --read:#b5d6e2; --steel:#8b959b;
     --heading:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
-    --gutter:clamp(20px,5vw,96px); --max:1440px; --header:86px;
+    --gutter:clamp(20px,5vw,96px); --max:1440px; --header:76px;
   }
 }
 @layer base {

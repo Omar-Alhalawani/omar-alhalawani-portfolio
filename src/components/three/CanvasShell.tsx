@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {PMREMGenerator,ACESFilmicToneMapping} from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import type { GraphicsTier, SceneKind, SceneProps } from './types';
+import EnergyBloom from './EnergyBloom';
 
 const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.ComponentType<SceneProps>>>>> = {
   hero: lazy(() => import('./HeroScene')),
@@ -21,8 +22,8 @@ function SteelEnvironment() {
   useEffect(()=>{
     const room=new RoomEnvironment(),generator=new PMREMGenerator(gl);
     const environment=generator.fromScene(room,.04);
-    scene.environment=environment.texture;scene.environmentIntensity=.45;
-    gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.12;
+    scene.environment=environment.texture;scene.environmentIntensity=.22;
+    gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.02;
     room.dispose();generator.dispose();invalidate();
     return()=>{scene.environment=null;environment.dispose();};
   },[gl,scene,invalidate]);
@@ -98,11 +99,12 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   useEffect(()=>{
     if(host.current)host.current.dataset.renderLoop=visible?(reducedMotion?'demand':'always'):'paused';
   },[host,visible,reducedMotion]);
-  return <Canvas className="scene-canvas" dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
+  return <Canvas className="scene-canvas" shadows={tier!=='low'?'soft':false} dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onFailure={onFailure} reducedMotion={reducedMotion} tier={tier} />
-    <SteelEnvironment/><ambientLight intensity={.3} />
-    <directionalLight position={[-3,5,4]} color="#e7edef" intensity={2.4} />
-    <directionalLight position={[4,2,-3]} color="#ffcb83" intensity={2.5} />
-    <pointLight position={[1,1.4,2]} color="#ffb443" intensity={6} distance={8} decay={2}/><Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
+    <SteelEnvironment/><ambientLight intensity={.16} />
+    <directionalLight castShadow position={[-3,5,4]} color="#d9e5ed" intensity={1.65} shadow-mapSize={[1024,1024]} shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={5} shadow-camera-bottom={-5} shadow-camera-far={18} shadow-bias={-.00025} shadow-normalBias={.012} />
+    <directionalLight position={[4,2,-3]} color="#ffcb83" intensity={1.45} />
+    <Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
+    {tier!=='low'&&<EnergyBloom/>}
   </Canvas>;
 }

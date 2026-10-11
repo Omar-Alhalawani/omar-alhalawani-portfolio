@@ -17,7 +17,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
   const ready=useCallback(()=>setStatus('ready'),[]);
   const fail=useCallback(()=>setStatus('fallback'),[]);
-  const fallback = scene === 'hero' ? '/art/silicon-fallback.svg' : `/art/${scene}-fallback.svg`;
+  const fallback = `/art/${scene}-render.webp`;
   useEffect(() => {
     const element = host.current;
     if (!element) return;

@@ -18,8 +18,9 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
     <section class="case-hero"><div class="case-heading"><Eyebrow>{project.category}</Eyebrow><h1>{project.title}<span>.</span></h1><p class="lead">{project.description}</p><div class="tech-tags">{project.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div><p class="case-status"><span aria-hidden="true">●</span> {project.status}</p><div class="actions">{project.source&&<Button href={project.source} variant="primary" external>View source ↗</Button>}<Button href="#architecture">View Architecture ↓</Button></div></div>
       <figure class="case-art"><div class="case-canvas"><SceneIsland scene={project.scene} client:visible /></div><figcaption class="art-caption">{sceneLabel[project.id]}<br />Conceptual illustration. Essential details are in the case study.</figcaption></figure>
     </section>
-    <div class="case-content"><aside class="case-toc" aria-label="On this page"><p class="eyebrow">On this page</p><a href="#architecture">Architecture</a>{project.sections.map((section,index)=><a href={`#section-${index+1}`}>{section.title}</a>)}{['fifo','fpga-arithmetic'].includes(project.id)&&<a href="#interactive-model">Interactive model</a>}</aside>
+    <div class="case-content"><nav class="case-toc" aria-label="On this page"><a href="#architecture">Architecture</a>{project.sections.map((section,index)=><a href={`#section-${index+1}`}>{section.title}</a>)}{project.id==='fifo'&&<a href="#simulation-evidence">Simulation evidence</a>}{['fifo','fpga-arithmetic'].includes(project.id)&&<a href="#interactive-model">Interactive model</a>}</nav>
       <article class="case-prose"><section id="architecture"><h2>Architecture</h2><ArchitectureDiagram project={project}/></section>{project.sections.map((section,index)=><section class="case-section" id={`section-${index+1}`}><span class="section-number">0{index+1} // ENGINEERING NOTES</span><h2>{section.title}</h2><p>{section.text}</p>{section.points&&<ul>{section.points.map(point=><li>{point}</li>)}</ul>}</section>)}
+        {project.id==='fifo'&&<section id="simulation-evidence" class="simulation-evidence"><p class="eyebrow">Results // Public-source simulation</p><h2>Directed Testbench Results</h2><p>The unchanged public RTL and queue-scoreboard testbench passed in Icarus Verilog 11.0 with DATA_WIDTH=8 and DEPTH=4. These plots show actual VCD transitions. The source has no physical timing specification; its declared VCD unit is 1 second, so the axis is presented as simulation ticks.</p><figure><img src="/evidence/fifo/sanity.svg" alt="Actual FIFO sanity-test waveform: three words are written in order and read through the registered output." width="1200" height="648" loading="lazy"/><figcaption>Sanity sequence: A1, B2, C3. Output is registered at an accepted read and checked by the scoreboard on the following edge.</figcaption></figure><figure><img src="/evidence/fifo/boundaries.svg" alt="Actual FIFO boundary-test waveform showing occupancy reaching four, full asserting, then occupancy returning to zero and empty asserting." width="1200" height="648" loading="lazy"/><figcaption>Boundary sequence: fill to full, then drain to empty. The public wrap-around test also passed; this is not evidence of exhaustive coverage.</figcaption></figure><div class="evidence-result"><strong>All directed tests + scoreboard passed.</strong><span>Sanity · full/empty · pointer wrap-around</span><div><a href="/evidence/fifo/directed-tests.vcd" download>Download VCD ↓</a><a href="/evidence/fifo/simulation.log">Simulation log ↗</a><a href="/evidence/fifo/provenance.json">Source provenance ↗</a></div></div></section>}
         {project.id==='fifo'&&<section id="interactive-model"><FifoDemo client:visible /><noscript><p>The interactive model requires JavaScript. The handshake rules and verification approach are documented above.</p></noscript></section>}
         {project.id==='fpga-arithmetic'&&<section id="interactive-model"><FpgaDemo client:visible /><noscript><p>The interactive model requires JavaScript. The register and arithmetic behavior is documented above.</p></noscript></section>}
         <div class="case-source">{project.source?<><p class="eyebrow">Primary evidence</p><a class="text-link" href={project.source} target="_blank" rel="noopener noreferrer">Open the public repository ↗</a></>:<><p class="eyebrow">Evidence scope</p><p>This case study uses the supplied resume as its factual source. An implementation repository is not publicly available.</p></>}</div>
@@ -30,24 +31,34 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
 </SiteLayout>
 <style>
   .case-back { margin-top:32px; font-size:11px; }
-  .case-hero { display:grid; grid-template-columns:1fr 1fr; gap:60px; padding-block:50px 80px; align-items:center; }
+  .case-hero { display:grid; grid-template-columns:.92fr 1.2fr; gap:32px; padding-block:40px 64px; align-items:center; }
   .case-heading h1 { font-size:clamp(44px,5.3vw,80px); max-width:650px; margin-bottom:28px; }
   .case-heading h1>span { color:var(--amber); }
   .case-heading>.lead { font-size:17px; margin-bottom:28px; }
   .case-status { font:400 10px/1.8 var(--mono); color:var(--muted); margin-block:24px; }
   .case-status>span { color:var(--amber); margin-right:7px; }
-  .case-canvas { height:440px; }
+  .case-canvas { height:520px; background:radial-gradient(ellipse at 55% 55%,#6b401b20,transparent 68%); }
   .case-art figcaption { text-align:center; max-width:420px; margin:auto; font-size:9px; }
-  .case-content { display:grid; grid-template-columns:240px minmax(0,820px); gap:80px; padding-block:50px 80px; border-top:1px solid var(--line); }
-  .case-toc { align-self:start; position:sticky; top:calc(var(--header) + 30px); }
+  .case-content { display:block; padding-block:0 80px; border-top:1px solid var(--line); }
+  .case-toc { display:flex; flex-wrap:wrap; gap:0 28px; position:sticky; top:var(--header); z-index:5; background:#080c0ef5; border-bottom:1px solid #80643d70; padding:12px 20px; margin-bottom:50px; }
+  .case-prose { max-width:1080px; margin-inline:auto; }
   .case-toc>.eyebrow { font-size:9px; margin-bottom:18px; }
-  .case-toc>a { display:block; min-height:44px; padding-block:12px; font-size:11px; color:var(--muted); line-height:1.65; }
+  .case-toc>a { display:flex; align-items:center; min-height:44px; padding-block:12px; font-size:11px; color:var(--soft); line-height:1.65; border-bottom:1px solid transparent; }
   .case-toc>a:hover { color:var(--amber); }
   .case-prose h2 { font-size:clamp(29px,3vw,44px); margin-bottom:26px; }
   .case-prose p,.case-prose li { font-size:14px; line-height:1.9; }
-  .case-section { margin-top:64px; }
+  .case-section { margin-top:28px; padding:34px; border:1px solid #50574f70; border-radius:5px; background:linear-gradient(135deg,#161c1e90,#090d0e); box-shadow:inset 0 1px #d0dbdc0b; }
   .section-number { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:18px; }
   .case-section ul { margin-top:24px; }
+  .simulation-evidence { margin-block:54px; border:1px solid #7c603e88; border-radius:6px; background:#0b1013; padding:32px; }
+  .simulation-evidence figure { margin-top:26px; }
+  .simulation-evidence img { display:block; width:100%; height:auto; border:1px solid var(--line); }
+  .simulation-evidence figcaption { font:400 10px/1.9 var(--mono); color:var(--muted); margin-top:12px; }
+  .evidence-result { margin-top:28px; padding:24px; border:1px solid #92704580; background:#211a1160; }
+  .evidence-result strong { color:var(--amber); font:500 16px/1.8 var(--heading); display:block; }
+  .evidence-result>span { font:400 11px/1.8 var(--mono); color:var(--muted); }
+  .evidence-result>div { display:flex; flex-wrap:wrap; gap:12px 24px; margin-top:14px; }
+  .evidence-result a { color:var(--amber); font-size:12px; min-height:44px; display:inline-flex; align-items:center; }
   .case-source { margin-top:48px; padding-top:30px; border-top:1px solid var(--line); }
   .case-source>.eyebrow { font-size:10px; margin-bottom:12px; }
   .related-projects { padding-block:60px 90px; border-top:1px solid var(--line); }
@@ -57,7 +68,7 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
   .related-projects h3 { font-size:28px; }
   .related-projects h3>span { color:var(--amber); margin-left:14px; }
   .related-projects a:hover h3 { color:var(--amber); }
-  @media(max-width:1050px) { .case-hero { gap:30px; } .case-content { grid-template-columns:190px minmax(0,1fr); gap:40px; } }
+  @media(max-width:1050px) { .case-hero { gap:30px; } .case-toc { gap:0 20px; } }
   @media(max-width:800px) { .case-hero { grid-template-columns:1fr; padding-top:30px; gap:20px; padding-bottom:50px; } .case-heading>.lead { max-width:670px; } .case-canvas { height:340px; } .case-content { display:block; padding-top:32px; } .case-toc { position:relative; top:0; margin-bottom:40px; display:flex; flex-wrap:wrap; gap:0 20px; } .case-toc>.eyebrow { width:100%; margin-bottom:6px; } .case-toc>a { max-width:250px; } }
-  @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading>.lead { font-size:15px; } .case-section { margin-top:48px; } .case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
+  @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading>.lead { font-size:15px; } .case-section { margin-top:24px; padding:22px; } .simulation-evidence { padding:20px; }.evidence-result { padding:18px; }.case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
 </style>

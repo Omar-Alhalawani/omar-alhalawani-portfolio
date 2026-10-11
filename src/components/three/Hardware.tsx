@@ -9,8 +9,10 @@ export function Bolt({position=[0,0,0]}:{position?:[number,number,number]}) {
   return <mesh position={position}><cylinderGeometry args={[.045,.045,.024,8]}/><meshStandardMaterial color="#adb2b5" metalness={.9} roughness={.34}/></mesh>;
 }
 export function Plate({width=3.4,depth=2.8,height=.12,color='#202429',rim=false,bolts=false}:{width?:number;depth?:number;height?:number;color?:string;rim?:boolean;bolts?:boolean}) {
+  const grain=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d')!;ctx.fillStyle='#b9b9b9';ctx.fillRect(0,0,128,128);for(let i=0;i<128;i++){const v=160+(i*37%70);ctx.fillStyle=`rgb(${v},${v},${v})`;ctx.fillRect(0,i,128,.55);}return new CanvasTexture(c);},[]);
+  useEffect(()=>()=>grain.dispose(),[grain]);
   return <group>
-    <RoundedBox args={[width,height,depth]} radius={Math.min(.055,height/3)} smoothness={2}><meshStandardMaterial color={color} metalness={.82} roughness={.33}/></RoundedBox>
+    <RoundedBox castShadow receiveShadow args={[width,height,depth]} radius={Math.min(.055,height/3)} smoothness={2}><meshStandardMaterial color={color} metalness={.9} roughness={.38} roughnessMap={grain} bumpMap={grain} bumpScale={.009}/></RoundedBox>
     {rim&&<Line points={[[-width/2+.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,-depth/2+.08]]} color="#939a9f" lineWidth={.65} transparent opacity={.6}/>}
     {bolts&&[-1,1].flatMap(x=>[-1,1].map(z=><Bolt key={`${x}-${z}`} position={[x*(width/2-.15),height/2+.013,z*(depth/2-.15)]}/>))}
   </group>;

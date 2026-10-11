@@ -1,0 +1,22 @@
+---
+const cards=[
+ {number:'01',title:'Technical Focus',text:'RTL, verification, embedded hardware, and engineering automation.',image:'/images/engineering-overview.webp',alt:'Detailed layered conceptual computing hardware.',href:'#engineering-stack',link:'Explore disciplines'},
+ {number:'02',title:'Experience',text:'ASIC verification at Ciena, research instrumentation, and teaching.',image:'/images/verification-overview.webp',alt:'Four illuminated conceptual verification modules on a circuit substrate.',href:'/experience',link:'View experience'},
+ {number:'03',title:'Selected Projects',text:'Six primary hardware and software implementations, with source and evidence.',image:'/images/project-overview.webp',alt:'Six distinct hardware project modules connected by amber routes.',href:'/projects',link:'Explore projects'},
+ {number:'04',title:'Education & Background',text:'Computer Systems Engineering, Honours Co-op at Carleton University.',image:'/images/omar.webp',alt:'Portrait of Omar Alhalawani.',href:'/about',link:'View background'},
+];
+---
+<nav class="engineering-overview" aria-label="Explore engineering portfolio">
+ {cards.map(card=><a href={card.href} class="overview-card"><p class="eyebrow">{card.number} // {card.title}</p><h2>{card.title}</h2><img src={card.image} alt={card.alt} width="640" height="480" loading="lazy" decoding="async"/><p class="overview-description">{card.text}</p><span class="overview-action">{card.link}<span aria-hidden="true">→</span></span></a>)}
+</nav>
+<style>
+ .engineering-overview{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid #695a4266;background:#080c0efc}
+ .overview-card{padding:22px 24px;border-right:1px solid #5a554666;background:radial-gradient(ellipse at 50% 55%,#71462115,transparent 70%);display:flex;flex-direction:column;transition:background .25s}
+ .overview-card:last-child{border-right:0}.overview-card>.eyebrow{font-size:8px;margin-bottom:10px}.overview-card h2{font-size:clamp(23px,1.85vw,29px);min-height:56px;letter-spacing:-.03em}
+ .overview-card img{width:calc(100% + 32px);max-width:none;height:165px;object-fit:cover;margin:0 -16px 8px;mix-blend-mode:screen}
+ .overview-card:last-child img{width:125px;max-width:100%;height:125px;margin:20px auto 28px;border-radius:50%;border:1px solid #ad8a4d80;object-fit:cover;filter:saturate(.6);mix-blend-mode:normal;box-shadow:0 0 45px #f1a83c12}
+ .overview-description{font-size:11px;line-height:1.8;max-width:310px;margin-top:auto}.overview-action{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:44px;color:var(--amber);font-size:11px;border-top:1px solid #695a423d;margin-top:20px;padding-top:10px}.overview-card:hover{background-color:#191b15}.overview-card:hover .overview-action{color:var(--text)}
+ @media(max-width:1000px){.engineering-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-card{border-bottom:1px solid #5a554666}.overview-card:nth-child(2){border-right:0}.overview-card img{height:230px}.overview-card:last-child img{margin-block:30px 40px}}
+ @media(max-width:500px){.overview-card{padding:22px 16px}.overview-card h2{font-size:23px;min-height:75px}.overview-card img{height:150px}.overview-card:last-child img{height:110px;width:110px;margin-block:20px 32px}.overview-description{font-size:10px}.overview-card>.eyebrow{font-size:7px}.overview-action{font-size:10px;gap:8px}}
+ @media(prefers-reduced-motion:reduce){.overview-card{transition:none}}
+</style>

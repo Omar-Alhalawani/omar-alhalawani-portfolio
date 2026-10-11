@@ -6,6 +6,7 @@ import SceneIsland from '../components/SceneIsland';
 import ExperienceCard from '../components/ExperienceCard.astro';
 import VerificationVisual from '../components/VerificationVisual.astro';
 import ProjectExplorer from '../components/ProjectExplorer.astro';
+import EngineeringOverview from '../components/EngineeringOverview.astro';
 import { site } from '../data/site';
 import { skills } from '../data/skills';
 import { experience } from '../data/experience';
@@ -19,18 +20,13 @@ import { featuredProjects } from '../data/projects';
         <Eyebrow>Computer Systems Engineering<br class="eyebrow-break" /> // ASIC Verification</Eyebrow>
         <h1 id="hero-title"><span>Omar</span><span>Alhalawani<span class="name-period">.</span></span></h1>
         <p class="hero-statement">ASIC Verification, RTL Design,<br class="desktop-break" /> and Embedded Systems</p>
-        <p class="hero-description">Computer Systems Engineering student at Carleton University with experience in ASIC verification methodology, digital design, embedded systems, and engineering automation.</p>
+        <p class="hero-description">Computer Systems Engineering student at Carleton University, with experience in ASIC verification, RTL, embedded hardware, and engineering automation.</p>
         <div class="hero-experience"><span class="status-dot" aria-hidden="true"></span><span>ASIC Engineer I Co-op <span class="muted">· Ciena · Summer 2026</span></span></div>
         <div class="actions"><Button href="/projects" variant="primary">View Projects <span aria-hidden="true">↗</span></Button><Button href="/resume">View Resume <span aria-hidden="true">↗</span></Button><Button href={site.github} variant="text" external>GitHub <span aria-hidden="true">↗</span></Button></div>
       </div>
       <div class="hero-bottom"><span>OTTAWA, CANADA // CARLETON UNIVERSITY</span><a href="#engineering-stack">Scroll to explore <span aria-hidden="true">↓</span></a></div>
     </section>
-    <div class="proof-strip container">
-      <div><strong>ASIC verification</strong><span>PyUVM · cocotb · SystemVerilog UVM</span></div>
-      <div><strong>RTL / digital design</strong><span>SystemVerilog · Verilog · FPGA</span></div>
-      <div><strong>Engineering automation</strong><span>Python · Bash · Linux · Git</span></div>
-      <div><strong>Embedded systems</strong><span>C / C++ · sensors · DAQ</span></div>
-    </div>
+    <div class="overview-band"><EngineeringOverview/></div>
     <section id="engineering-stack" class="engineering-stack container" aria-labelledby="stack-title">
       <div class="stack-copy"><Eyebrow>02 // Engineering disciplines</Eyebrow><h2 id="stack-title">Technical Focus</h2><p class="stack-intro">RTL, verification, embedded hardware, and the tools used to develop and test them. Select a category to inspect its conceptual layer.</p>
         <div class="skill-list">{skills.map(skill=><button class="skill-row" data-layer={skill.index} data-active={skill.index===2 ? 'true':undefined} aria-pressed={skill.index===2} type="button"><span class="skill-number">0{5-skill.index}</span><span><strong>{skill.name}</strong><span>{skill.tech}</span><span class="skill-detail">{skill.detail}</span></span><span class="skill-arrow" aria-hidden="true">↗</span></button>)}</div>
@@ -56,20 +52,22 @@ import { featuredProjects } from '../data/projects';
 </script>
 <style>
   .silicon-sequence { position:relative; max-width:1800px; margin-inline:auto; }
-  .world-stage { position:absolute; inset:0 0 0 auto; width:61%; z-index:0; pointer-events:none; }
-  .world-window { position:sticky; top:var(--header); height:calc(100svh - var(--header)); min-height:560px; }
+  .overview-band { position:relative;z-index:2; }
+  .world-stage { position:absolute; inset:0 0 0 auto; width:69%; z-index:0; pointer-events:none; }
+  .world-window { position:sticky; top:var(--header); height:clamp(560px,62svh,750px); min-height:560px; }
   .world-window::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,var(--bg),transparent 18%,transparent 85%,var(--bg)); pointer-events:none; }
-  .world-label { position:absolute; bottom:54px; left:30%; display:flex; align-items:center; gap:12px; font:400 9px/1.5 var(--mono); letter-spacing:.08em; color:var(--muted); }
+  .world-label { position:absolute; bottom:32px; left:30%; display:flex; align-items:center; gap:12px; font:400 9px/1.5 var(--mono); letter-spacing:.08em; color:var(--muted); }
   .world-label-line { display:block; width:28px; height:1px; background:var(--amber); }
-  .hero { min-height:calc(100svh - var(--header)); padding-block:clamp(68px,8vh,110px) 90px; position:relative; display:flex; align-items:center; }
-  .hero-copy { position:relative; width:46%; z-index:2; }
-  .hero .eyebrow { font-size:10px; line-height:2; margin-bottom:25px; }
-  .hero h1 { font-size:clamp(56px,5.8vw,94px); letter-spacing:-.068em; line-height:.99; margin-bottom:30px; }
+  .hero { min-height:clamp(560px,62svh,750px); padding-block:52px 74px; position:relative; display:flex; align-items:center; }
+  .hero-copy { position:relative; width:42%; z-index:2; }
+  .hero .eyebrow { font-size:9px; line-height:1.8; margin-bottom:18px; }
+  .eyebrow-break { display:none; }
+  .hero h1 { font-size:clamp(54px,4.5vw,78px); letter-spacing:-.068em; line-height:.99; margin-bottom:22px; }
   .hero h1>span { display:block; }
   .name-period { color:var(--amber); }
-  .hero-statement { font-family:var(--heading); font-size:clamp(21px,2vw,29px); line-height:1.35; color:var(--text); letter-spacing:-.02em; margin-bottom:20px; }
-  .hero-description { max-width:445px; font-size:13px; line-height:1.9; }
-  .hero-experience { margin-block:24px 27px; display:flex; gap:10px; align-items:baseline; font-size:12px; }
+  .hero-statement { font-family:var(--heading); font-size:clamp(21px,1.8vw,27px); line-height:1.3; color:var(--text); letter-spacing:-.02em; margin-bottom:16px; }
+  .hero-description { max-width:430px; font-size:12px; line-height:1.8; }
+  .hero-experience { margin-block:18px 20px; display:flex; gap:10px; align-items:baseline; font-size:11px; }
   .status-dot { width:5px; height:5px; border-radius:50%; background:var(--amber); flex:none; }
   .hero-bottom { position:absolute; inset:auto 0 30px; display:flex; justify-content:space-between; z-index:3; font:400 9px/1.7 var(--mono); letter-spacing:.05em; color:var(--muted); gap:24px; }
   .hero-bottom a { min-height:44px; display:flex; gap:18px; align-items:center; }
@@ -78,7 +76,7 @@ import { featuredProjects } from '../data/projects';
   .proof-strip>div:first-child { padding-left:0; border:0; }
   .proof-strip strong { display:block; font:500 13px/1.6 var(--heading); margin-bottom:6px; }
   .proof-strip span { display:block; color:var(--muted); font:400 9px/1.8 var(--mono); }
-  .engineering-stack { min-height:1100px; padding-block:135px; position:relative; }
+  .engineering-stack { min-height:960px; padding-block:100px; position:relative; }
   .stack-copy { width:43%; z-index:2; position:relative; }
   .stack-intro { font-size:14px; margin-block:28px 36px; max-width:440px; }
   .skill-list { display:grid; }
@@ -93,12 +91,12 @@ import { featuredProjects } from '../data/projects';
   .skill-row:hover strong,.skill-row[data-active] strong { color:var(--amber); }
   .concept-note { margin-top:24px; color:var(--muted); font:400 9px/1.8 var(--mono); }
   .home-experience,.home-projects,.home-about { border-top:1px solid var(--line); }
-  .experience-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; }
-  .home-about { display:grid; grid-template-columns:1fr 1fr; gap:100px; }
+  .experience-grid { display:grid; grid-template-columns:.85fr 1.2fr; gap:44px; }
+  .home-about { display:grid; grid-template-columns:1fr 1fr; gap:60px; background:radial-gradient(ellipse at 90% 45%,#57392024,transparent 55%); }
   .home-about p { font-size:16px; line-height:1.9; max-width:620px; }
   .home-about p+p { margin-top:22px; }
   .home-about .text-link { margin-top:24px; }
-  @media (min-width:1900px) { .hero h1 { font-size:108px; } .hero-description { font-size:15px; } }
+  @media (min-width:1900px) { .hero h1 { font-size:88px; } .hero-description { font-size:14px; } }
   @media (max-width:1100px) { .hero .actions { gap:8px; } .hero .button { padding-inline:14px; } .hero-copy { width:52%; } .stack-copy { width:47%; } .world-stage { width:54%; } }
   @media (max-width:900px) {
     .experience-grid { grid-template-columns:1fr; gap:24px; }
@@ -107,16 +105,18 @@ import { featuredProjects } from '../data/projects';
     .silicon-sequence { display:flex; flex-direction:column; }
     .hero { order:1; min-height:0; align-items:start; padding-top:56px; padding-bottom:85px; }
     .proof-strip { order:3; }
-    .engineering-stack { order:4; }
+    .overview-band { order:4; }
+    .engineering-stack { order:5; }
     .hero-copy { width:100%; max-width:580px; }
     .hero h1 { font-size:clamp(52px,12vw,78px); margin-bottom:24px; }
     .hero .eyebrow { font-size:9px; margin-bottom:20px; }
+    .eyebrow-break { display:block; }
     .hero-statement { font-size:24px; }
     .hero-description { max-width:430px; font-size:13px; }
     .hero-experience { flex-wrap:wrap; font-size:10px; margin-block:22px; }
     .hero .actions { gap:8px; }
     .hero .button { font-size:11px; padding-inline:15px; }
-    .world-stage { order:2; width:100%; position:relative; top:auto; height:440px; bottom:auto; margin-top:-24px; }
+    .world-stage { order:2; width:100%; position:relative; inset:auto; top:auto; height:440px; bottom:auto; margin-top:-24px; }
     .world-window { min-height:0; height:440px; position:relative; top:0; }
     .world-window::after { background:linear-gradient(0deg,var(--bg),transparent 16%,transparent 80%,var(--bg)); }
     .world-label { left:50%; transform:translateX(-50%); bottom:16px; white-space:nowrap; font-size:8px; }

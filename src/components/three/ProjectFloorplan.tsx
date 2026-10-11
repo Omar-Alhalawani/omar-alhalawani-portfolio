@@ -1,7 +1,9 @@
 import {useEffect,useRef,useState} from 'react';
 import {useFrame,useThree,type ThreeEvent} from '@react-three/fiber';
 import {Group,MathUtils,Vector3} from 'three';
-import {Board,Block} from './Board';
+import {Html} from '@react-three/drei';
+import {Block} from './Board';
+import {CircuitBoard,Processor,Connector,Parts,SystemBed} from './Circuitry';
 import {Plate,Chip,Label,AMBER,READ} from './Hardware';
 import SignalTrace from './SignalTrace';
 import Waveform from './Waveform';
@@ -20,6 +22,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   const {invalidate,camera,size,gl}=useThree();
   const fit=Math.max(1,1.16/(size.width/size.height));
   const base=useRef(new Vector3(0,5.8*fit,6.8*fit));
+  useEffect(()=>{gl.domElement.dataset.selectedProject=active;},[active,gl]);
   useEffect(()=>{base.current.set(0,5.8*fit,6.8*fit);camera.position.copy(base.current);camera.lookAt(0,.18,0);invalidate();},[camera,fit,invalidate]);
   useEffect(()=>{
     const read=(event:Event)=>{const id=(event as CustomEvent<string>).detail;if(regions.some(r=>r.id===id)){setActive(id);invalidate();}};
@@ -30,7 +33,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   },[invalidate,gl]);
   useFrame((_,delta)=>{
     const dt=Math.min(delta,.05);if(!reducedMotion)time.current+=dt;
-    groups.current.forEach((group,i)=>{if(group)group.position.y=MathUtils.damp(group.position.y,regions[i].id===active?.15:.035,6,dt);});
+    groups.current.forEach((group,i)=>{if(group){const target=regions[i].id===active?.24:.07;group.position.y=reducedMotion?target:MathUtils.damp(group.position.y,target,6,dt);}});
     const region=regions.find(r=>r.id===opening);
     const target=region&&!reducedMotion?new Vector3(region.x*.27,base.current.y*.86,base.current.z*.86):base.current;
     camera.position.lerp(target,1-Math.exp(-dt*8));camera.lookAt(0,.18,0);
@@ -57,22 +60,31 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     else{lastTouch.current=id;selectProject(id);}
   };
   return <group rotation={[0,-.1,0]}>
-    <Board width={5.5} depth={4.1} height={.18}/>
+    <group position={[0,-.23,0]}><SystemBed width={7.3} depth={5.8} tier={tier} reducedMotion={reducedMotion}/></group>
+    <CircuitBoard width={5.7} depth={4.5} tier={tier} seed={56} components={false}/>
     {regions.map((region,i)=>{
       const selected=region.id===active;
       return <group key={region.id} ref={g=>{groups.current[i]=g;}} position={[region.x,.035,region.z]}
         onPointerOver={event=>{event.stopPropagation();if(event.pointerType==='mouse'){selectProject(region.id);gl.domElement.style.cursor='pointer';}}}
         onPointerOut={()=>{gl.domElement.style.cursor='';}}
         onPointerDown={event=>start(event,region.id)} onPointerUp={event=>end(event,region.id)} onPointerCancel={()=>{down.current=null;}}>
-        <Plate width={1.4} depth={1.53} height={.11} color={selected?'#3f3b33':'#282d31'} rim bolts={tier!=='low'}/>
+        <mesh position={[0,.3,0]}><boxGeometry args={[1.4,.6,1.5]}/><meshBasicMaterial transparent opacity={0} depthWrite={false}/></mesh>
+        <Plate width={1.44} depth={1.57} height={.12} color={selected?'#615442':'#3a4248'} rim bolts={tier!=='low'}/>
+        <group position={[0,.07,0]}><CircuitBoard width={1.35} depth={1.46} tier={tier} seed={i+70}/></group>
+        <group position={[0,.2,-.6]}><Connector width={.75} count={10}/></group>
+        <Parts parts={[-1,1].flatMap(side=>Array.from({length:5},(_,n)=>({position:[side*.59,.19,(n-2)*.15] as [number,number,number],size:[.08,.13,.075] as [number,number,number]})))} color='#69747a'/>
         <Label text={region.label} position={[0,.063,.59]} width={.9} color={selected?AMBER:'#9ca5aa'}/>
+        <Html position={[0,.9,-.45]} center style={{pointerEvents:'none'}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'7px 10px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'4px',background:'#0b1013ed',color:selected?'#ffc36a':'#c0c8c9',font:'10px monospace',letterSpacing:'.04em',boxShadow:selected?'0 0 22px #ffac291c':'none'}}>{region.label}</span></Html>
         {region.id==='fifo'&&<group position={[0,.15,-.08]}>
           <Plate width={1.05} depth={.75} height={.08} color="#111619"/>
-          {Array.from({length:8},(_,n)=><Block key={n} position={[(n%4-1.5)*.23,.13,(Math.floor(n/4)-.5)*.34]} size={[.14,.2,.23]} active={selected&&n<5}/>)}
+          {Array.from({length:8},(_,n)=><mesh key={n} position={[(n%4-1.5)*.23,.18,(Math.floor(n/4)-.5)*.34]}><boxGeometry args={[.14,.3,.23]}/><meshPhysicalMaterial color='#e38a24' emissive='#ff7900' emissiveIntensity={selected?.75:.18} metalness={.15} roughness={.16} transparent opacity={.65}/></mesh>)}
+          <group position={[0,.39,0]}><Plate width={1.08} depth={.83} height={.065} color='#525e66' rim bolts/></group>
+          <Parts parts={[-1,1].flatMap(x=>[-1,1].map(z=>({position:[x*.49,.21,z*.34] as [number,number,number],size:[.035,.4,.035] as [number,number,number]})))} color='#97a5aa'/>
         </group>}
         {region.id==='fpga-arithmetic'&&<>
           <group position={[-.35,.2,-.27]}><Chip width={.31} depth={.28} active={selected}/></group><group position={[-.35,.2,.14]}><Chip width={.31} depth={.28} active={selected}/></group>
-          <group position={[.23,.24,-.08]}><Chip width={.54} depth={.58} active={selected}/></group>
+          <group position={[.23,.2,-.08]}><Processor width={.47} active={selected}/></group>
+          <Parts parts={Array.from({length:8},(_,n)=>({position:[.47,.3,(n-3.5)*.075],size:[.04,.045,.038]}))} color={AMBER} emissive={selected}/>
           <SignalTrace reducedMotion={reducedMotion} active={selected} points={[[-.2,.12,-.27],[-.07,.12,-.27],[-.07,.12,-.08],[.23,.12,-.08]]}/>
         </>}
         {region.id==='emg'&&<>
@@ -91,9 +103,10 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
           {[-.3,0,.3].map(x=><group key={x}><Block position={[x,.38,-.12]} size={[.16,.06,.36]} active={selected}/><mesh position={[x,.22,.29]}><cylinderGeometry args={[.045,.045,.17,8]}/><meshStandardMaterial color="#bdad87" metalness={.85} roughness={.3}/></mesh></group>)}
         </>}
         {region.id==='cubex'&&<group position={[0,.12,-.15]}><Printer reducedMotion={reducedMotion} active={selected} scale={.47}/></group>}
-        <SignalTrace reducedMotion={reducedMotion} active={selected} offset={i*.13} points={[[0,.059,-.72],[-.59,.059,-.72],[-.59,.059,.44],[.59,.059,.44],[.59,.059,-.72]]}/>
+        <SignalTrace strength={selected?1.5:.65} reducedMotion={reducedMotion} active offset={i*.13} points={[[0,.145,-.72],[-.59,.145,-.72],[-.59,.145,.44],[.59,.145,.44],[.59,.145,-.72]]}/>
+        {selected&&<pointLight position={[0,.27,.35]} color='#ffae35' intensity={2} distance={2.2} decay={2}/>}
       </group>;
     })}
-    {regions.map((r,i)=><SignalTrace key={r.id} reducedMotion={reducedMotion} active={active===r.id} offset={i*.1} points={[[-2.5,.015,0],[r.x,.015,0],[r.x,.015,r.z*.35],[r.x,.05,r.z*.52]]}/>)}
+    {regions.map((r,i)=><SignalTrace key={r.id} strength={active===r.id?1.7:.7} reducedMotion={reducedMotion} active offset={i*.1} points={[[-2.8,.068,0],[r.x,.068,0],[r.x,.068,r.z*.35],[r.x,.13,r.z*.52]]}/>)}
   </group>;
 }

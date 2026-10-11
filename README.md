@@ -12,7 +12,9 @@ Amber + Steel: near-black surfaces, graphite/anodized-metal hardware, neutral re
 
 The enlarged Projects platform has six distinct modules: memory, registers/ALU, optical TX/RX, DAQ, signal instrumentation, and a mechanical printer. Real WebGL hit targets select the same state as HTML hover/focus. Desktop clicks use a 320 ms camera transition; touch selects first and opens through the CTA or a second intentional tap. Dragged gestures do not navigate. Essential links and descriptions remain semantic HTML.
 
-Metal reflections come from a small procedural room environment, with no remote HDR maps. Signals use lightweight line/glow geometry instead of a full-screen postprocessing chain. Low-tier scenes omit secondary bolts and spacers and cap DPR at 1; ordinary screens cap at 1.35 and wide screens at 1.75. Hidden/offscreen scenes pause. Reduced motion stops autonomous/pointer/camera motion and uses demand rendering. Scene-specific SVGs cover loading, failure, and no-JavaScript use.
+Metal reflections come from a procedural room environment, with no remote HDR maps. Populated substrates use local circuit/metal textures and instanced component banks. Medium/high tiers add soft shadows, restrained HDR bloom, and FXAA; low tiers keep routed cores and pulse sprites without those passes. DPR caps remain 1 / 1.35 / 1.75. Hidden/offscreen scenes pause. Reduced motion settles directly into a static composition and uses demand rendering. Scene-specific WebP renders provide the same hardware world during loading, failure, and no-JavaScript use.
+
+The corrective pass adds a compact four-panel overview, a full-width project ecosystem with integrated previews, and richer case-study panels. FIFO includes actual Icarus output from its unchanged public directed testbench: VCD, plots, simulation log, and source hashes. The plots retain the source timing units and do not imply a physical clock frequency or exhaustive coverage.
 
 ## Content and resume
 
@@ -70,4 +72,4 @@ Build before QA. Scripts use an ephemeral production server unless `QA_BASE_URL`
 
 Use the existing `omar-alhalawani-portfolio` project and main-branch Git integration. Astro defaults: root `./`, `npm install`, `npm run build`, output `dist`. Do not import another project. `VERCEL_PROJECT_PRODUCTION_URL` chooses the public metadata/sitemap origin; the fallback is the current staging host. Do not canonicalize assets to a protected immutable deployment URL.
 
-No DNS, redirects, domains, paid services, or production-indexing changes are part of this upgrade. Authentication/MFA/consent must be completed by Omar when required. See `docs/upgrade/FINAL_REPORT.md` for the actual deployed measurements and limitations once completed.
+No DNS, redirects, domains, paid services, or production-indexing changes are part of this upgrade. Authentication/MFA/consent must be completed by Omar when required. See `docs/upgrade/FINAL_REPORT.md` for the actual deployed measurements and limitations.
