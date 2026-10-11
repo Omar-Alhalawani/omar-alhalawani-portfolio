@@ -7,6 +7,7 @@ import {Plate,Label,AMBER,READ} from './Hardware';
 import {Frame,PowerBank,SiliconDie} from './ModuleHardware';
 import Waveform from './Waveform';
 import SignalTrace from './SignalTrace';
+import {PortBank,PowerShelf} from './EngineeringDetails';
 import type {SceneProps} from './types';
 
 export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
@@ -15,6 +16,9 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
  return <group rotation={[0,-.2,0]}>
   <group position={[0,-.25,0]}><SystemBed width={7.2} depth={4.5} tier={tier} reducedMotion={reducedMotion}/></group>
   <group position={[0,-.05,0]}><CircuitBoard width={5.7} depth={2.95} tier={tier} seed={107} components={false}/><Frame width={5.7} depth={2.95} height={.16}/></group>
+  <group position={[0,.02,-1.72]}><PowerShelf tier={tier} scale={1.15}/></group>
+  <group position={[0,-.04,1.69]}><PortBank width={5.5} count={8}/></group>
+  <Parts parts={[-1,1].map(s=>({position:[0,.12,s*1.38] as [number,number,number],size:[5.7,.1,.085] as [number,number,number]}))} color='#6b818c' metalness={.9} roughness={.3}/>
   {[-2.05,-.68,.68,2.05].map((x,i)=><group key={x} position={[x,.09,0]}>
    <Plate width={1.22} depth={1.8} height={.13} color='#687a80' rim bolts/>
    <group position={[0,.09,0]}><CircuitBoard width={1.12} depth={1.68} tier={tier} seed={100+i}/><Frame width={1.1} depth={1.6} height={.17}/></group>

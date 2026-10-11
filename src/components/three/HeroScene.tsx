@@ -10,8 +10,9 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
   const pointer=useRef(new Vector2());
   const time=useRef(0);
   const [active,setActive]=useState(2);
-  const { camera, invalidate, viewport,gl }=useThree();
+  const { camera, invalidate, viewport }=useThree();
   useEffect(()=>{
+    camera.position.set(0,2.45,7.5);camera.lookAt(0,0,0);
     const sequence=document.getElementById('silicon-sequence');
     const scroll=()=>{
       if(!sequence) return;
@@ -31,7 +32,7 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     window.addEventListener('pointermove',move,{passive:true});
     window.addEventListener('portfolio:layer',select);window.addEventListener('pointerout',leave);window.addEventListener('blur',neutral);
     return()=>{window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);window.removeEventListener('pointermove',move);window.removeEventListener('portfolio:layer',select);window.removeEventListener('pointerout',leave);window.removeEventListener('blur',neutral);};
-  },[invalidate,reducedMotion]);
+  },[camera,invalidate,reducedMotion]);
   useFrame((_,delta)=>{
     if(!form.current) return;
     const dt=Math.min(delta,.1);
@@ -50,7 +51,7 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     camera.position.y=settle(camera.position.y,2.45+layer*.5-py*.06,3);
     camera.position.z=settle(camera.position.z,7.5+layer*.2,3);
     camera.lookAt(0,layer*.85,0);
-    gl.domElement.dataset.motion=JSON.stringify({rotation:[form.current.rotation.x,form.current.rotation.y,form.current.rotation.z],pointer:[px,py],progress:layer,time:time.current});
+    const sample=window.__PORTFOLIO_PROFILE__?.scenes.hero;if(sample)sample.pose=[form.current.rotation.x,form.current.rotation.y,form.current.rotation.z,px,py,layer,time.current];
   });
   return <group ref={form} rotation={[.22,-.45,-.04]}>
     <ChipLayers progress={progress} active={active} reducedMotion={reducedMotion} tier={tier} pointer={pointer} />

@@ -1,6 +1,8 @@
 import {useEffect,useMemo} from 'react';
 import {Line,RoundedBox} from '@react-three/drei';
-import {CanvasTexture} from 'three';
+import {CanvasTexture,InstancedMesh,Matrix4} from 'three';
+import {useLayoutEffect,useRef} from 'react';
+import {useSteelGrain,usePlateGeometry,useMetal} from './resources';
 
 export const AMBER='#ffbd59';
 export const READ='#b5d6e2';
@@ -8,13 +10,17 @@ export const READ='#b5d6e2';
 export function Bolt({position=[0,0,0]}:{position?:[number,number,number]}) {
   return <mesh position={position}><cylinderGeometry args={[.045,.045,.024,8]}/><meshStandardMaterial color="#adb2b5" metalness={.9} roughness={.34}/></mesh>;
 }
-export function Plate({width=3.4,depth=2.8,height=.12,color='#202429',rim=false,bolts=false}:{width?:number;depth?:number;height?:number;color?:string;rim?:boolean;bolts?:boolean}) {
-  const grain=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=128;const ctx=c.getContext('2d')!;ctx.fillStyle='#b9b9b9';ctx.fillRect(0,0,128,128);for(let i=0;i<128;i++){const v=160+(i*37%70);ctx.fillStyle=`rgb(${v},${v},${v})`;ctx.fillRect(0,i,128,.55);}return new CanvasTexture(c);},[]);
-  useEffect(()=>()=>grain.dispose(),[grain]);
+function BoltSet({width,depth,y}:{width:number;depth:number;y:number}) {
+ const ref=useRef<InstancedMesh>(null),material=useMetal('#adb2b5',.9,.34);
+ useLayoutEffect(()=>{let i=0;const m=new Matrix4();for(const x of [-1,1])for(const z of [-1,1])ref.current?.setMatrixAt(i++,m.makeTranslation(x*(width/2-.15),y,z*(depth/2-.15)));if(ref.current)ref.current.instanceMatrix.needsUpdate=true;},[width,depth,y]);
+ return <instancedMesh ref={ref} args={[undefined,material,4]}><cylinderGeometry args={[.045,.045,.024,8]}/><primitive object={material} attach="material" dispose={null}/></instancedMesh>;
+}
+export function Plate({width=3.4,depth=2.8,height=.12,color='#202429',rim=false,bolts=false,metalness=.88,roughness=.4}:{width?:number;depth?:number;height?:number;color?:string;rim?:boolean;bolts?:boolean;metalness?:number;roughness?:number}) {
+  const grain=useSteelGrain(),geometry=usePlateGeometry(width,height,depth),material=useMetal(color,metalness,roughness,grain);
   return <group>
-    <RoundedBox castShadow receiveShadow args={[width,height,depth]} radius={Math.min(.055,height/3)} smoothness={2}><meshStandardMaterial color={color} metalness={.9} roughness={.38} roughnessMap={grain} bumpMap={grain} bumpScale={.009}/></RoundedBox>
+    <mesh castShadow receiveShadow geometry={geometry} material={material} dispose={null}/>
     {rim&&<Line points={[[-width/2+.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,-depth/2+.08]]} color="#939a9f" lineWidth={.65} transparent opacity={.6}/>}
-    {bolts&&[-1,1].flatMap(x=>[-1,1].map(z=><Bolt key={`${x}-${z}`} position={[x*(width/2-.15),height/2+.013,z*(depth/2-.15)]}/>))}
+    {bolts&&<BoltSet width={width} depth={depth} y={height/2+.013}/>}
   </group>;
 }
 export function Chip({width=.8,depth=.8,active=false}:{width?:number;depth?:number;active?:boolean}) {

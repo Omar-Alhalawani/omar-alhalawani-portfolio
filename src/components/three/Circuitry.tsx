@@ -1,15 +1,17 @@
-import {useEffect,useLayoutEffect,useMemo,useRef} from 'react';
+import {useLayoutEffect,useMemo,useRef} from 'react';
 import {CanvasTexture,InstancedMesh,Matrix4,Quaternion,Vector3,SRGBColorSpace} from 'three';
 import {Plate,Label,AMBER} from './Hardware';
 import SignalTrace from './SignalTrace';
 import type {GraphicsTier} from './types';
+import {useResource,useBox,useMetal} from './resources';
+import {useDetailTier} from './quality';
 
 type Box={position:[number,number,number];size:[number,number,number]};
 // Repeated physical parts share one draw call per material.
-export function Parts({parts,color='#202427',metalness=.75,roughness=.36,emissive=false}:{parts:Box[];color?:string;metalness?:number;roughness?:number;emissive?:boolean}) {
- const ref=useRef<InstancedMesh>(null);
+export function Parts({parts,color='#202427',metalness=.75,roughness=.36,emissive=false,beveled=false}:{parts:Box[];beveled?:boolean;color?:string;metalness?:number;roughness?:number;emissive?:boolean}) {
+ const ref=useRef<InstancedMesh>(null),geometry=useBox(beveled),material=useMetal(color,metalness,roughness,undefined,emissive);
  useLayoutEffect(()=>{const m=new Matrix4(),q=new Quaternion();parts.forEach((p,i)=>{m.compose(new Vector3(...p.position),q,new Vector3(...p.size));ref.current?.setMatrixAt(i,m);});if(ref.current){ref.current.instanceMatrix.needsUpdate=true;ref.current.computeBoundingSphere();}},[parts]);
- return <instancedMesh castShadow receiveShadow ref={ref} args={[undefined,undefined,parts.length]} raycast={()=>{}}><boxGeometry/><meshStandardMaterial color={color} metalness={metalness} roughness={roughness} emissive={emissive?AMBER:'#000000'} emissiveIntensity={emissive?2.4:0}/></instancedMesh>;
+ return <instancedMesh receiveShadow ref={ref} args={[undefined,undefined,parts.length]} raycast={()=>{}}><primitive object={geometry} attach="geometry" dispose={null}/><primitive object={material} attach="material" dispose={null}/></instancedMesh>;
 }
 
 function boardTexture(width:number,depth:number,seed:number,resolution:number) {
@@ -35,10 +37,11 @@ function boardTexture(width:number,depth:number,seed:number,resolution:number) {
  const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;t.anisotropy=4;return t;
 }
 
-export function CircuitBoard({width=3.4,depth=2.6,tier='medium',seed=1,components=true,base=true}:{width?:number;depth?:number;tier?:GraphicsTier;seed?:number;components?:boolean;base?:boolean}) {
- const texture=useMemo(()=>boardTexture(width,depth,seed,tier==='low'?512:1024),[width,depth,seed,tier]);useEffect(()=>()=>texture.dispose(),[texture]);
+export function CircuitBoard({width=3.4,depth=2.6,tier:requestedTier,seed=1,components=true,base=true}:{width?:number;depth?:number;tier?:GraphicsTier;seed?:number;components?:boolean;base?:boolean}) {
+ const inheritedTier=useDetailTier(),tier=requestedTier||inheritedTier;
+ const texture=useResource(`pcb:${seed}:${width}:${depth}`,()=>boardTexture(width,depth,seed,512));
  const bodies=useMemo(()=>{
-  const a:Box[]=[];const step=tier==='low'?.34:.23;
+  const a:Box[]=[];const step=tier==='low'?.45:tier==='medium'?.29:.23;
   for(let z=-depth/2+.22;z<depth/2-.12;z+=step)for(let x=-width/2+.24;x<width/2-.15;x+=step){
    if(Math.abs(x)<width*.25&&Math.abs(z)<depth*.28)continue;
    const n=Math.round((x+4)*17+(z+4)*31+seed);if(n%3===0)continue;
@@ -58,11 +61,12 @@ export function Processor({width=1.2,active=true}:{width?:number;active?:boolean
   p.push({position:[side*width*.54,.085,(i-11.5)*width/27],size:[width*.08,.035,width/55]});p.push({position:[(i-11.5)*width/27,.085,side*width*.54],size:[width/55,.035,width*.08]});
  }return p;},[width]);
  const fins=useMemo(()=>Array.from({length:13},(_,i)=>({position:[(i-6)*width*.052,.246,0] as [number,number,number],size:[width*.025,.024,width*.64] as [number,number,number]})),[width]);
+ const tier=useDetailTier();
  return <group>
   <Plate width={width*1.27} depth={width*1.27} height={.075} color='#3d4239'/>
   <mesh castShadow position={[0,.12,0]}><boxGeometry args={[width,.16,width]}/><meshStandardMaterial color='#151c21' metalness={.12} roughness={.58}/></mesh>
   <group position={[0,.22,0]}><Plate width={width*.75} depth={width*.72} height={.05} color='#172126'/></group>
-  <Parts parts={pins} color='#bbad84' roughness={.27}/><Parts parts={fins} color='#4d6068' roughness={.25}/>
+  <Parts parts={tier==='low'?pins.filter((_,i)=>i%2===0):pins} color='#bbad84' roughness={.27}/><Parts parts={tier==='low'?fins.filter((_,i)=>i%2===0):fins} color='#4d6068' roughness={.25}/>
   <Label text='OA / COMPUTE' position={[0,.263,0]} width={width*.57}/>
   {active&&[-1,1].map(side=><mesh key={side} position={[side*width*.49,.142,0]}><boxGeometry args={[.018,.09,width*.8]}/><meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={1.6} toneMapped={false}/></mesh>)}
  </group>;
@@ -73,7 +77,8 @@ export function Connector({width=1,count=12}:{width?:number;count?:number}) {
  return <group><Plate width={width+.1} depth={.22} height={.18} color='#22292a'/><Parts parts={pins} color='#c5b57f'/></group>;
 }
 
-export function SystemBed({reducedMotion,tier='medium',width=7.8,depth=6}:{reducedMotion:boolean;tier?:GraphicsTier;width?:number;depth?:number}) {
+export function SystemBed({reducedMotion,tier:requestedTier,width=7.8,depth=6}:{reducedMotion:boolean;tier?:GraphicsTier;width?:number;depth?:number}) {
+ const inheritedTier=useDetailTier(),tier=requestedTier||inheritedTier;
  return <group>
   <CircuitBoard width={width} depth={depth} tier={tier} seed={33} components={false}/>
   <group position={[-width*.38,.08,-depth*.29]}><CircuitBoard width={1.1} depth={1.3} tier={tier} seed={41}/><Processor width={.45} active={false}/></group>

@@ -1,13 +1,15 @@
-import {useEffect,useMemo,useRef,type RefObject} from 'react';
+import {useMemo,useRef,type RefObject} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {Line} from '@react-three/drei';
-import {CanvasTexture,Color,CurvePath,LineCurve3,Group,Vector3,AdditiveBlending,SRGBColorSpace,PointLight} from 'three';
+import {Color,CurvePath,LineCurve3,Group,Vector3,AdditiveBlending,PointLight} from 'three';
 import {AMBER} from './Hardware';
+import {useGlow} from './resources';
+import {useDetailTier} from './quality';
 
 export default function SignalTrace({points,color=AMBER,active=true,reducedMotion=false,offset=0,strength=1,spill=0,speed=.14,progressRef}:{points:[number,number,number][];color?:string;active?:boolean;reducedMotion?:boolean;offset?:number;strength?:number;spill?:number;speed?:number;progressRef?:RefObject<number>}) {
+  const tier=useDetailTier();spill=tier==='low'?0:spill;
   const dot=useRef<Group>(null),phase=useRef(offset),light=useRef<PointLight>(null);
-  const glow=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d')!,g=ctx.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'#fff7dc');g.addColorStop(.1,'#ffd18b');g.addColorStop(.25,'#ffb74a55');g.addColorStop(1,'#ff9c0000');ctx.fillStyle=g;ctx.fillRect(0,0,64,64);const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;return t;},[]);
-  useEffect(()=>()=>glow.dispose(),[glow]);
+  const glow=useGlow();
   const energy=useMemo(()=>new Color(color===AMBER?'#ff961c':color).multiplyScalar(1.7*strength),[color,strength]);
   const curve=useMemo(()=>{
     const route=new CurvePath<Vector3>();

@@ -69,9 +69,9 @@
   .section-heading { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:48px; }
   .section-heading .eyebrow { margin-bottom:16px; }
   .scene-island { position:relative; width:100%; height:100%; isolation:isolate; }
-  .scene-fallback { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:1; transition:opacity .7s; }
+  .scene-fallback { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:1; transition:opacity .22s; }
   .scene-island[data-state='ready'] .scene-fallback { opacity:0; }
-  .scene-canvas { position:absolute!important; inset:0; opacity:0; transition:opacity .7s; }
+  .scene-canvas { position:absolute!important; inset:0; opacity:0; transition:opacity .22s; }
   .scene-island[data-state='ready'] .scene-canvas { opacity:1; }
   .scene-island[data-state='fallback'] .scene-canvas { display:none; }
   .art-caption { font:400 10px/1.8 var(--mono); color:var(--muted); letter-spacing:.05em; }

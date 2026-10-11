@@ -7,7 +7,7 @@ export function webglAvailable():Promise<boolean> {
       try {
         const worker=new Worker(new URL('./webgl.worker.ts',import.meta.url),{type:'module'});
         const finish=(available:boolean)=>{clearTimeout(timeout);worker.terminate();resolve(available);};
-        const timeout=setTimeout(()=>finish(false),10000);
+        const timeout=setTimeout(()=>finish(false),2500);
         worker.onmessage=event=>finish(event.data===true);
         worker.onerror=()=>finish(false);
         return;

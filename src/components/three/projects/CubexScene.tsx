@@ -13,6 +13,10 @@ export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boole
  const head=useRef<Group>(null),gantry=useRef<Group>(null),time=useRef(0);
  useFrame((_,delta)=>{if(active&&!reducedMotion)time.current+=Math.min(delta,.05);if(head.current)head.current.position.x=reducedMotion?0:Math.sin(time.current*.65)*.66;if(gantry.current)gantry.current.position.z=reducedMotion?0:Math.sin(time.current*.4)*.43;});
  return <group scale={scale}>
+  <Parts parts={[[0,.16,-.95],[-1.12,1.45,-.03],[1.16,.18,-.7]].map(p=>({position:p as [number,number,number],size:[.36,.34,.35] as [number,number,number]}))} color='#223038' metalness={.4} roughness={.5}/>
+  {[-1,1].map(s=><mesh key={`lead-${s}`} position={[s*.94,.91,-.68]}><cylinderGeometry args={[.026,.026,1.52,12]}/><meshStandardMaterial color='#a5b1b8' metalness={.95} roughness={.24}/></mesh>)}
+  <Line points={[[-.9,1.46,-.06],[.9,1.46,-.06],[.9,1.46,.08],[-.9,1.46,.08],[-.9,1.46,-.06]]} color='#0d161c' lineWidth={2} raycast={()=>{}}/>
+
   <Parts parts={[-1,1].flatMap(x=>[-1,1].map(z=>({position:[x*1.04,.93,z*.76] as [number,number,number],size:[.11,1.86,.11] as [number,number,number]})))} color='#8c9da5' metalness={.9} roughness={.25}/>
   {[.08,1.85].flatMap(y=>[-1,1].map(s=><group key={`${y}-${s}`}><group position={[0,y,s*.76]}><Plate width={2.18} depth={.1} height={.1} color='#75858d'/></group><group position={[s*1.04,y,0]}><Plate width={.1} depth={1.56} height={.1} color='#62747d'/></group></group>))}
   <Parts parts={[-1,1].flatMap(x=>[-1,1].flatMap(z=>[.17,1.72].map(y=>({position:[x*1.01,y,z*.73] as [number,number,number],size:[.2,.18,.19] as [number,number,number]}))))} color='#25383f' metalness={.3}/>
@@ -23,6 +27,7 @@ export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boole
    <mesh position={[0,-.1,.13]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.029,.029,1.9,12]}/><meshStandardMaterial color='#c0cbd0' metalness={.96} roughness={.16}/></mesh>
    <group ref={head} position={[0,-.04,.13]}><Plate width={.39} depth={.37} height={.31} color='#192b33' bolts/>
     <mesh position={[0,0,.2]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.115,.115,.034,16]}/><meshStandardMaterial color='#101a1e' roughness={.6}/></mesh>
+    <Parts parts={[-1,1].flatMap(s=>[{position:[s*.047,0,.222] as [number,number,number],size:[.026,.14,.009] as [number,number,number]},{position:[0,s*.047,.222] as [number,number,number],size:[.14,.026,.009] as [number,number,number]}])} color='#75868e'/>
     <Parts parts={[-1,1].map(s=>({position:[s*.085,-.19,0] as [number,number,number],size:[.04,.12,.16] as [number,number,number]}))} color='#a7b2b1'/>
     <mesh position={[0,-.27,0]}><boxGeometry args={[.13,.12,.13]}/><meshStandardMaterial color='#a79468' metalness={.92} roughness={.3} emissive={AMBER} emissiveIntensity={active?.11:0}/></mesh>
     <mesh position={[0,-.37,0]} rotation={[Math.PI,0,0]}><coneGeometry args={[.067,.12,12]}/><meshStandardMaterial color='#bca15f' metalness={.9} roughness={.25}/></mesh>
