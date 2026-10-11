@@ -83,15 +83,15 @@ export function Connector({width=1,count=12}:{width?:number;count?:number}) {
  return <group><Plate width={width+.1} depth={.22} height={.18} color='#22292a'/><Parts parts={pins} color='#c5b57f'/></group>;
 }
 
-export function SystemBed({reducedMotion,tier:requestedTier,width=7.8,depth=6}:{reducedMotion:boolean;tier?:GraphicsTier;width?:number;depth?:number}) {
+export function SystemBed({reducedMotion,tier:requestedTier,width=7.8,depth=6,peripherals=true}:{reducedMotion:boolean;tier?:GraphicsTier;width?:number;depth?:number;peripherals?:boolean}) {
  const inheritedTier=useDetailTier(),tier=requestedTier||inheritedTier;
  return <group>
   <CircuitBoard width={width} depth={depth} tier={tier} seed={33} components={false}/>
-  <group position={[-width*.38,.08,-depth*.29]}><CircuitBoard width={1.1} depth={1.3} tier={tier} seed={41}/><Processor width={.45} active={false}/></group>
-  <group position={[width*.36,.09,depth*.25]}><CircuitBoard width={1.2} depth={1.1} tier={tier} seed={47}/><Connector width={.7} count={8}/></group>
+  {peripherals&&<group position={[-width*.38,.08,-depth*.29]}><CircuitBoard width={1.1} depth={1.3} tier={tier} seed={41}/><Processor width={.45} active={false}/></group>}
+  {peripherals&&<group position={[width*.36,.09,depth*.25]}><CircuitBoard width={1.2} depth={1.1} tier={tier} seed={47}/><Connector width={.7} count={8}/></group>}
   <Parts parts={[-1,1].flatMap(s=>Array.from({length:tier==='low'?8:15},(_,i)=>({position:[s*width*.43,.1,(i-7)*depth/18] as [number,number,number],size:[.25,.14,.16] as [number,number,number]})))} color='#17272c' metalness={.15} roughness={.67}/>
   <Parts parts={[-1,1].flatMap(s=>Array.from({length:18},(_,i)=>({position:[(i-8.5)*width/22,.11,s*depth*.43] as [number,number,number],size:[.17,.065,.19] as [number,number,number]})))} color='#28373b' metalness={.6} roughness={.4}/>
-  {[-1,1].map(s=><group key={s} position={[s*width*.35,.07,-depth*.36]}><CircuitBoard width={1.2} depth={.85} tier={tier} seed={42+s}/><Processor width={.52} active={false}/><group position={[0,.1,.48]}><Connector width={.9}/></group></group>)}
+  {peripherals&&[-1,1].map(s=><group key={s} position={[s*width*.35,.07,-depth*.36]}><CircuitBoard width={1.2} depth={.85} tier={tier} seed={42+s}/><Processor width={.52} active={false}/><group position={[0,.1,.48]}><Connector width={.9}/></group></group>)}
   {[-1,1].flatMap(side=>[0,1,2].map(n=><SignalTrace key={`${side}-${n}`} reducedMotion={reducedMotion} duty={n===1?.65:.22} period={n===1?17:11+n*3} offset={n*.19+(side+1)*.18} strength={n===1?1.4:.8} points={[[side*width*.48,.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,depth*.23+n*.2],[side*width*.48,.074,depth*.23+n*.2]]}/>))}
  </group>;
 }
