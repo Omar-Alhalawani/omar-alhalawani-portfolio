@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Group, MathUtils, Vector2 } from 'three';
 import ChipLayers from './ChipLayers';
@@ -9,36 +9,30 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
   const progress=useRef(0);
   const pointer=useRef(new Vector2());
   const time=useRef(0);
-  const [active,setActive]=useState(2);
+  const target=useRef(new Vector2());
   const { camera, invalidate, viewport }=useThree();
   useEffect(()=>{
     camera.position.set(0,2.45,7.5);camera.lookAt(0,0,0);
-    const sequence=document.getElementById('silicon-sequence');
-    const scroll=()=>{
-      if(!sequence) return;
-      const rect=sequence.getBoundingClientRect();
-      progress.current=MathUtils.clamp(-rect.top/Math.max(1,rect.height-innerHeight),0,1);
+    const surface=document.querySelector<HTMLElement>('[data-hero-surface]');
+    const move=(event:PointerEvent)=>{
+      if(reducedMotion||event.pointerType!=='mouse'||!surface)return;
+      const rect=surface.getBoundingClientRect();
+      target.current.set(MathUtils.clamp((event.clientX-rect.left)/rect.width*2-1,-1,1),MathUtils.clamp((event.clientY-rect.top)/rect.height*2-1,-1,1));
       invalidate();
     };
-    const move=(event:PointerEvent)=>{
-      if(!reducedMotion&&event.pointerType==='mouse') pointer.current.set((event.clientX/innerWidth-.5)*2,(event.clientY/innerHeight-.5)*2);
-    };
-    const neutral=()=>pointer.current.set(0,0);
-    const leave=(event:PointerEvent)=>{if(!event.relatedTarget)neutral();};
-    const select=(event:Event)=>{setActive((event as CustomEvent<number>).detail);invalidate();};
-    scroll();
-    window.addEventListener('scroll',scroll,{passive:true});
-    window.addEventListener('resize',scroll,{passive:true});
-    window.addEventListener('pointermove',move,{passive:true});
-    window.addEventListener('portfolio:layer',select);window.addEventListener('pointerout',leave);window.addEventListener('blur',neutral);
-    return()=>{window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);window.removeEventListener('pointermove',move);window.removeEventListener('portfolio:layer',select);window.removeEventListener('pointerout',leave);window.removeEventListener('blur',neutral);};
+    const neutral=()=>{target.current.set(0,0);invalidate();};
+    surface?.addEventListener('pointermove',move,{passive:true});
+    surface?.addEventListener('pointerleave',neutral);
+    window.addEventListener('blur',neutral);
+    return()=>{surface?.removeEventListener('pointermove',move);surface?.removeEventListener('pointerleave',neutral);window.removeEventListener('blur',neutral);};
   },[camera,invalidate,reducedMotion]);
   useFrame((_,delta)=>{
     if(!form.current) return;
     const dt=Math.min(delta,.1);
     if(!reducedMotion)time.current+=dt;
-    const p=reducedMotion?0:progress.current;
-    const layer=MathUtils.smoothstep(p,.38,.94);
+    const layer=0;
+    pointer.current.x=MathUtils.damp(pointer.current.x,target.current.x,4,dt);
+    pointer.current.y=MathUtils.damp(pointer.current.y,target.current.y,4,dt);
     const px=reducedMotion||tier==='low'?0:pointer.current.x;
     const py=reducedMotion||tier==='low'?0:pointer.current.y;
     const settle=(value:number,target:number,speed:number)=>reducedMotion?target:MathUtils.damp(value,target,speed,dt);
@@ -54,6 +48,6 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     const sample=window.__PORTFOLIO_PROFILE__?.scenes.hero;if(sample)sample.pose=[form.current.rotation.x,form.current.rotation.y,form.current.rotation.z,px,py,layer,time.current];
   });
   return <group ref={form} rotation={[.22,-.45,-.04]}>
-    <ChipLayers progress={progress} active={active} reducedMotion={reducedMotion} tier={tier} pointer={pointer} />
+    <ChipLayers progress={progress} active={2} reducedMotion={reducedMotion} tier={tier} pointer={pointer} />
   </group>;
 }

@@ -139,3 +139,15 @@
     .button:hover { transform:none; }
   }
 }
+
+/* Quiet shared atmosphere: static routing and a single compositor opacity pulse. */
+body { isolation:isolate; }
+.technical-background { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; background-image:linear-gradient(#9aadb405 1px,transparent 1px),linear-gradient(90deg,#9aadb405 1px,transparent 1px); background-size:96px 96px; mask-image:linear-gradient(90deg,#000,transparent 42%,transparent 58%,#000); }
+.technical-background svg { width:100%; height:100%; color:#9caeb4; opacity:.075; stroke-width:1; }
+.technical-energy { position:absolute; inset:0; background:radial-gradient(ellipse at 85% 32%,#b5762420,transparent 34%),radial-gradient(ellipse at 12% 76%,#607d8814,transparent 28%); opacity:.5; animation:technical-breathe 14s ease-in-out infinite alternate; }
+@keyframes technical-breathe { to { opacity:.85; } }
+.background-paused .technical-energy { animation-play-state:paused; }
+[data-reveal-state] { transition:opacity 600ms ease,transform 600ms cubic-bezier(.22,.61,.36,1); }
+[data-reveal-state='pending'] { opacity:0; transform:translateY(20px); }
+[data-reveal-state='visible'] { opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce) { .technical-energy { animation:none; opacity:.6; } [data-reveal-state] { opacity:1; transform:none; transition:none; } }

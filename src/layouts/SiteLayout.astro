@@ -62,8 +62,37 @@ const schema = {
     <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')} />
   </head>
   <body transition:animate="none">
+    <div class="technical-background" aria-hidden="true">
+      <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor"><path d="M0 230H210L310 330H550M1440 140H1170L1090 220V440H950M0 780H190L290 680V540M1440 830H1220L1120 730H900"/><path d="M90 80H420V180H90ZM1040 570H1350V680H1040Z" opacity=".4"/></g><g fill="currentColor"><circle cx="550" cy="330" r="3"/><circle cx="950" cy="440" r="3"/><circle cx="290" cy="540" r="3"/><circle cx="900" cy="730" r="3"/></g></svg>
+      <div class="technical-energy"></div>
+    </div>
     <SiteHeader />
     <main id="main" tabindex="-1"><slot /></main>
     <Footer />
   </body>
 </html>
+
+<script>
+  import {onPage} from '../lib/page-lifecycle';
+  onPage(signal=>{
+    const motion=matchMedia('(prefers-reduced-motion: reduce)');
+    // Reveal content blocks once; never transform the retained project canvas.
+    const blocks=document.querySelectorAll<HTMLElement>('[data-reveal],main .section-heading,main .about-details,main .contact-form-wrap,main .experience-card,main .case-prose > section,main .cta-band');
+    if(motion.matches||!('IntersectionObserver' in window))return;
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){(entry.target as HTMLElement).dataset.revealState='visible';observer.unobserve(entry.target);}});
+    },{threshold:0,rootMargin:'0px 0px -32px 0px'});
+    blocks.forEach(block=>{
+      // Avoid nested reveals and leave above-the-fold content immediately readable.
+      if(block.parentElement?.closest('[data-reveal],.experience-card'))return;
+      if(block.getBoundingClientRect().top<innerHeight-32)return;
+      block.dataset.revealState='pending';observer.observe(block);
+    });
+    const show=()=>{blocks.forEach(block=>{delete block.dataset.revealState;});observer.disconnect();};
+    motion.addEventListener('change',show,{signal});
+    // Hidden tabs suspend the inexpensive background pulse.
+    const visibility=()=>document.body.classList.toggle('background-paused',document.hidden);
+    visibility();document.addEventListener('visibilitychange',visibility,{signal});
+    return()=>{observer.disconnect();};
+  });
+</script>

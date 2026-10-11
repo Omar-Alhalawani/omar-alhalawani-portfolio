@@ -1,0 +1,8 @@
+{
+  "hero": "Anchored; local pointer response and scroll-independent pose confirmed",
+  "reveal": "20px / 600ms one-time reveal activates",
+  "projects": "Platform selection and one FIFO transition passed; same document retained",
+  "contact": "Globe renders and drag rotation works",
+  "mobile": "390px viewport has no horizontal overflow; hero and copy render",
+  "reducedMotion": "No hidden reveal content or background animation"
+}
