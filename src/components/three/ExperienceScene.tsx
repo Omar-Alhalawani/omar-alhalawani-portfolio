@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {useRef,useState} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {MeshStandardMaterial,MathUtils} from 'three';
 import {useSceneCamera} from './useSceneData';
@@ -12,12 +12,15 @@ import type {SceneProps} from './types';
 
 export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
  useSceneCamera('floorplan');const materials=useRef<(MeshStandardMaterial|null)[]>([]),pass=useRef<MeshStandardMaterial>(null),time=useRef(0),phase=useRef(.9);
+ const [lit,setLit]=useState([false,false,false,false]),litState=useRef(lit);
  const activity=useRef([{current:.5},{current:0},{current:0},{current:0}]);
  useFrame((_,delta)=>{
   if(!reducedMotion)time.current+=Math.min(delta,.1);
   phase.current=reducedMotion?.85:(time.current/24)%1;
   const windows=[[0,.19],[.19,.39],[.39,.68],[.68,.91]];
   materials.current.forEach((m,i)=>{const [a,b]=windows[i],p=phase.current;const value=reducedMotion?.55:p>=a&&p<b?MathUtils.smoothstep(p,a,a+.025)*(1-MathUtils.smoothstep(p,b-.025,b)):0;activity.current[i].current=value;if(m)m.emissiveIntensity=.035+value*.7;});
+  const next=activity.current.map(a=>a.current>.12);
+  if(next.some((on,i)=>on!==litState.current[i])){litState.current=next;setLit(next);}
   if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.94?1.25:.035;
  });
  return <group rotation={[0,-.2,0]}>
@@ -51,7 +54,7 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
    <group position={[-.48,.35,-.02]}><PowerBank count={4}/></group>
    <mesh position={[0,.37,.63]}><boxGeometry args={[1.03,.45,.045]}/><meshStandardMaterial color='#12232b' metalness={.7} roughness={.23}/></mesh>
    <mesh position={[0,.37,.657]}><planeGeometry args={[.96,.36]}/><meshStandardMaterial ref={m=>{materials.current[i]=m;}} color='#233238' emissive={AMBER} emissiveIntensity={.15} metalness={.55} roughness={.24}/></mesh>
-   <Label text={['SPEC','RTL','TESTBENCH','VERIFY'][i]} color='#e4dfce' position={[0,.37,.66]} rotation={[0,0,0]} width={.9}/>
+   <Label text={['SPEC','RTL','TESTBENCH','VERIFY'][i]} color={lit[i]?'#101719':'#e4dfce'} position={[0,.37,.66]} rotation={[0,0,0]} width={.9}/>
    <group position={[0,.15,.81]}><Connector width={.84}/></group>
    <SignalTrace strength={1.05} reducedMotion={reducedMotion} activityRef={activity.current[i]} speed={.18} offset={i*.25} points={[[0,.23,.84],[-.53,.23,.84],[-.53,.23,-.5],[-.53,.69,-.5],[0,.69,-.5],[0,.76,0]]}/>
    <mesh position={[0,.12,.91]}><boxGeometry args={[1.1,.018,.014]}/><meshStandardMaterial color={AMBER} emissive='#ffac40' emissiveIntensity={2.6}/></mesh>
