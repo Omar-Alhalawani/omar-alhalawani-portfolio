@@ -17,7 +17,7 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
 ---
 <SiteLayout title={`${project.title} — Omar Alhalawani`} description={project.description} project={project}>
   <div class="container"><a class="text-link case-back" href="/projects">← All projects</a>
-    <section class="case-hero"><div class="case-heading"><Eyebrow>{project.category}</Eyebrow><h1>{project.title}<span>.</span></h1><p class="lead">{project.description}</p><div class="tech-tags">{project.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div><p class="case-status"><span aria-hidden="true">●</span> {project.status}</p><div class="actions">{project.source&&<Button href={project.source} variant="primary" external>View source ↗</Button>}<Button href="#architecture">View Architecture ↓</Button></div></div>
+    <section class="case-hero"><div class="case-heading"><Eyebrow>{project.category}</Eyebrow><h1 data-title-length={project.id==='emg'?'very-long':project.title.length>32?'long':'normal'}>{project.title}<span>.</span></h1><p class="lead">{project.description}</p><div class="tech-tags">{project.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div><p class="case-status"><span aria-hidden="true">●</span> {project.status}</p><div class="actions">{project.source&&<Button href={project.source} variant="primary" external>{project.id==='emg'?'View repository ↗':'View source ↗'}</Button>}<Button href="#architecture">View Architecture ↓</Button></div></div>
       <figure class="case-art"><div class="case-canvas"><SceneIsland scene={project.scene} client:load /></div><figcaption class="art-caption">{sceneLabel[project.id]}<br />Conceptual illustration. Essential details are in the case study.</figcaption></figure>
     </section>
     <div class="case-content"><nav class="case-toc" aria-label="On this page"><a href="#architecture">Architecture</a>{project.sections.map((section,index)=><a href={`#section-${index+1}`}>{section.title}</a>)}{project.id==='fifo'&&<a href="#simulation-evidence">Simulation evidence</a>}{['fifo','fpga-arithmetic'].includes(project.id)&&<a href="#interactive-model">Interactive model</a>}</nav>
@@ -50,6 +50,8 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
   .case-back { margin-top:32px; font-size:11px; }
   .case-hero { display:grid; grid-template-columns:.92fr 1.2fr; gap:32px; padding-block:40px 64px; align-items:center; }
   .case-heading h1 { font-size:clamp(44px,5.3vw,80px); max-width:650px; margin-bottom:28px; }
+  .case-heading h1[data-title-length="long"] { font-size:clamp(36px,3.7vw,56px); line-height:1.08; text-wrap:balance; }
+  .case-heading h1[data-title-length="very-long"] { font-size:clamp(34px,3.4vw,51px); line-height:1.1; text-wrap:balance; }
   .case-heading h1>span { color:var(--amber); }
   .case-heading>.lead { font-size:17px; margin-bottom:28px; }
   .case-status { font:400 10px/1.8 var(--mono); color:var(--muted); margin-block:24px; }
@@ -87,5 +89,5 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
   .related-projects a:hover h3 { color:var(--amber); }
   @media(max-width:1050px) { .case-hero { gap:30px; } .case-toc { gap:0 20px; } }
   @media(max-width:800px) { .case-hero { grid-template-columns:1fr; padding-top:30px; gap:20px; padding-bottom:50px; } .case-heading>.lead { max-width:670px; } .case-canvas { height:340px; } .case-content { display:block; padding-top:32px; } .case-toc { position:sticky; top:var(--header); margin-bottom:40px; display:flex; flex-wrap:nowrap; overflow-x:auto; gap:0 20px; } .case-toc>.eyebrow { width:100%; margin-bottom:6px; } .case-toc>a { max-width:250px; flex-shrink:0; white-space:nowrap; } }
-  @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading>.lead { font-size:15px; } .case-section { margin-top:24px; padding:22px; } .simulation-evidence { padding:20px; }.evidence-result { padding:18px; }.case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
+  @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading h1[data-title-length="long"],.case-heading h1[data-title-length="very-long"] { font-size:clamp(32px,8.4vw,42px); } .case-heading>.lead { font-size:15px; } .case-section { margin-top:24px; padding:22px; } .simulation-evidence { padding:20px; }.evidence-result { padding:18px; }.case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
 </style>

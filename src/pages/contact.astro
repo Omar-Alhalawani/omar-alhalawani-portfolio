@@ -1,18 +1,20 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import SceneIsland from '../components/SceneIsland';
 import Eyebrow from '../components/Eyebrow.astro';
 import {site} from '../data/site';
 ---
 <SiteLayout title="Contact — Omar Alhalawani" description="Contact Omar Alhalawani about ASIC verification, digital design, embedded systems, and engineering opportunities. Based in Ottawa, Canada.">
-  <div class="container"><section class="page-intro"><Eyebrow>Contact // Engineering inquiries</Eyebrow><h1>Contact</h1><p class="lead">For engineering, internship, research, or project inquiries, feel free to get in touch.</p></section>
-    <div class="contact-grid"><aside class="contact-details"><div><span class="contact-label">EMAIL</span><a href={`mailto:${site.email}`}>{site.email} <span aria-hidden="true">↗</span></a></div><div><span class="contact-label">ELSEWHERE</span><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><div><span class="contact-label">BASED IN</span><p>{site.location}<br />{site.university}</p></div></aside>
-      <form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100"/></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254"/></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint"></textarea><p id="message-hint">At least 10 characters.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit">Send message ↗</button><p id="form-status" class="form-status" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also email me directly.</p></form>
+  <div class="container"><section class="contact-hero"><div class="contact-copy"><Eyebrow>Contact // Engineering inquiries</Eyebrow><h1>Contact</h1><p class="lead">For engineering, internship, research, or project inquiries, feel free to get in touch.</p>
+    <aside class="contact-details"><div><span class="contact-label">EMAIL</span><a href={`mailto:${site.email}`}>{site.email} <span aria-hidden="true">↗</span></a></div><div><span class="contact-label">ELSEWHERE</span><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><div><span class="contact-label">BASED IN</span><p>{site.location}<br />{site.university}</p></div></aside><a class="button button--primary contact-entry" href="#contact-form">Send a message ↓</a></div><figure class="contact-globe"><SceneIsland client:visible scene="contact"/><figcaption>OTTAWA, CANADA <span>Conceptual communication paths</span></figcaption></figure></section>
+      <div class="contact-form-wrap"><form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100"/></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254"/></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint"></textarea><p id="message-hint">At least 10 characters.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit">Send message ↗</button><p id="form-status" class="form-status" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also email me directly.</p></form>
     </div>
   </div>
 </SiteLayout>
 <script>
   import {onPage} from '../lib/page-lifecycle';
   onPage(signal=>{
+  document.querySelector('.contact-entry')?.addEventListener('click',event=>{event.preventDefault();document.querySelector('#contact-form')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});document.querySelector<HTMLInputElement>('#contact-name')?.focus({preventScroll:true});},{signal});
   const form=document.querySelector<HTMLFormElement>('#contact-form');
   const status=document.querySelector<HTMLParagraphElement>('#form-status');
   const submit=form?.querySelector<HTMLButtonElement>('button[type="submit"]');
@@ -31,18 +33,27 @@ import {site} from '../data/site';
   });
 </script>
 <style>
-  .contact-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:120px; padding-block:30px 110px; }
-  .contact-details { display:grid; gap:44px; align-content:start; padding-top:10px; }
-  .contact-label { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:16px; letter-spacing:.09em; }
+  .contact-hero { display:grid; grid-template-columns:.85fr 1.3fr; gap:40px; align-items:center; padding-block:70px 60px; }
+  .contact-details { display:grid; gap:20px; align-content:start; padding-top:10px; }
+  .contact-label { display:block; font:400 9px/1.8 var(--mono); color:var(--muted); margin-bottom:4px; letter-spacing:.09em; }
   .contact-details a { display:flex; width:fit-content; gap:14px; align-items:center; font-size:16px; color:var(--amber); min-height:44px; overflow-wrap:anywhere; }
   .contact-details a:hover { color:var(--text); }
   .contact-details p { font-size:14px; line-height:1.9; }
-  form { border:1px solid var(--line); padding:clamp(22px,4vw,48px); border-radius:5px; background:var(--bg-raised); }
+  .contact-copy h1 { font-size:clamp(54px,6vw,88px); margin:18px 0 24px; }
+  .contact-copy .lead { max-width:440px; margin-bottom:28px; }
+  .contact-entry { margin-top:28px; }
+  .contact-globe { height:580px; position:relative; background:radial-gradient(ellipse at 60% 45%,#50331a19,transparent 68%); }
+  .contact-globe :global(.scene-island) { height:100%; }
+  .contact-globe figcaption { position:absolute; bottom:5px; left:10%; font:9px/1.8 var(--mono); color:var(--amber); letter-spacing:.08em; }
+  .contact-globe figcaption span { display:block; color:var(--muted); font-size:8px; }
+  .contact-form-wrap { max-width:850px; padding:20px 0 100px; scroll-margin-top:100px; }
+  form { border:1px solid var(--line); padding:clamp(22px,4vw,48px); border-radius:5px; background:linear-gradient(135deg,#151c20,var(--bg-raised)); }
   form h2 { font-size:32px; margin-bottom:16px; }
   .form-intro { font-size:12px; color:var(--muted); margin-bottom:30px; }
   .form-field { margin-bottom:26px; }
   label { display:block; font-size:12px; margin-bottom:10px; }
   input,textarea { display:block; width:100%; min-height:46px; border:1px solid var(--line); border-radius:3px; background:var(--bg); color:var(--text); font-size:15px; padding:12px 14px; }
+  input:focus,textarea:focus { outline:1px solid var(--amber); outline-offset:2px; border-color:#96713e; }
   textarea { resize:vertical; min-height:150px; }
   .form-field>p { font-size:10px; color:var(--muted); margin-top:8px; }
   .form-trap { display:none; }
@@ -51,6 +62,6 @@ import {site} from '../data/site';
   .form-status[data-state='error'] { color:#ffc2a4; }
   .form-note { font-size:10px; color:var(--muted); margin-top:16px; line-height:1.85; }
   button:disabled { opacity:.7; cursor:wait; }
-  @media(max-width:1000px) { .contact-grid { gap:60px; } }
-  @media(max-width:800px) { .contact-grid { grid-template-columns:1fr; gap:50px; padding-top:0; } .contact-details { gap:30px; } .contact-details a { font-size:14px; } }
+  @media(max-width:1000px) { .contact-hero { gap:20px; } .contact-globe { height:480px; } }
+  @media(max-width:800px) { .contact-hero { grid-template-columns:1fr; gap:20px; padding-block:42px 30px; } .contact-globe { height:340px; } .contact-form-wrap { padding-top:10px; } .contact-details { gap:30px; } .contact-details a { font-size:14px; } }
 </style>

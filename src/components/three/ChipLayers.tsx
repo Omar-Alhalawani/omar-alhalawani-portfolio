@@ -11,7 +11,7 @@ import type {SceneProps} from './types';
 // Three serviceable assemblies: I/O backplane, compute board, semiconductor socket.
 export default function ChipLayers({progress,active,reducedMotion,tier,pointer}:SceneProps&{progress:React.RefObject<number>;active:number;pointer?:React.RefObject<{x:number;y:number}>}) {
  const layers=useRef<(Group|null)[]>([]),clock=useRef(0),core=useRef<PointLight>(null);
- useFrame((_,delta)=>{const dt=Math.min(delta,.05);if(!reducedMotion)clock.current+=dt;const split=reducedMotion?0:MathUtils.smoothstep(progress.current,.15,.92);layers.current.forEach((g,i)=>{if(g)g.position.y=MathUtils.damp(g.position.y,[-.63,-.13,.55][i]+i*split*.23+(reducedMotion?0:Math.sin(clock.current*.2+i)*.004),4,dt);});if(core.current){core.current.intensity=4.8+(reducedMotion?0:Math.sin(clock.current*.91)*.5+Math.max(0,1-Math.hypot(pointer?.current.x||0,pointer?.current.y||0))*.9);core.current.position.x=reducedMotion?.8:.8+Math.sin(clock.current*.23)*.28;}});
+ useFrame((_,delta)=>{const dt=Math.min(delta,.05);if(!reducedMotion)clock.current+=dt;const split=reducedMotion?0:MathUtils.smoothstep(progress.current,.15,.92);layers.current.forEach((g,i)=>{if(g)g.position.y=MathUtils.damp(g.position.y,[-.63,-.13,.55][i]+i*split*.23+(reducedMotion?0:Math.sin(clock.current*.2+i)*.004),4,dt);});if(core.current){core.current.intensity=3.5+(reducedMotion?0:Math.sin(clock.current*.91)*.35+Math.max(0,1-Math.hypot(pointer?.current.x||0,pointer?.current.y||0))*.6);core.current.position.x=reducedMotion?.8:.8+Math.sin(clock.current*.23)*.28;}});
  return <group>
   <group position={[0,-1.05,-.3]}><SystemBed width={9.4} depth={7.2} tier={tier} reducedMotion={reducedMotion}/></group>
   <group position={[0,-.83,0]}><Plate width={5.6} depth={4.15} height={.2} color='#1c2429' rim bolts/><Frame width={5.6} depth={4.15} height={.3}/></group>
@@ -38,12 +38,12 @@ export default function ChipLayers({progress,active,reducedMotion,tier,pointer}:
   <group ref={g=>{layers.current[2]=g;}} position={[0,.55,-.12]}>
    <ComputePackage tier={tier}/>
    {[-1,1].map(s=><SignalTrace key={s} reducedMotion={reducedMotion} spill={s===1?1.1:0} strength={1.0} offset={(s+1)*.2} points={[[s*1.4,.07,1.14],[s*.75,.07,1.14],[s*.75,.14,.75],[s*.56,.28,.75],[s*.56,.294,.35],[s*.23,.294,.35]]}/>)}
-   <mesh position={[0,.065,1.26]}><boxGeometry args={[2.75,.014,.018]}/><meshStandardMaterial color={AMBER} emissive='#ff9b29' emissiveIntensity={3}/></mesh>
+   <mesh position={[0,.065,1.26]}><boxGeometry args={[2.75,.014,.018]}/><meshStandardMaterial color={AMBER} emissive='#ff9b29' emissiveIntensity={2.1}/></mesh>
   </group>
   <Parts parts={[-1,1].flatMap(s=>Array.from({length:tier==='low'?9:20},(_,i)=>({position:[s*2.77,-.39,(i-(tier==='low'?8:19)/2)*.14] as [number,number,number],size:[.28,.39,.045] as [number,number,number]})))} color='#687981' metalness={.95} roughness={.26}/>
   {[-1,1].map(s=><SignalTrace key={`vertical-${s}`} reducedMotion={reducedMotion} duty={.88} period={19} spill={s===1?1.2:0} strength={1.15} offset={.1+(s+1)*.19} points={[[s*4.65,-.97,1.65],[s*3.2,-.97,1.65],[s*3.2,-.97,.74],[s*2.15,-.97,.74],[s*2.15,-.63,.74],[s*1.94,-.63,.74],[s*1.94,-.13,.74],[s*1.4,-.13,.74],[s*1.4,.47,.74],[s*.7,.47,.74]]}/>)}
   {[-1,1].map(s=><SignalTrace key={`rear-${s}`} reducedMotion={reducedMotion} duty={.23} period={21} offset={(s+1)*.31} strength={.8} speed={.08} points={[[s*.25,.286,-.47],[s*.86,.286,-.47],[s*.86,.07,-1.2],[s*1.5,.07,-1.2],[s*1.5,-.9,-1.7],[s*4.6,-.9,-1.7]]}/>)}
-  <pointLight ref={core} position={[.8,1.15,.74]} color='#ffb04d' intensity={4.8} distance={3.2} decay={2}/>
+  <pointLight ref={core} position={[.8,1.15,.74]} color='#ffb04d' intensity={3.5} distance={3.2} decay={2}/>
   <pointLight position={[-2.35,-.35,.76]} color='#ffc06b' intensity={1.5} distance={2.2} decay={2}/>
   <Label text={`ASSEMBLY / ${active+1}`} position={[0,-.71,2.05]} width={1.4} color='#9faaa9'/>
  </group>;

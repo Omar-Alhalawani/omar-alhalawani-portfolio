@@ -3,7 +3,7 @@ import {RoundedBox} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
 import {CylinderGeometry,InstancedMesh,Matrix4,MeshStandardMaterial} from 'three';
 import {Plate,Label,AMBER,READ} from './Hardware';
-import {Parts,Processor,Connector} from './Circuitry';
+import {Parts,Processor,Connector,CircuitBoard} from './Circuitry';
 import {useMetal,useResource,canvasTexture} from './resources';
 import {useDetailTier} from './quality';
 import SignalTrace from './SignalTrace';
@@ -79,10 +79,13 @@ export function AcquisitionTile({reducedMotion,active=true,scale=1}:{reducedMoti
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.38,-.51] as [number,number,number],size:[.1,.65,.12] as [number,number,number]}))} color='#788b94' metalness={.9} roughness={.28}/>
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.12,-.48] as [number,number,number],size:[.28,.055,.55] as [number,number,number]}))} color='#667980'/>
   <group position={[-.74,.13,.72]}><Plate width={1.22} depth={.54} height={.08} color='#2e413e'/><Parts parts={[-.4,0,.4].map(x=>({position:[x,.09,0] as [number,number,number],size:[.23,.1,.24] as [number,number,number]}))} color='#14242a' metalness={.12}/><Label text='ANALOG FRONT END' width={1.05} position={[0,.15,.18]}/></group>
-  <group position={[-1.3,.15,.2]}><Plate width={.75} depth={.7} height={.15} color='#405253'/>{[-.2,0,.2].map(x=><mesh key={x} position={[x,.15,.08]}><cylinderGeometry args={[.068,.068,.08,16]}/><meshStandardMaterial color='#c6c2ac' metalness={.9} roughness={.25}/></mesh>)}<Label text='INPUT' position={[0,.245,-.16]} width={.55}/></group>
+  <group position={[-1.3,.15,.2]}><Plate width={.75} depth={.7} height={.15} color='#405253'/>{[-.2,0,.2].map(x=><mesh key={x} position={[x,.15,.08]}><cylinderGeometry args={[.068,.068,.08,16]}/><meshStandardMaterial color='#c6c2ac' metalness={.9} roughness={.25}/></mesh>)}<Label text='MYOWARE / INPUT' position={[0,.245,-.16]} width={.67}/></group>
+  <group position={[-.55,.08,-.28]}><CircuitBoard width={.85} depth={.83} seed={121}/><Connector width={.55} count={6}/></group>
   <group position={[-.55,.18,-.28]}><Processor width={.47} active={active}/><Label text='MCU / ADC' position={[0,.29,0]} width={.44}/></group>
+  <group position={[.37,.08,.48]}><Plate width={1.06} depth={.69} height={.13} color='#26383e' rim/><Parts parts={[-1,1].map(s=>({position:[s*.43,.12,0] as [number,number,number],size:[.1,.08,.45] as [number,number,number]}))} color='#697e84'/></group>
   <group position={[.37,.2,.48]}><Processor width={.65} active={active}/><Label text='PYTHON' position={[0,.28,0]} width={.5}/></group>
   <group position={[-.67,.17,-.87]}><Connector width={.7} count={6}/><Label text='SERIAL' position={[0,.14,.17]} width={.57} color={READ}/></group>
+  <Label text='ADC → SERIAL → PYTHON' position={[0,.12,1.08]} width={1.8} color={READ}/>
   <SignalTrace color={READ} active={active} duty={.55} period={8} reducedMotion={reducedMotion} strength={.55} points={[[-.55,.13,-.28],[-.55,.13,-.82],[-.08,.13,-.82],[-.08,.13,.48],[.37,.13,.48]]}/>
   <group position={[.5,.83,-.48]} rotation={[-.24,0,0]}>
    <RoundedBox castShadow args={[2.05,1.13,.16]} radius={.055} smoothness={2}><meshStandardMaterial color='#77878c' metalness={.91} roughness={.22}/></RoundedBox>
@@ -91,6 +94,7 @@ export function AcquisitionTile({reducedMotion,active=true,scale=1}:{reducedMoti
    <Parts parts={Array.from({length:5},(_,i)=>({position:[0,(i-2)*.18,.091] as [number,number,number],size:[1.77,.003,.003] as [number,number,number]}))} color='#203e43' metalness={0}/>
    <Waveform position={[0,.12,.096]} width={1.75} amplitude={.15} noisy color={READ} active={active} reducedMotion={reducedMotion}/>
    <Waveform position={[0,-.19,.096]} width={1.75} amplitude={.11} color={AMBER} active={active} reducedMotion={reducedMotion}/>
+   <Parts parts={[-.65,-.5,-.35].map(x=>({position:[x,-.49,.098] as [number,number,number],size:[.045,.02,.015] as [number,number,number]}))} color={AMBER} emissive/>
    <Label text='SYNTHETIC / SERIAL' position={[0,.37,.097]} rotation={[0,0,0]} width={1.4} color={READ}/>
   </group>
   <SignalTrace active={active} spill={.65} reducedMotion={reducedMotion} points={[[-1.3,.07,.25],[-.95,.07,.25],[-.95,.07,-.28],[-.55,.1,-.28],[-.1,.1,-.28],[-.1,.1,.48],[.37,.1,.48],[1.45,.1,.48],[1.45,.3,-.48],[.5,.4,-.48]]}/>
@@ -117,7 +121,10 @@ export function OpticalTile({reducedMotion,active=true,scale=1}:{reducedMotion:b
    <mesh position={[.057,0,0]} rotation={[0,Math.PI/2,0]}><planeGeometry args={[1.04,.68]}/><meshStandardMaterial ref={screen} color='#c1a878' emissive='#ffd89e' emissiveIntensity={.045} roughness={.26} metalness={.08}/></mesh>
    <Label text='SCREEN / MORSE TX' position={[.062,-.35,0]} rotation={[0,Math.PI/2,0]} width={1.03}/>
   </group>
+  <group position={[-1.22,.17,.36]}><CircuitBoard width={.69} depth={.34} seed={127}/><Processor width={.23}/></group>
   <Label text='TX / SCREEN' position={[-1.22,.158,.55]} width={.77}/>
+  <group position={[1.08,.16,.49]}><CircuitBoard width={.94} depth={.38} seed={129}/><Connector width={.62} count={6}/></group>
+  <Parts parts={Array.from({length:6},(_,i)=>({position:[1.15+(i-2.5)*.1,.78,-.25] as [number,number,number],size:[.035,.07,.36] as [number,number,number]}))} color='#7d9199' metalness={.86} roughness={.32}/>
   <group position={[1.08,.36,0]}><Plate width={.9} depth={1.05} height={.58} color='#42535b'/><group position={[-.56,.07,0]} rotation={[0,0,Math.PI/2]}>
    {[0,.08,.16].map((y,i)=><mesh key={i} position={[0,y,0]}><cylinderGeometry args={[.235-i*.03,.235-i*.03,.07,24]}/><meshStandardMaterial color={i===1?'#8c9ba3':'#17272d'} metalness={.92} roughness={.19}/></mesh>)}
    <mesh position={[0,.21,0]}><cylinderGeometry args={[.16,.16,.012,24]}/><meshPhysicalMaterial color='#426f84' metalness={.55} roughness={.08} clearcoat={1}/></mesh>

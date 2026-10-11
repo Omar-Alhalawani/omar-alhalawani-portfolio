@@ -1,0 +1,62 @@
+{
+  "desktop": {
+    "pmremMs": 44.5,
+    "compileStartedMs": 819.7000000000698,
+    "compileMs": 17.899999999906868,
+    "programs": 5,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "activePaths": 6,
+    "landNodes": 1030,
+    "clock": 5.860200000000071,
+    "rotation": [
+      -0.17450072470148442,
+      0.9656371692176393,
+      0,
+      "XYZ"
+    ],
+    "firstFrameMs": 1137.2000000000698,
+    "dpr": 1,
+    "drawCalls": 27,
+    "triangles": 41355,
+    "textures": 16,
+    "geometries": 13,
+    "stage": 1
+  },
+  "form": "one mocked request",
+  "offscreen": "paused",
+  "mobile": {
+    "pmremMs": 18.70000000006985,
+    "compileStartedMs": 802.0999999999767,
+    "compileMs": 20.900000000023283,
+    "programs": 5,
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "activePaths": 3,
+    "landNodes": 458,
+    "clock": 0.7716999999999535,
+    "rotation": [
+      -0.16000000000000003,
+      0.867595262125035,
+      0,
+      "XYZ"
+    ],
+    "firstFrameMs": 921.9000000000233,
+    "dpr": 1,
+    "drawCalls": 9,
+    "triangles": 18388,
+    "textures": 3,
+    "geometries": 9,
+    "stage": 0
+  },
+  "reduced": "demand; clock 0",
+  "emgTitle": {
+    "height": 108,
+    "font": "48.96px",
+    "lines": 2
+  },
+  "cubexTitle": {
+    "height": 173,
+    "font": "53.28px",
+    "lines": 3
+  },
+  "transition": "client navigation and retained handoff complete"
+}

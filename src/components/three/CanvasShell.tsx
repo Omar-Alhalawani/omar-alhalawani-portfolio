@@ -9,6 +9,7 @@ import type { GraphicsTier, SceneKind, SceneProps } from './types';
 const EnergyBloom=lazy(()=>import('./EnergyBloom'));
 
 const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.ComponentType<SceneProps>>>>> = {
+  contact: lazy(() => import('./ContactGlobeScene')),
   hero: lazy(() => import('./HeroScene')),
   verification: lazy(() => import('./ExperienceScene')),
   floorplan: lazy(() => import('./ProjectFloorplan')),
@@ -91,8 +92,8 @@ export default function CanvasShell({ scene, host, onReady, onFailure, onContext
   }, [host]);
   const Scene = sceneModules[scene];
   const detailTier=stage>=6?'low':tier;
-  const dpr=tier==='low'?1:stage>=2?1:stage>=1?1.1:tier==='high'?1.4:1.25;
-  const bloom=tier!=='low'&&stage<3,shadows=tier!=='low'&&stage<5;
+  const dpr=scene==='contact'?(tier==='low'||stage>=2?1:stage>=1?1.1:1.25):tier==='low'?1:stage>=2?1:stage>=1?1.1:tier==='high'?1.4:1.25;
+  const bloom=tier!=='low'&&stage<3,shadows=scene!=='contact'&&tier!=='low'&&stage<5;
   useEffect(()=>{
     if(host.current)host.current.dataset.renderLoop=visible?(reducedMotion?'demand':'always'):'paused';
   },[host,visible,reducedMotion]);
