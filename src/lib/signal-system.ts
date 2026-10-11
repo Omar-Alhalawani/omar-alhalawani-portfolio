@@ -10,13 +10,12 @@ export function initializeSignals(){
   const candidates: [string,SignalSection][]=[['[data-hero-surface]','home'],['.home-experience,.experience-flagship','experience'],['.home-projects,.project-explorer,.case-hero','projects'],['.home-about,.about-intro','about'],['.contact-hero,main > .cta-band','contact']];
   const sections:HTMLElement[]=[];
   for(const [selector,name] of candidates)document.querySelectorAll<HTMLElement>(selector).forEach(el=>{if(el.parentElement?.closest('main [data-signal-section]'))return;el.dataset.signalSection=name;sections.push(el);});
-  const network=document.querySelector<HTMLElement>('.technical-background');let current:SignalSection|undefined,timer:ReturnType<typeof setTimeout>|undefined;
+  let current:SignalSection|undefined;
   const activate=(name:SignalSection)=>{
    if(current===name)return;current=name;document.body.dataset.signalSection=name;
    const key=`${path}:${name}`;if(played.has(key))return;played.add(key);
    const stamp=String(performance.now());document.body.dataset.signalStart=stamp;
    document.querySelectorAll<HTMLElement>(`[data-signal-section="${name}"]`).forEach(el=>el.dataset.signalStart=stamp);
-   if(network){network.dataset.pulse=name;clearTimeout(timer);timer=setTimeout(()=>{delete network.dataset.pulse;},2400);}
    window.dispatchEvent(new CustomEvent('portfolio:section-signal',{detail:name}));
   };
   activate(route);
@@ -38,6 +37,6 @@ export function initializeSignals(){
    hintObserver.observe(hint.parentElement!);signal.addEventListener('abort',()=>hintObserver.disconnect(),{once:true});
    hint.parentElement?.addEventListener('pointerdown',()=>{hint.hidden=true;clearTimeout(hintTimer);},{signal});
   }
-  return()=>{observer.disconnect();clearTimeout(timer);clearTimeout(hintTimer);};
+  return()=>{observer.disconnect();clearTimeout(hintTimer);};
  });
 }
