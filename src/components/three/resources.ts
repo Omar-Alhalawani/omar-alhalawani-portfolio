@@ -1,4 +1,4 @@
-import {useEffect,useMemo} from 'react';
+import {useLayoutEffect,useMemo} from 'react';
 import {BoxGeometry,CanvasTexture,MeshStandardMaterial,SRGBColorSpace,type Texture} from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
@@ -6,8 +6,8 @@ import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js'
 // Delayed release also survives React's mount/cleanup/remount development cycle.
 const cache=new Map<string,{value:{dispose:()=>void};users:number;timer?:ReturnType<typeof setTimeout>}>();
 export function useResource<T extends {dispose:()=>void}>(key:string,create:()=>T):T {
- const value=useMemo(()=>{let entry=cache.get(key);if(!entry){entry={value:create(),users:0};cache.set(key,entry);}return entry.value as T;},[key]);
- useEffect(()=>{const entry=cache.get(key)!;clearTimeout(entry.timer);entry.users++;return()=>{if(--entry.users===0)entry.timer=setTimeout(()=>{if(entry.users===0){entry.value.dispose();cache.delete(key);}},1500);};},[key,value]);
+ const value=useMemo(()=>{let entry=cache.get(key);if(!entry){entry={value:create(),users:0};cache.set(key,entry);}clearTimeout(entry.timer);return entry.value as T;},[key]);
+ useLayoutEffect(()=>{const entry=cache.get(key)!;clearTimeout(entry.timer);entry.users++;return()=>{if(--entry.users===0)entry.timer=setTimeout(()=>{if(entry.users===0&&cache.get(key)===entry){entry.value.dispose();cache.delete(key);}},1500);};},[key,value]);
  return value;
 }
 export function canvasTexture(draw:(ctx:CanvasRenderingContext2D)=>void,size=128,color=false) {

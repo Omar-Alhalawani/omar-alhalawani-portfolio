@@ -1,0 +1,11 @@
+{
+  "renderer": "Playwright / ANGLE SwiftShader (software rendering; not hardware FPS validation)",
+  "checks": [
+    "All six modules rest on their mounts; default FIFO selection does not lift it.",
+    "FIFO actual mouse hover retains +0.22; pointer exit returns to exact rest.",
+    "fifo: real 3D click, midpoint/final/entry captures, destination ready; click-to-DOM 19557 ms on SwiftShader.",
+    "Reduced-motion keyboard Enter navigates without camera fly-in.",
+    "390×844 touch: first tap selects, second tap opens; frame handoff and no horizontal overflow."
+  ],
+  "errors": []
+}

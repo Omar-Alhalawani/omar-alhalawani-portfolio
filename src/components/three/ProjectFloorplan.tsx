@@ -1,29 +1,34 @@
 import {useEffect,useRef,useState} from 'react';
 import {useFrame,useThree,type ThreeEvent} from '@react-three/fiber';
 import {Group,MathUtils,Vector3} from 'three';
-import {Html} from '@react-three/drei';
+import {Html,Line} from '@react-three/drei';
 import {CircuitBoard,Connector,Parts,SystemBed} from './Circuitry';
 import {Plate} from './Hardware';
 import {Frame,MemoryBank,ArithmeticTile,AcquisitionTile,OpticalTile,InstrumentTile,PowerBank} from './ModuleHardware';
 import SignalTrace from './SignalTrace';
 import {PortBank,PowerShelf} from './EngineeringDetails';
 import {Printer} from './projects/CubexScene';
-import {selectProject} from '../../lib/project-selection';
+import {setProjectIntent,activeProjectIntent} from '../../lib/project-selection';
+import {openProject,projectNavigationHolding,type ProjectOpening} from '../../lib/project-navigation';
 import type {SceneProps} from './types';
 
 const regions=[
-  {id:'fifo',label:'FIFO',x:-.05,z:.58,width:2.04,depth:1.6,lift:.28},
-  {id:'fpga-arithmetic',label:'FPGA',x:-2.02,z:-1.13,width:1.86,depth:1.56,lift:.13},
-  {id:'lumalink',label:'LUMALINK',x:2.12,z:-.81,width:1.92,depth:1.62,lift:.26},
-  {id:'emg',label:'EMG',x:-2.15,z:1.35,width:1.74,depth:1.72,lift:.03},
-  {id:'mini-lysimeter',label:'DAQ',x:2.12,z:1.56,width:1.6,depth:1.8,lift:.05},
-  {id:'cubex',label:'CUBEX',x:-.15,z:-1.85,width:1.8,depth:1.85,lift:.06},
+  {id:'fifo',label:'FIFO',x:-.05,z:.58,width:2.04,depth:1.6,restY:-.06},
+  {id:'fpga-arithmetic',label:'FPGA',x:-2.02,z:-1.13,width:1.86,depth:1.56,restY:-.06},
+  {id:'lumalink',label:'LUMALINK',x:2.12,z:-.81,width:1.92,depth:1.62,restY:-.06},
+  {id:'emg',label:'EMG',x:-2.15,z:1.35,width:1.74,depth:1.72,restY:-.06},
+  {id:'mini-lysimeter',label:'DAQ',x:2.12,z:1.56,width:1.6,depth:1.8,restY:-.06},
+  {id:'cubex',label:'CUBEX',x:-.15,z:-1.85,width:1.8,depth:1.85,restY:-.06},
 ];
+const ACTIVE_LIFT=.22;
+const views:Record<string,{scale:number;y:number;yaw:number}>={fifo:{scale:.6/1.15,y:.158+.6*.6,yaw:-.2},'fpga-arithmetic':{scale:.43,y:.122+.43*.42,yaw:-.18},emg:{scale:.45,y:.088+.45*.45,yaw:-.17},lumalink:{scale:.5,y:.0945+.5*.5,yaw:-.22},cubex:{scale:.71/1.15,y:.122+.71*.85,yaw:-.27},'mini-lysimeter':{scale:.55,y:.122+.3,yaw:-.12}};
+type CameraOpening={request:ProjectOpening;started:number;ready:boolean;complete:boolean;progress:number;from:Vector3;to:Vector3;target:Vector3;midCaptured:boolean};
 export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
+  const [physical,setPhysical]=useState<string|null>(null);
   const [active,setActive]=useState('fifo'),[opening,setOpening]=useState<string|null>(null);
-  const groups=useRef<(Group|null)[]>([]),timer=useRef<ReturnType<typeof setTimeout>|null>(null);
-  const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),lastTouch=useRef<string|null>(null),time=useRef(0);
-  const {invalidate,camera,size,gl}=useThree();
+  const groups=useRef<(Group|null)[]>([]),transition=useRef<CameraOpening|null>(null);
+  const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),lastTouch=useRef<string|null>(null),look=useRef(new Vector3(0,.25,0));
+  const {invalidate,camera,size,gl,scene}=useThree();
   const fit=Math.max(1,1.16/(size.width/size.height));
   const base=useRef(new Vector3(0,5.7*fit,7*fit));
   useEffect(()=>{gl.domElement.dataset.selectedProject=active;gl.domElement.dataset.transition=opening||'idle';},[active,opening,gl]);
@@ -32,35 +37,79 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     const read=(event:Event)=>{const id=(event as CustomEvent<string>).detail;if(regions.some(r=>r.id===id)){setActive(id);invalidate();}};
     const selected=document.querySelector<HTMLElement>('[data-project-world]')?.dataset.selected;
     if(selected)setActive(selected);
+    const intent=()=>{setPhysical(activeProjectIntent());invalidate();};intent();
+    const surface=gl.domElement.parentElement;
+    const leave=()=>{setProjectIntent(null,'hover');gl.domElement.style.cursor='';};
+    surface?.addEventListener('pointerleave',leave);window.addEventListener('blur',leave);
+    window.addEventListener('portfolio:project-intent',intent);
     window.addEventListener('portfolio:project',read);
-    return()=>{window.removeEventListener('portfolio:project',read);if(timer.current)clearTimeout(timer.current);gl.domElement.style.cursor='';};
+    return()=>{surface?.removeEventListener('pointerleave',leave);window.removeEventListener('blur',leave);window.removeEventListener('portfolio:project-intent',intent);window.removeEventListener('portfolio:project',read);transition.current=null;gl.domElement.style.cursor='';};
   },[invalidate,gl]);
+  useEffect(()=>{
+    const begin=(event:Event)=>{
+      const request=(event as CustomEvent<ProjectOpening>).detail;
+      const host=gl.domElement.closest<HTMLElement>('.scene-island'),bounds=gl.domElement.getBoundingClientRect();
+      const visible=Math.min(bounds.bottom,innerHeight)-Math.max(bounds.top,0);
+      if(reducedMotion||transition.current||host?.dataset.state!=='ready'||host.dataset.renderLoop==='paused'||visible<bounds.height*.3)return;
+      const region=regions.find(r=>r.id===request.id)!;const view=views[request.id];
+      const target=new Vector3(region.x,region.restY+ACTIVE_LIFT+view.y,region.z).applyAxisAngle(new Vector3(0,1,0),-.23);
+      const fitDetail=Math.max(1,1.2/(size.width/size.height));
+      const to=target.clone().add(new Vector3(0,2.6,6.2).multiplyScalar(view.scale*.72*fitDetail));
+      request.claim();setActive(request.id);setPhysical(request.id);setOpening(request.id);
+      const motion:CameraOpening={request,started:performance.now(),ready:false,complete:false,progress:0,from:camera.position.clone(),to,target,midCaptured:false};
+      transition.current=motion;
+      void request.ready.then(()=>{motion.ready=true;invalidate();});invalidate();
+    };
+    const cancel=()=>{transition.current=null;setOpening(null);setPhysical(null);camera.position.copy(base.current);look.current.set(0,.25,0);camera.lookAt(look.current);groups.current.forEach(group=>{if(group)group.rotation.y=0;});invalidate();};
+    const previous=scene.onAfterRender;
+    scene.onAfterRender=(...args)=>{
+      previous.apply(scene,args);
+      const motion=transition.current;if(!motion||motion.complete)return;
+      const sample=window.__PORTFOLIO_PROFILE__?.scenes.floorplan;
+      const midpoint=Boolean(sample&&!motion.midCaptured&&motion.progress>=.25&&motion.progress<1);
+      const final=motion.progress>=1&&(motion.ready||performance.now()-motion.started>=motion.request.duration+400);
+      if(midpoint)motion.midCaptured=true;
+      if(final)motion.complete=true;
+      // Capture after all synchronous composer passes, before the browser discards
+      // the drawing buffer. The picture is the actual camera's final frame.
+      if(midpoint||final)queueMicrotask(()=>{
+        if(transition.current!==motion)return;
+        let image:string|undefined;try{const picture=document.createElement('canvas');picture.width=Math.min(1000,gl.domElement.width);picture.height=Math.round(picture.width*gl.domElement.height/gl.domElement.width);picture.getContext('2d')?.drawImage(gl.domElement,0,0,picture.width,picture.height);image=picture.toDataURL('image/webp',.86);}catch{/* Safe normal navigation. */}
+        if(midpoint&&sample)sample.navigationMidFrame=image;
+        if(final)motion.request.finish(image);
+      });
+    };
+    window.addEventListener('portfolio:open-project',begin);window.addEventListener('portfolio:cancel-opening',cancel);
+    return()=>{window.removeEventListener('portfolio:open-project',begin);window.removeEventListener('portfolio:cancel-opening',cancel);scene.onAfterRender=previous;transition.current=null;};
+  },[gl,scene,camera,size.width,size.height,invalidate,reducedMotion]);
   useFrame((_,delta)=>{
-    const dt=Math.min(delta,.05);if(!reducedMotion)time.current+=dt;
-    groups.current.forEach((group,i)=>{if(group){const target=regions[i].lift+(regions[i].id===active?.22:0);group.position.y=reducedMotion?target:MathUtils.damp(group.position.y,target,6,dt);}});
-    const region=regions.find(r=>r.id===opening);
-    const target=region&&!reducedMotion?new Vector3(region.x*.27,base.current.y*.86,base.current.z*.86):base.current;
-    camera.position.lerp(target,1-Math.exp(-dt*8));camera.lookAt(0,.25,0);
+    const motion=transition.current;
+    groups.current.forEach((group,i)=>{if(group){const target=regions[i].restY+(!reducedMotion&&(regions[i].id===physical||regions[i].id===opening)?ACTIVE_LIFT:0);group.position.y=Math.abs(group.position.y-target)<.0005?target:MathUtils.damp(group.position.y,target,8,Math.min(delta,.25));}});
+    if(motion){
+      const p=Math.min(1,(performance.now()-motion.started)/motion.request.duration),ease=p*p*p*(10+p*(-15+6*p));motion.progress=p;
+      camera.position.lerpVectors(motion.from,motion.to,ease);look.current.lerpVectors(new Vector3(0,.25,0),motion.target,ease);camera.lookAt(look.current);
+      const index=regions.findIndex(r=>r.id===motion.request.id),group=groups.current[index];
+      if(group){group.rotation.y=(views[motion.request.id].yaw+.23)*ease;if(p===1)group.position.y=regions[index].restY+ACTIVE_LIFT;}
+      if(p===1)projectNavigationHolding();
+    }
     const sample=window.__PORTFOLIO_PROFILE__?.scenes.floorplan;
     if(sample){
+      if(motion)sample.navigation={id:motion.request.id,progress:motion.progress,camera:camera.position.toArray(),target:look.current.toArray()};
+      sample.mounts=regions.map((r,i)=>({id:r.id,restY:r.restY,y:groups.current[i]?.position.y??r.restY,activeLift:ACTIVE_LIFT}));
       sample.targets=regions.map((r,i)=>{
         const p=new Vector3(0,.36,-.05);groups.current[i]?.localToWorld(p);p.project(camera);
         return {id:r.id,x:(p.x+1)*size.width/2,y:(1-p.y)*size.height/2};
       });
     }
   });
-  const open=(id:string)=>{
-    if(timer.current)return;
-    selectProject(id);setOpening(id);
-    timer.current=setTimeout(()=>{window.location.assign(`/projects/${id}`);},reducedMotion?0:320);
-  };
+  const open=(id:string)=>openProject(id);
   const start=(event:ThreeEvent<PointerEvent>,id:string)=>{if(event.button!==0)return;event.stopPropagation();down.current={x:event.clientX,y:event.clientY,id,time:performance.now()};};
   const end=(event:ThreeEvent<PointerEvent>,id:string)=>{
     event.stopPropagation();const gesture=down.current;down.current=null;
     if(!gesture||gesture.id!==id||Math.hypot(event.clientX-gesture.x,event.clientY-gesture.y)>8||performance.now()-gesture.time>700)return;
     if(event.pointerType==='mouse')open(id);
     else if(lastTouch.current===id&&active===id)open(id);
-    else{lastTouch.current=id;selectProject(id);}
+    else{lastTouch.current=id;setProjectIntent(id,'tap');}
   };
   return <group rotation={[0,-.23,0]}>
     <group position={[0,-.37,-.12]}><SystemBed width={8.6} depth={6.6} tier={tier} reducedMotion={reducedMotion}/></group>
@@ -71,27 +120,29 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     <group position={[0,-.02,0]}><Plate width={.3} depth={4.75} height={.19} color='#5b6d72'/></group>
     {[-1,1].map(s=><group key={s} position={[s*3.1,.07,-.25]}><PowerBank count={10}/></group>)}
     <Parts parts={[-1,1].flatMap(s=>Array.from({length:15},(_,i)=>({position:[(i-7)*.36,.08,s*2.3] as [number,number,number],size:[.18,.14,.19] as [number,number,number]})))} color='#1b2e34' metalness={.12}/>
+    {regions.map(region=><group key={`dock-${region.id}`} position={[region.x,-.17,region.z]}><Frame width={region.width+.08} depth={region.depth+.08} height={.05}/></group>)}
     {regions.map((region,i)=>{
       const selected=region.id===active;
-      return <group key={region.id} ref={g=>{groups.current[i]=g;}} position={[region.x,region.lift,region.z]}
-        onPointerOver={event=>{event.stopPropagation();if(event.pointerType==='mouse'){selectProject(region.id);gl.domElement.style.cursor='pointer';}}}
-        onPointerOut={()=>{gl.domElement.style.cursor='';}}
+      return <group key={region.id} ref={g=>{groups.current[i]=g;}} position={[region.x,region.restY,region.z]}
+        onPointerOver={event=>{event.stopPropagation();if(event.pointerType==='mouse'){setProjectIntent(region.id,'hover');gl.domElement.style.cursor='pointer';}}}
+        onPointerOut={()=>{setProjectIntent(null,'hover');if(!transition.current)gl.domElement.style.cursor='';}}
         onPointerDown={event=>start(event,region.id)} onPointerUp={event=>end(event,region.id)} onPointerCancel={()=>{down.current=null;}}>
         <mesh position={[0,.38,0]}><boxGeometry args={[region.width,.85,region.depth]}/><meshBasicMaterial transparent opacity={0} depthWrite={false}/></mesh>
         <Plate width={region.width} depth={region.depth} height={.12} color={selected?'#687879':'#3a4a50'} rim bolts={tier!=='low'}/>
         <group position={[0,.07,0]}><CircuitBoard width={region.width-.12} depth={region.depth-.12} tier={tier} seed={i+70}/></group>
         <group position={[0,.17,-region.depth/2+.13]}><Connector width={region.width*.5} count={10}/></group>
-        <Html position={[0,region.id==='cubex'?1.85:region.id==='fifo'?1.19:1.02,-region.depth*.4]} center style={{pointerEvents:'none'}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'7px 10px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'4px',background:'#0b1013ed',color:selected?'#ffc36a':'#c0c8c9',font:'10px monospace',letterSpacing:'.04em',boxShadow:selected?'0 0 22px #ffac291c':'none'}}>{region.label}</span></Html>
-        {region.id==='fifo'&&<group position={[0,.16,0]}><MemoryBank scale={.6} occupied={selected?[true,true,true,false,false,false,false,false]:[true,false,false,false,false,false,false,false]}/></group>}
-        {region.id==='fpga-arithmetic'&&<group position={[0,.17,0]}><ArithmeticTile scale={.43} a={21} b={8} result={29} active={selected} reducedMotion={reducedMotion}/></group>}
-        {region.id==='emg'&&<group position={[0,.15,0]}><AcquisitionTile scale={.45} active={selected} reducedMotion={reducedMotion}/></group>}
-        {region.id==='lumalink'&&<group position={[0,.14,0]}><OpticalTile scale={.5} active={selected} reducedMotion={reducedMotion}/></group>}
-        {region.id==='mini-lysimeter'&&<group position={[0,.15,0]}><InstrumentTile active={selected}/></group>}
-        {region.id==='cubex'&&<group position={[0,.12,0]}><Printer reducedMotion={reducedMotion} active={selected} scale={.71}/></group>}
-        <SignalTrace strength={selected?1.2:.55} reducedMotion={reducedMotion} active offset={i*.13} points={[[0,.145,-region.depth*.47],[-region.width*.44,.145,-region.depth*.47],[-region.width*.44,.145,region.depth*.4],[region.width*.44,.145,region.depth*.4]]}/>
-        {selected&&<pointLight position={[0,.4,.2]} color='#ffb34d' intensity={1.8} distance={2.1} decay={2}/>}
+        <Line points={[[region.width*.38,.19,-region.depth*.33],[region.width*.38,region.id==='cubex'?1.58:region.id==='fifo'?.92:.86,-region.depth*.33]]} color={selected?'#9e763f':'#576b73'} lineWidth={.55} raycast={()=>{}}/>
+        <Html position={[region.width*.38,region.id==='cubex'?1.65:region.id==='fifo'?.99:.93,-region.depth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening ? .3 : 1}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'4px 8px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'2px',background:'#0b1013e0',color:selected?'#ffc36a':'#c0c8c9',font:'10px monospace',letterSpacing:'.04em',boxShadow:selected?'0 0 22px #ffac291c':'none'}}>{region.label}</span></Html>
+        {region.id==='fifo'&&<group position={[0,.158,0]}><MemoryBank scale={.6} occupied={selected?[true,true,true,false,false,false,false,false]:[true,false,false,false,false,false,false,false]}/></group>}
+        {region.id==='fpga-arithmetic'&&<group position={[0,.122,0]}><ArithmeticTile scale={.43} a={21} b={8} result={29} active={selected} reducedMotion={reducedMotion}/></group>}
+        {region.id==='emg'&&<group position={[0,.088,0]}><AcquisitionTile scale={.45} active={selected} reducedMotion={reducedMotion}/></group>}
+        {region.id==='lumalink'&&<group position={[0,.0945,0]}><OpticalTile scale={.5} active={selected} reducedMotion={reducedMotion}/></group>}
+        {region.id==='mini-lysimeter'&&<group position={[0,.122,0]}><InstrumentTile active={selected}/></group>}
+        {region.id==='cubex'&&<group position={[0,.122,0]}><Printer reducedMotion={reducedMotion} active={selected} scale={.71}/></group>}
+        <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={!opening||selected} offset={i*.13} points={[[0,.145,-region.depth*.47],[-region.width*.44,.145,-region.depth*.47],[-region.width*.44,.145,region.depth*.4],[region.width*.44,.145,region.depth*.4]]}/>
+        {selected&&<pointLight position={[0,.4,.2]} color='#ffb34d' intensity={opening?2.6:1.8} distance={2.1} decay={2}/>}
       </group>;
     })}
-    {regions.flatMap((r,i)=>[0,1].map(n=><SignalTrace key={`${r.id}-${n}`} spill={active===r.id&&n===0?1.3:0} strength={active===r.id?1.35:.75} reducedMotion={reducedMotion} active offset={i*.13+n*.3} points={[[-3.9,-.25,-2.4+n*.13],[-3.35,-.25,-2.4+n*.13],[-3.35,.07,-2.13+n*.13],[-3.35,.07,n*.13],[r.x,.07,n*.13],[r.x,.07,r.z-r.depth*.48],[r.x,r.lift+.18+(active===r.id?.22:0),r.z-r.depth*.48]]}/>))}
+    {regions.flatMap((r,i)=>[0,1].map(n=><SignalTrace key={`${r.id}-${n}`} spill={active===r.id&&n===0?1.3:0} strength={active===r.id?1.35:(opening ? .25 : .75)} reducedMotion={reducedMotion} active={!opening||active===r.id} offset={i*.13+n*.3} points={[[-3.9,-.25,-2.4+n*.13],[-3.35,-.25,-2.4+n*.13],[-3.35,.07,-2.13+n*.13],[-3.35,.07,n*.13],[r.x,.07,n*.13],[r.x,.07,r.z-r.depth*.48],[r.x,r.restY+.18+(!reducedMotion&&physical===r.id?ACTIVE_LIFT:0),r.z-r.depth*.48]]}/>))}
   </group>;
 }

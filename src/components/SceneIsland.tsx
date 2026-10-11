@@ -16,8 +16,8 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   const host = useRef<HTMLDivElement>(null);
   const [load, setLoad] = useState(false);
   const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
-  const ready=useCallback(()=>setStatus('ready'),[]);
-  const fail=useCallback(()=>setStatus('fallback'),[]);
+  const ready=useCallback(()=>{setStatus('ready');if(window.__PROJECT_HANDOFF__)window.dispatchEvent(new Event('portfolio:destination-ready'));},[]);
+  const fail=useCallback(()=>{setStatus('fallback');if(window.__PROJECT_HANDOFF__)window.dispatchEvent(new Event('portfolio:destination-ready'));},[]);
   const fallback = `/art/${scene}-render.webp`;
   useEffect(() => {
     const element = host.current;
@@ -27,7 +27,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
       return;
     }
     let mounted=true;
-    if(scene==='hero'){void loadCanvas();void import('./three/HeroScene');webglAvailable().then(available=>{if(mounted){if(available)setLoad(true);else setStatus('fallback');}});return()=>{mounted=false;};}
+    if(scene==='hero'||window.__PROJECT_HANDOFF__){void loadCanvas();if(scene==='hero')void import('./three/HeroScene');webglAvailable().then(available=>{if(mounted){if(available)setLoad(true);else fail();}});return()=>{mounted=false;};}
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         observer.disconnect();
@@ -37,7 +37,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
     }, { rootMargin: '250px' });
     observer.observe(element);
     return () => {mounted=false;observer.disconnect();};
-  }, [scene]);
+  }, [scene,fail]);
   return (
     <div className="scene-island" ref={host} data-state={status} data-scene={scene} aria-hidden="true">
       <img className="scene-fallback" src={fallback} width="900" height={scene==='hero'?900:600} alt="" loading={scene==='hero'?'eager':'lazy'} fetchPriority={scene==='hero'?'high':'auto'} />

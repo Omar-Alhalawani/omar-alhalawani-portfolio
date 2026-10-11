@@ -1,5 +1,12 @@
 @layer reset, tokens, base, components, responsive;
 
+::view-transition-old(root),::view-transition-new(root) { animation-duration:90ms; }
+::view-transition-group(project-handoff) { animation:none; }
+::view-transition-old(project-handoff),::view-transition-new(project-handoff) { animation:none; mix-blend-mode:normal; }
+.project-handoff { position:fixed;inset:0;z-index:50;background:#07090b;pointer-events:none;display:grid;place-items:center;view-transition-name:project-handoff;transition:opacity 240ms ease; }
+.project-handoff>img { width:100%;height:100%;object-fit:contain; }
+.project-handoff.project-handoff-revealing { opacity:0; }
+
 @layer reset {
   *,*::before,*::after { box-sizing:border-box; }
   body,h1,h2,h3,p,figure { margin:0; }
@@ -125,6 +132,7 @@
     .brand-label { font-size:9px; }
   }
   @media (prefers-reduced-motion:reduce) {
+    ::view-transition-old(root),::view-transition-new(root) { animation-duration:20ms; }
     html { scroll-behavior:auto; }
     *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
     .button:hover { transform:none; }
