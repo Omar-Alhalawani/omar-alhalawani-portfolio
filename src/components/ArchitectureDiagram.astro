@@ -12,7 +12,7 @@ const notes:Record<string,string>={
 };
 ---
 <figure class="architecture-diagram"><figcaption class="eyebrow">Architecture // Conceptual overview</figcaption>
-  {project.id==='fpga-arithmetic'?<div class="datapath"><div class="path"><span>DIP[7:0]</span><span>A[7:0] + B[7:0]<small>Captured operands</small></span><span>Add / subtract<small>9-bit intermediate</small></span><span>LED[7:0]<small>Low 8 bits</small></span></div><div class="control-path"><span>5 buttons</span><span>2-flop synchronization</span><span>Rising-edge detection</span><span>Capture / mode / clear</span></div></div>:project.id==='fifo'?<div class="datapath"><div class="path"><span>din + write handshake</span><span>Memory array<small>Write / read pointers</small></span><span>Registered dout<small>After accepted read</small></span></div><div class="control-path"><span>Shared clock + rst_n</span><span>Occupancy count</span><span>wr_ready / rd_valid</span></div></div>:<ol class="path">{project.architecture.map(label=><li>{label}</li>)}</ol>}
+  {project.id==='fpga-arithmetic'?<div class="datapath"><div class="path"><span>DIP[7:0]</span><span>A[7:0] + B[7:0]<small>Captured operands</small></span><span>Add / subtract<small>9-bit intermediate</small></span><span>LED[7:0]<small>Low 8 bits</small></span></div><div class="control-path"><span>5 buttons</span><span>2-flop synchronization</span><span>Rising-edge detection</span><span>Capture / mode / clear</span></div></div>:project.id==='fifo'?<div class="datapath"><div class="path"><span data-fifo-region="write">din + write handshake</span><span data-fifo-region="status">Memory array<small>Write / read pointers</small></span><span data-fifo-region="read">Registered dout<small>After accepted read</small></span></div><div class="control-path"><span>Shared clock + rst_n</span><span>Occupancy count</span><span>wr_ready / rd_valid</span></div></div>:<ol class="path">{project.architecture.map(label=><li>{label}</li>)}</ol>}
   <p class="architecture-note">{notes[project.id]}</p>
 </figure>
 <style>
@@ -27,4 +27,9 @@ const notes:Record<string,string>={
   .control-path>span { border-style:dashed; color:var(--read); font-size:9px; padding-block:12px; }
   .architecture-note { margin-top:22px; font-size:11px; line-height:1.85; color:var(--muted); }
   @media(max-width:650px) { .path,.control-path { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .path>span,.path>li,.control-path>span { font-size:9px; padding:14px 12px; } .path>span::after,.path>li::after { display:none; } .architecture-diagram { margin-block:32px; } }
+</style>
+
+<style>
+ .architecture-diagram[data-probe="write"] [data-fifo-region="write"],.architecture-diagram[data-probe="status"] [data-fifo-region="status"] { border-color:var(--amber); box-shadow:inset 0 0 20px #ffbd5918; }
+ .architecture-diagram[data-probe="read"] [data-fifo-region="read"] { border-color:var(--read); box-shadow:inset 0 0 20px #b5d6e218; }
 </style>

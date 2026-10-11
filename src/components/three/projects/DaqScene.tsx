@@ -9,7 +9,7 @@ export default function DaqScene({reducedMotion}:SceneProps) {
  useSceneCamera();
  return <group rotation={[0,-.12,0]}>
   <Board reducedMotion={reducedMotion} width={4.4} depth={3.3}/>
-  <group position={[0,.12,0]} scale={1/.55}><InstrumentTile/></group>
+  <group position={[0,.12,0]} scale={1/.55}><InstrumentTile reducedMotion={reducedMotion}/></group>
   <group position={[-1.8,.24,-.3]}><PowerBank count={5}/></group>
   <group position={[1.8,.2,.3]} rotation={[0,Math.PI/2,0]}><Connector width={1.1} count={12}/></group>
   <SignalTrace reducedMotion={reducedMotion} spill={.6} points={[[-2.1,.08,.8],[-1.4,.08,.8],[-1.4,.22,.8],[0,.22,.8],[0,.5,.8]]}/>

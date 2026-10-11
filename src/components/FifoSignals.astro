@@ -1,0 +1,47 @@
+---
+import {readFileSync} from 'node:fs';
+import {parseFifoVcd,signalHelp} from '../lib/fifo-waveform';
+const data=parseFifoVcd(readFileSync('public/evidence/fifo/directed-tests.vcd','utf8'));
+---
+<section id="signal-inspection" class="fifo-signals" data-waveform data-wave-data={JSON.stringify(data)}>
+ <div class="signal-title"><div><p class="eyebrow">Verification // Recorded signals</p><h2>FIFO Signal Probe</h2></div><button type="button" class="button" data-inspect-toggle aria-pressed="false" aria-controls="fifo-probe-list">Inspect signals</button></div>
+ <p class="wave-source">Actual Icarus simulation · DATA_WIDTH=8 · DEPTH=4 · <a href="/evidence/fifo/provenance.json">Source provenance ↗</a></p>
+ <div id="fifo-probe-list" class="probe-list" hidden>{data.signals.map(s=><button type="button" data-probe={s.name} aria-pressed="false">{s.name}</button>)}</div>
+ <aside class="signal-explanation" data-probe-explanation hidden aria-live="polite"></aside>
+ <div class="wave-events" aria-label="Recorded events">{data.events.map((event,i)=><button type="button" data-wave-event={i} aria-pressed="false">{event.label}</button>)}</div>
+ <p class="wave-event-description" data-wave-description>Choose a recorded event to inspect its interval. Simultaneous accepted transfers are not explicitly tested by this testbench.</p>
+ <div class="wave-toolbar"><label>Start <input data-wave-start type="range" min="0" max={data.end-160} value="0" step="5"/></label><label>Window <select data-wave-window><option value="80">80 ticks</option><option value="160" selected>160 ticks</option><option value="320">320 ticks</option><option value={data.end}>Full recording</option></select></label><output data-wave-time>t=0 simulation ticks</output></div>
+ <div class="wave-canvas-wrap"><canvas data-wave-canvas tabindex="0" aria-label="Recorded FIFO waveforms. Drag horizontally to pan, or use the Start slider and Window controls. Left and right arrow keys pan; Home returns to start."></canvas></div>
+ <p class="wave-note">Amber: write/status · pale steel: read/output. Drag horizontally to pan. Hover a row for its value; enable inspection for explanations. The source VCD declares 1 s units; ticks do not represent a specified physical clock.</p>
+ <details><summary>Accessible signal definitions and recorded events</summary><dl>{data.signals.map(s=><div><dt>{s.name}</dt><dd>{signalHelp[s.name]}</dd></div>)}</dl><ul>{data.events.map(e=><li>{e.label}, ticks {e.start}–{e.end}: {e.description}</li>)}</ul><a href="/evidence/fifo/directed-tests.vcd" download>Download original VCD ↓</a></details>
+</section>
+<script>
+ import {initializeWaveforms} from '../lib/waveform-viewer';
+ initializeWaveforms();
+</script>
+<style>
+ .fifo-signals { margin-block:54px; padding:clamp(18px,3vw,32px); border:1px solid #7c603e88; background:#0b1013; border-radius:6px; }
+ .signal-title { display:flex; align-items:center; justify-content:space-between; gap:24px; }
+ .signal-title h2 { margin-bottom:18px; }
+ .signal-title .eyebrow { margin-bottom:12px; }
+ .wave-source,.wave-note { font-size:11px!important; color:var(--muted); }
+ a { color:var(--amber); }
+ .probe-list,.wave-events { display:flex; flex-wrap:wrap; gap:8px; margin-block:20px; }
+ .probe-list[hidden] { display:none; }
+ .probe-list button,.wave-events button { min-height:40px; padding:8px 12px; font:10px/1.6 var(--mono); border:1px solid var(--line); background:#151d20; border-radius:3px; }
+ button[aria-pressed='true'] { border-color:var(--amber); color:var(--amber); }
+ .signal-explanation { border-left:2px solid var(--amber); background:#182024; padding:14px 18px; font:12px/1.8 var(--body); margin-bottom:18px; min-height:70px; }
+ .wave-event-description { font-size:12px!important; min-height:46px; }
+ .wave-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-block:16px; font:10px/1.8 var(--mono); }
+ .wave-toolbar label { display:flex; align-items:center; gap:10px; }
+ input { accent-color:var(--amber); width:140px; }
+ select { background:#182024; color:var(--text); border:1px solid var(--line); padding:9px; }
+ output { color:var(--read); }
+ .wave-canvas-wrap { border:1px solid var(--line); background:#080d10; }
+ canvas { display:block; width:100%; height:530px; touch-action:pan-y pinch-zoom; cursor:crosshair; }
+ .wave-note { margin-top:16px; }
+ details { margin-top:18px; font-size:12px; color:var(--soft); }
+ summary { min-height:44px; padding-block:12px; }
+ dt { color:var(--amber); font-family:var(--mono); } dd { margin:4px 0 16px; }
+ @media(max-width:650px) { .signal-title { display:block; } .signal-title button { margin-bottom:16px; } input { width:120px; } canvas { height:530px; } }
+</style>

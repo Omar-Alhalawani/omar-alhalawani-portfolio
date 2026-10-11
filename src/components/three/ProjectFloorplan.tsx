@@ -4,8 +4,10 @@ import {Group,MathUtils,Vector3} from 'three';
 import {Html,Line} from '@react-three/drei';
 import {CircuitBoard,Connector,Parts,SystemBed} from './Circuitry';
 import {Plate} from './Hardware';
-import {Frame,MemoryBank,ArithmeticTile,AcquisitionTile,OpticalTile,InstrumentTile,PowerBank} from './ModuleHardware';
+import {Frame,ArithmeticTile,AcquisitionTile,OpticalTile,InstrumentTile,PowerBank} from './ModuleHardware';
 import SignalTrace from './SignalTrace';
+import FifoActivity from './FifoActivity';
+import {useMicroSequence,useSectionActivation} from './useMicroSequence';
 import {PortBank,PowerShelf} from './EngineeringDetails';
 import {Printer} from './projects/CubexScene';
 import {setProjectIntent,activeProjectIntent} from '../../lib/project-selection';
@@ -26,6 +28,7 @@ const ACTIVE_LIFT=.22;
 const views:Record<string,{scale:number;y:number;yaw:number}>={fifo:{scale:.6/1.15,y:.6,yaw:-.2},'fpga-arithmetic':{scale:.43,y:.42,yaw:-.18},emg:{scale:.45,y:.45,yaw:-.17},lumalink:{scale:.5,y:.5,yaw:-.22},cubex:{scale:.71/1.15,y:.85,yaw:-.27},'mini-lysimeter':{scale:.55,y:.3,yaw:-.12}};
 type CameraOpening={request:ProjectOpening;started:number;ready:boolean;complete:boolean;progress:number;from:Vector3;to:Vector3;target:Vector3;midCaptured:boolean};
 export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
+  const entry=useSectionActivation('projects'),bus=useMicroSequence(entry,reducedMotion,3,2.4,'bus');
   const [mounts,setMounts]=useState<Record<string,ModelMount>>({});
   const measured=useRef<Record<string,ModelMount>>({});
   const onMeasure=useCallback((id:string,mount:ModelMount)=>{measured.current[id]=mount;setMounts(previous=>({...previous,[id]:mount}));},[]);
@@ -116,6 +119,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     }
     const sample=window.__PORTFOLIO_PROFILE__?.scenes.floorplan;
     if(sample){
+      sample.pose=[bus.progress.current];
       if(motion)sample.navigation={id:motion.request.id,progress:motion.progress,camera:camera.position.toArray(),target:look.current.toArray()};
       sample.mounts=regions.map((r,i)=>({id:r.id,restY:r.restY,x:groups.current[i]?.position.x??r.x,z:groups.current[i]?.position.z??r.z,y:groups.current[i]?.position.y??r.restY,activeLift:ACTIVE_LIFT}));
       sample.targets=regions.map((r,i)=>{
@@ -144,7 +148,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     <Parts parts={[-1,1].flatMap(s=>Array.from({length:15},(_,i)=>({position:[(i-7)*.36,.08,s*2.3] as [number,number,number],size:[.18,.14,.19] as [number,number,number]})).filter(p=>!regions.some(r=>Math.abs(p.position[0]-r.x)<r.dockWidth/2+.1&&Math.abs(p.position[2]-r.z)<r.dockDepth/2+.1)))} color='#1b2e34' metalness={.12}/>
     {regions.map(region=><group key={`dock-${region.id}`} position={[region.x,-.17,region.z]}><Frame width={region.dockWidth+.08} depth={region.dockDepth+.08} height={.05}/></group>)}
     {regions.map((region,i)=>{
-      const selected=region.id===active,labelY=.222+(mounts[region.id]?.size[1]??1.2),hitHeight=labelY;
+      const engaged=region.id===physical||region.id===opening,selected=region.id===active,labelY=.222+(mounts[region.id]?.size[1]??1.2),hitHeight=labelY;
       return <group key={region.id} ref={g=>{groups.current[i]=g;}} position={[region.x,region.restY,region.z]}
         onPointerOver={event=>{event.stopPropagation();if(event.pointerType==='mouse'){setProjectIntent(region.id,'hover');gl.domElement.style.cursor='pointer';}}}
         onPointerOut={()=>{setProjectIntent(null,'hover');if(!transition.current)gl.domElement.style.cursor='';}}
@@ -156,17 +160,17 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
         <Line points={[[region.dockWidth*.38,.19,-region.dockDepth*.33],[region.dockWidth*.38,labelY-.07,-region.dockDepth*.33]]} color={selected?'#9e763f':'#576b73'} lineWidth={.55} raycast={()=>{}}/>
         <Html portal={labels} position={[region.dockWidth*.38,labelY,-region.dockDepth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening ? .3 : 1}}><span aria-hidden="true" style={{display:'block',whiteSpace:'nowrap',padding:'5px 9px 5px 15px',border:`1px solid ${selected?'#c69243':'#6a604c'}`,borderRadius:'3px',background:'#0b1013e0',color:selected?'#ffc36a':'#c0c8c9',font:'500 9px monospace',letterSpacing:'.04em',boxShadow:'0 4px 12px #0008'}}><span style={{position:'absolute',left:'6px',top:'9px',width:'3px',height:'3px',borderRadius:'50%',background:selected?'#e4ac58':'#829398'}}/>{region.label}</span></Html>
         <ProjectMount dock={region} onMeasure={onMeasure}>
-          {region.id==='fifo'&&<MemoryBank occupied={selected?[true,true,true,false,false,false,false,false]:[true,false,false,false,false,false,false,false]}/>}
-          {region.id==='fpga-arithmetic'&&<ArithmeticTile a={21} b={8} result={29} active={selected} reducedMotion={reducedMotion}/>}
-          {region.id==='emg'&&<AcquisitionTile active={selected} reducedMotion={reducedMotion}/>}
-          {region.id==='lumalink'&&<OpticalTile active={selected} reducedMotion={reducedMotion}/>}
-          {region.id==='mini-lysimeter'&&<InstrumentTile active={selected}/>}
-          {region.id==='cubex'&&<Printer reducedMotion={reducedMotion} active={selected}/>}
+          {region.id==='fifo'&&<FifoActivity active={engaged} reducedMotion={reducedMotion}/>}
+          {region.id==='fpga-arithmetic'&&<ArithmeticTile a={21} b={8} result={29} active={engaged} reducedMotion={reducedMotion}/>}
+          {region.id==='emg'&&<AcquisitionTile active={engaged} reducedMotion={reducedMotion}/>}
+          {region.id==='lumalink'&&<OpticalTile active={engaged} reducedMotion={reducedMotion}/>}
+          {region.id==='mini-lysimeter'&&<InstrumentTile active={engaged} reducedMotion={reducedMotion}/>}
+          {region.id==='cubex'&&<Printer reducedMotion={reducedMotion} active={engaged}/>}
         </ProjectMount>
-        <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={!opening||selected} offset={i*.13} points={[[0,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,region.dockDepth*.4],[region.dockWidth*.44,.145,region.dockDepth*.4]]}/>
+        <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={engaged||bus.running} offset={i*.13} points={[[0,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,region.dockDepth*.4],[region.dockWidth*.44,.145,region.dockDepth*.4]]}/>
 
       </group>;
     })}
-    {regions.flatMap((r,i)=>[0,1].map(n=><SignalTrace key={`${r.id}-${n}`} spill={active===r.id&&n===0?1.3:0} strength={active===r.id?1.35:(opening ? .25 : .75)} reducedMotion={reducedMotion} active={!opening||active===r.id} offset={i*.13+n*.3} points={[[-3.9,-.25,-2.4+n*.13],[-3.35,-.25,-2.4+n*.13],[-3.35,.07,-2.13+n*.13],[-3.35,.07,n*.13],[r.x,.07,n*.13],[r.x,.07,r.z-r.dockDepth*.48],[r.x,r.restY+.18+(!reducedMotion&&physical===r.id?ACTIVE_LIFT:0),r.z-r.dockDepth*.48]]}/>))}
+    {regions.flatMap((r,i)=>[0,1].map(n=><SignalTrace key={`${r.id}-${n}`} spill={physical===r.id&&n===0?.6:0} strength={active===r.id?1.35:(opening ? .25 : .75)} reducedMotion={reducedMotion} active={bus.running||physical===r.id||opening===r.id} offset={i*.13+n*.3} points={[[-3.9,-.25,-2.4+n*.13],[-3.35,-.25,-2.4+n*.13],[-3.35,.07,-2.13+n*.13],[-3.35,.07,n*.13],[r.x,.07,n*.13],[r.x,.07,r.z-r.dockDepth*.48],[r.x,r.restY+.18+(!reducedMotion&&physical===r.id?ACTIVE_LIFT:0),r.z-r.dockDepth*.48]]}/>))}
   </group>;
 }

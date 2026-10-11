@@ -8,20 +8,23 @@ import {Frame,PowerBank,SiliconDie} from './ModuleHardware';
 import Waveform from './Waveform';
 import SignalTrace from './SignalTrace';
 import {PortBank,PowerShelf} from './EngineeringDetails';
+import {useMicroSequence,useSectionActivation} from './useMicroSequence';
 import type {SceneProps} from './types';
 
 export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
+ const activation=useSectionActivation('experience'),sequence=useMicroSequence(activation,reducedMotion,5,4.8,'verification');
  useSceneCamera('floorplan');const materials=useRef<(MeshStandardMaterial|null)[]>([]),pass=useRef<MeshStandardMaterial>(null),time=useRef(0),phase=useRef(.9);
  const [lit,setLit]=useState([false,false,false,false]),litState=useRef(lit);
  const activity=useRef([{current:.5},{current:0},{current:0},{current:0}]);
  useFrame((_,delta)=>{
   if(!reducedMotion)time.current+=Math.min(delta,.1);
-  phase.current=reducedMotion?.85:(time.current/24)%1;
+  phase.current=reducedMotion?.85:sequence.progress.current;
   const windows=[[0,.19],[.19,.39],[.39,.68],[.68,.91]];
   materials.current.forEach((m,i)=>{const [a,b]=windows[i],p=phase.current;const value=reducedMotion?.55:p>=a&&p<b?MathUtils.smoothstep(p,a,a+.025)*(1-MathUtils.smoothstep(p,b-.025,b)):0;activity.current[i].current=value;if(m)m.emissiveIntensity=.035+value*.7;});
   const next=activity.current.map(a=>a.current>.12);
   if(next.some((on,i)=>on!==litState.current[i])){litState.current=next;setLit(next);}
-  if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.94?1.25:.035;
+  if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.98?1.25:.035;
+  const sample=window.__PORTFOLIO_PROFILE__?.scenes.verification;if(sample)sample.pose=[phase.current,sequence.stage];
  });
  return <group rotation={[0,-.2,0]}>
   <group position={[0,-.25,0]}><SystemBed width={7.2} depth={4.5} tier={tier} reducedMotion={reducedMotion}/></group>

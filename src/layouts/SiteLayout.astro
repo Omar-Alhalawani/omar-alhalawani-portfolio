@@ -32,6 +32,8 @@ const schema = {
     <meta name="theme-color" content="#07090b" />
     <ClientRouter fallback="swap" />
     <script>
+      import {initializeSignals} from '../lib/signal-system';
+      initializeSignals();
       import {initializeProjectNavigation} from '../lib/project-navigation';
       initializeProjectNavigation();
     </script>
@@ -64,7 +66,7 @@ const schema = {
   <body transition:animate="none">
     <div class="technical-background" aria-hidden="true">
       <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="currentColor"><path d="M0 230H210L310 330H550M1440 140H1170L1090 220V440H950M0 780H190L290 680V540M1440 830H1220L1120 730H900"/><path d="M90 80H420V180H90ZM1040 570H1350V680H1040Z" opacity=".4"/></g><g fill="currentColor"><circle cx="550" cy="330" r="3"/><circle cx="950" cy="440" r="3"/><circle cx="290" cy="540" r="3"/><circle cx="900" cy="730" r="3"/></g></svg>
-      <div class="technical-energy"></div>
+      <svg class="signal-network" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice"><path class="signal-route" pathLength="100" d="M1400 90H1260V220L1170 310V490L1290 610V780L1190 880"/><g class="signal-nodes">{['home','experience','projects','about','contact'].map((name,i)=><circle data-signal-node={name} cx={i===0?1260:i===1?1170:i===2?1170:i===3?1290:1190} cy={[160,310,490,710,880][i]} r="4"/>)}</g></svg><div class="technical-energy"></div>
     </div>
     <SiteHeader />
     <main id="main" tabindex="-1"><slot /></main>

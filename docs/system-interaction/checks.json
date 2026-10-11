@@ -1,0 +1,135 @@
+{
+  "renderer": "Chromium / software SwiftShader; no hardware FPS claim",
+  "background": {
+    "implementation": "SVG/CSS + IntersectionObserver + dominance hysteresis",
+    "continuousRAF": false
+  },
+  "checks": [
+    "Homepage one-time reveal and section state",
+    "Six distinct project sequences and HTML selection; idle settles",
+    "FIFO camera transition and retained document",
+    "Waveform cursor/value, keyboard pan/probe, mouse drag, real FULL annotation and architecture link",
+    "Full route stress sequence, Back, one background, no global replay, waveform disposed, Contact drag",
+    "Mobile tap probe, horizontal touch pan, native vertical scroll, no overflow",
+    "Reduced-motion static state and immediately readable content",
+    "Contact drag hint fades and is not repeated after reload"
+  ],
+  "performance": {
+    "home": {
+      "activeRenderers": 1,
+      "pmremMs": 7.2999999998137355,
+      "compileStartedMs": 969.8999999999069,
+      "compileMs": 207.8000000002794,
+      "programs": 10,
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "pose": [
+        0.222497292933444,
+        -0.44742566865868577,
+        -0.038418955128619425,
+        0,
+        0,
+        0,
+        1.3069999999995345
+      ],
+      "firstFrameMs": 4764.899999999907,
+      "dpr": 1,
+      "drawCalls": 269,
+      "triangles": 41893,
+      "textures": 34,
+      "geometries": 51,
+      "stage": 1
+    },
+    "projectsIdle": 491,
+    "projects-fifo": {
+      "drawCalls": 415,
+      "activity": {
+        "stage": 3,
+        "progress": 0.6243611111110337,
+        "running": true
+      }
+    },
+    "projects-fpga": {
+      "drawCalls": 418,
+      "activity": {
+        "stage": 3,
+        "progress": 0.7171714285715884,
+        "running": true
+      }
+    },
+    "projects-lumalink": {
+      "drawCalls": 412,
+      "activity": {
+        "stage": 2,
+        "progress": 0.7405277777777522,
+        "running": true
+      }
+    },
+    "projects-cubex": {
+      "drawCalls": 412,
+      "activity": {
+        "stage": 3,
+        "progress": 0.8216249999999129,
+        "running": true
+      }
+    },
+    "projects-emg": {
+      "drawCalls": 414,
+      "activity": {
+        "stage": 1,
+        "progress": 0.21939473684203173,
+        "running": true
+      }
+    },
+    "projects-daq": {
+      "drawCalls": 414,
+      "activity": {
+        "stage": 1,
+        "progress": 0.2255625000000873,
+        "running": true
+      }
+    },
+    "waveform": {
+      "idleRedraws": 0,
+      "continuousRAF": false
+    },
+    "fifo": {
+      "activeRenderers": 0,
+      "drawCalls": 122
+    }
+  },
+  "errors": [],
+  "signalEvents": [
+    {
+      "path": "/",
+      "section": "home"
+    },
+    {
+      "path": "/",
+      "section": "experience"
+    },
+    {
+      "path": "/",
+      "section": "about"
+    },
+    {
+      "path": "/experience",
+      "section": "experience"
+    },
+    {
+      "path": "/projects",
+      "section": "projects"
+    },
+    {
+      "path": "/projects/fifo",
+      "section": "projects"
+    },
+    {
+      "path": "/projects/fpga-arithmetic",
+      "section": "projects"
+    },
+    {
+      "path": "/contact",
+      "section": "contact"
+    }
+  ]
+}
