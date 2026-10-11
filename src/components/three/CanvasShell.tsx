@@ -22,7 +22,7 @@ function SteelEnvironment() {
   useEffect(()=>{
     const room=new RoomEnvironment(),generator=new PMREMGenerator(gl);
     const environment=generator.fromScene(room,.04);
-    scene.environment=environment.texture;scene.environmentIntensity=.22;
+    scene.environment=environment.texture;scene.environmentIntensity=.32;
     gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.02;
     room.dispose();generator.dispose();invalidate();
     return()=>{scene.environment=null;environment.dispose();};
@@ -34,7 +34,7 @@ function WarmShaders({onPrepared,onFailure}:{onPrepared:()=>void;onFailure:()=>v
   const {gl,scene,camera}=useThree();
   useEffect(()=>{
     let mounted=true;
-    // Keep the SVG visible while the actual scene compiles. On drivers with
+    // Keep the rendered fallback visible while the scene compiles. On drivers with
     // KHR_parallel_shader_compile this avoids a synchronous first-draw stall.
     gl.compileAsync(scene,camera).then(()=>{if(mounted)onPrepared();}).catch(()=>{if(mounted)onFailure();});
     return()=>{mounted=false;};
@@ -102,9 +102,10 @@ export default function CanvasShell({ scene, host, onReady, onFailure }: {
   return <Canvas className="scene-canvas" shadows={tier!=='low'?'soft':false} dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:tier !== 'low', powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onFailure={onFailure} reducedMotion={reducedMotion} tier={tier} />
     <SteelEnvironment/><ambientLight intensity={.16} />
-    <directionalLight castShadow position={[-3,5,4]} color="#d9e5ed" intensity={1.65} shadow-mapSize={[1024,1024]} shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={5} shadow-camera-bottom={-5} shadow-camera-far={18} shadow-bias={-.00025} shadow-normalBias={.012} />
-    <directionalLight position={[4,2,-3]} color="#ffcb83" intensity={1.45} />
+    <fog attach="fog" args={['#07090b',9,19]}/>
+    <directionalLight castShadow position={[-3,5,4]} color="#e4eef5" intensity={1.65} shadow-mapSize={[1024,1024]} shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={5} shadow-camera-bottom={-5} shadow-camera-far={18} shadow-bias={-.00025} shadow-normalBias={.012} />
+    <directionalLight position={[4,2,-3]} color="#c4dbea" intensity={1.05} />
     <Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={tier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure}/></Suspense>
-    {tier!=='low'&&<EnergyBloom/>}
+    {tier!=='low'&&<EnergyBloom cinematic={scene==='hero'||scene==='floorplan'}/>}
   </Canvas>;
 }

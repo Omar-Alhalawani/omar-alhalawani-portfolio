@@ -53,6 +53,6 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     gl.domElement.dataset.motion=JSON.stringify({rotation:[form.current.rotation.x,form.current.rotation.y,form.current.rotation.z],pointer:[px,py],progress:layer,time:time.current});
   });
   return <group ref={form} rotation={[.22,-.45,-.04]}>
-    <ChipLayers progress={progress} active={active} reducedMotion={reducedMotion} tier={tier} />
+    <ChipLayers progress={progress} active={active} reducedMotion={reducedMotion} tier={tier} pointer={pointer} />
   </group>;
 }

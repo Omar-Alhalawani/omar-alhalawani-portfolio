@@ -29,7 +29,7 @@ export function Label({text,position=[0,.1,0],width=.9,color='#dadbd7',rotation=
   const texture=useMemo(()=>{
     const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
     const ctx=canvas.getContext('2d')!;
-    ctx.fillStyle=color;ctx.font='500 46px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64);
+    ctx.fillStyle=color;ctx.font='500 56px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64,490);
     return new CanvasTexture(canvas);
   },[text,color]);
   useEffect(()=>()=>texture.dispose(),[texture]);

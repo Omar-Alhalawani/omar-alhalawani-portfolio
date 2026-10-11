@@ -1,12 +1,12 @@
-import {useEffect,useMemo,useRef} from 'react';
+import {useEffect,useMemo,useRef,type RefObject} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {Line} from '@react-three/drei';
-import {CanvasTexture,Color,CurvePath,LineCurve3,Group,Vector3,AdditiveBlending} from 'three';
+import {CanvasTexture,Color,CurvePath,LineCurve3,Group,Vector3,AdditiveBlending,SRGBColorSpace,PointLight} from 'three';
 import {AMBER} from './Hardware';
 
-export default function SignalTrace({points,color=AMBER,active=true,reducedMotion=false,offset=0,strength=1}:{points:[number,number,number][];color?:string;active?:boolean;reducedMotion?:boolean;offset?:number;strength?:number}) {
-  const dot=useRef<Group>(null),phase=useRef(offset);
-  const glow=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d')!,g=ctx.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'#fff7dc');g.addColorStop(.13,'#ffd18b');g.addColorStop(.36,'#ff991b77');g.addColorStop(1,'#ff7b0000');ctx.fillStyle=g;ctx.fillRect(0,0,64,64);return new CanvasTexture(c);},[]);
+export default function SignalTrace({points,color=AMBER,active=true,reducedMotion=false,offset=0,strength=1,spill=0,speed=.14,progressRef}:{points:[number,number,number][];color?:string;active?:boolean;reducedMotion?:boolean;offset?:number;strength?:number;spill?:number;speed?:number;progressRef?:RefObject<number>}) {
+  const dot=useRef<Group>(null),phase=useRef(offset),light=useRef<PointLight>(null);
+  const glow=useMemo(()=>{const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d')!,g=ctx.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'#fff7dc');g.addColorStop(.1,'#ffd18b');g.addColorStop(.25,'#ffb74a55');g.addColorStop(1,'#ff9c0000');ctx.fillStyle=g;ctx.fillRect(0,0,64,64);const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;return t;},[]);
   useEffect(()=>()=>glow.dispose(),[glow]);
   const energy=useMemo(()=>new Color(color===AMBER?'#ff961c':color).multiplyScalar(1.7*strength),[color,strength]);
   const curve=useMemo(()=>{
@@ -16,14 +16,16 @@ export default function SignalTrace({points,color=AMBER,active=true,reducedMotio
   },[points]);
   useFrame((_,delta)=>{
     if(!dot.current)return;
-    if(active&&!reducedMotion)phase.current=(phase.current+Math.min(delta,.05)*.24)%1;
+    if(active&&!reducedMotion)phase.current=progressRef?(progressRef.current+offset)%1:(phase.current+Math.min(delta,.05)*speed)%1;
     dot.current.position.copy(curve.getPoint(reducedMotion?.42:phase.current));
+    if(light.current)light.current.intensity=active?spill*(.8+.2*Math.sin(phase.current*Math.PI*2)):0;
   });
   return <group>
     <Line points={points} color={active?energy:'#443b2c'} lineWidth={active?1.6*strength:.65} transparent opacity={active?.96:.55} toneMapped={false} raycast={()=>{}}/>
     <group ref={dot} visible={active} position={points[0]}>
-      <mesh raycast={()=>{}}><sphereGeometry args={[.029*strength,8,6]}/><meshBasicMaterial color={new Color('#fff1ca').multiplyScalar(3)} toneMapped={false}/></mesh>
-      <sprite scale={[.42*strength,.42*strength,1]} raycast={()=>{}}><spriteMaterial map={glow} color={energy} transparent opacity={.9} blending={AdditiveBlending} depthWrite={false} toneMapped={false}/></sprite>
+      <mesh raycast={()=>{}}><sphereGeometry args={[.018*strength,8,6]}/><meshBasicMaterial color={new Color('#fff1ca').multiplyScalar(2.5)} toneMapped={false}/></mesh>
+      <sprite scale={[.19*strength,.19*strength,1]} raycast={()=>{}}><spriteMaterial map={glow} transparent opacity={.65} blending={AdditiveBlending} depthWrite={false} toneMapped={false}/></sprite>
+      {spill>0&&<pointLight ref={light} color={color} intensity={spill} distance={1.7} decay={2}/>}
     </group>
   </group>;
 }

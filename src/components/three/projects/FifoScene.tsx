@@ -1,35 +1,32 @@
+import {useEffect,useRef} from 'react';
+import {useFrame,useThree} from '@react-three/fiber';
+import {Mesh,Vector3} from 'three';
 import {Board} from '../Board';
-import {Parts,Connector} from '../Circuitry';
-import {Edges} from '@react-three/drei';
+import {Connector,Parts} from '../Circuitry';
+import {MemoryBank,PowerBank} from '../ModuleHardware';
 import {createFifo,slotOccupied} from '../../../lib/fifo';
 import {useSceneCamera,useSceneData} from '../useSceneData';
 import SignalTrace from '../SignalTrace';
-import {Plate,Label,READ} from '../Hardware';
+import {Label,READ,AMBER} from '../Hardware';
 import type {SceneProps} from '../types';
 
-const locations=Array.from({length:8},(_,i)=>[-1.2+(i%4)*.8,.2,-.48+Math.floor(i/4)*.96] as [number,number,number]);
+const cell=(i:number)=>new Vector3((i%4-1.5)*.713,.67,(Math.floor(i/4)-.5)*.7935);
+type Transfer={write:boolean;read:boolean;writeSlot:number;readSlot:number;reset:boolean};
 export default function FifoScene({reducedMotion}:SceneProps) {
-  useSceneCamera();
-  const state=useSceneData('fifo-demo','portfolio:fifo',createFifo(8));
-  return <group rotation={[0,-.12,0]}>
-    <Board reducedMotion={reducedMotion} width={4.1} depth={2.7}/>
-    <group position={[0,.46,-1.1]}><Plate width={3.6} depth={.13} height={.75} color="#3f464a"/></group>
-    <group position={[0,.13,1.1]}><Plate width={3.6} depth={.14} height={.13} color="#747c80"/></group>
-    {[-1,1].map(side=><group key={side} position={[side*1.75,.32,0]}><Plate width={.12} depth={2.15} height={.49} color="#4f565a"/></group>)}
-    <Label text="WRITE / WR_PTR" position={[-.95,.014,1.23]} width={1.5} color="#ffbd59"/>
-    <Label text="READ / RD_PTR" position={[.95,.014,1.23]} width={1.5} color={READ}/>
-    <Label text={`COUNT ${state.count}/8 ${state.count===0?'EMPTY':state.count===8?'FULL':''}`} position={[0,.847,-1.1]} width={2.5}/>
-
-    {locations.map((position,i)=><group key={i} position={[position[0],.36,position[2]]}>
-      <mesh><boxGeometry args={[.52,.5,.55]}/><meshPhysicalMaterial color={slotOccupied(state,i)?'#ffbd59':'#57412b'} emissive='#ffb43c' emissiveIntensity={slotOccupied(state,i)?1.9:.07} metalness={.12} roughness={.15} transparent opacity={slotOccupied(state,i)?.68:.24}/><Edges color='#ffbd59'/></mesh>
-      <mesh position={[0,-.25,0]}><boxGeometry args={[.62,.08,.64]}/><meshStandardMaterial color='#606c72' metalness={.9} roughness={.25}/></mesh>
-    </group>)}
-    <Parts parts={[-1,1].flatMap(x=>[-1,1].map(z=>({position:[x*1.7,.45,z*1.05] as [number,number,number],size:[.065,.75,.065] as [number,number,number]})))} color='#a1a8aa'/>
-    <group position={[-1.94,.2,0]} rotation={[0,Math.PI/2,0]}><Connector width={1.1}/></group>
-    <group position={[1.94,.2,0]} rotation={[0,-Math.PI/2,0]}><Connector width={1.1}/></group>
-    <mesh position={[locations[state.wrPtr][0]-.12,.81,locations[state.wrPtr][2]]} rotation={[Math.PI,0,0]}><coneGeometry args={[.1,.18,3]}/><meshBasicMaterial color="#ffbd59"/></mesh>
-    <mesh position={[locations[state.rdPtr][0]+.12,.81,locations[state.rdPtr][2]]} rotation={[Math.PI,0,0]}><coneGeometry args={[.1,.18,3]}/><meshBasicMaterial color="#b5d6e2"/></mesh>
-    <SignalTrace strength={1.5} reducedMotion={reducedMotion} points={[[-2.8,.05,.95],[-1.85,.05,.95],[-1.85,.05,-.85],[0,.05,-.85],[1.85,.05,-.85],[1.85,.05,.95],[2.8,.05,.95]]}/>
-    <pointLight position={[0,.5,.7]} color='#ffa63b' intensity={3} distance={3} decay={2}/>
-  </group>;
+ useSceneCamera();const state=useSceneData('fifo-demo','portfolio:fifo',createFifo(8)),write=useRef<Mesh>(null),read=useRef<Mesh>(null),transition=useRef({write:false,read:false,writeSlot:0,readSlot:0,progress:1});const {invalidate}=useThree();
+ useEffect(()=>{const receive=(event:Event)=>{const t=(event as CustomEvent<Transfer>).detail;transition.current={write:t.write&&!t.reset,read:t.read&&!t.reset,writeSlot:t.writeSlot,readSlot:t.readSlot,progress:0};invalidate();};window.addEventListener('portfolio:fifo-transfer',receive);return()=>window.removeEventListener('portfolio:fifo-transfer',receive);},[invalidate]);
+ useFrame((_,delta)=>{const t=transition.current;t.progress=reducedMotion?1:Math.min(1,t.progress+Math.min(delta,.05)*.8);if(write.current){write.current.visible=t.write&&(reducedMotion||t.progress<1);write.current.position.lerpVectors(new Vector3(-2.1,.55,.75),cell(t.writeSlot),t.progress);}if(read.current){read.current.visible=t.read&&(reducedMotion||t.progress<1);read.current.position.lerpVectors(cell(t.readSlot),new Vector3(2.1,.55,.75),t.progress);}});
+ return <group rotation={[0,-.2,0]}>
+  <Board reducedMotion={reducedMotion} width={4.35} depth={2.8}/>
+  <group position={[0,.12,0]}><MemoryBank scale={1.15} occupied={state.memory.map((_,i)=>slotOccupied(state,i))} values={state.memory}/></group>
+  {[-1,1].map(s=><group key={s} position={[s*1.94,.28,0]}><PowerBank count={7}/><group position={[0,.11,.79]} rotation={[0,s*Math.PI/2,0]}><Connector width={.65}/></group></group>)}
+  <Parts parts={[-1,1].flatMap(s=>Array.from({length:10},(_,i)=>({position:[(i-4.5)*.35,.09,s*1.25] as [number,number,number],size:[.13,.13,.15] as [number,number,number]})))} color='#253c42' metalness={.15}/>
+  <Label text='WRITE / WR_PTR' position={[-.97,.015,1.24]} width={1.5} color={AMBER}/><Label text='READ / RD_PTR' position={[.97,.015,1.24]} width={1.5} color={READ}/>
+  <Label text={`COUNT ${state.count}/8 ${state.count===0?'EMPTY':state.count===8?'FULL':''}`} position={[0,1.225,0]} width={2.5}/>
+  {[['write',state.wrPtr,AMBER,-.1],['read',state.rdPtr,READ,.1]].map(([kind,i,color,dx])=><mesh key={String(kind)} position={[cell(Number(i)).x+Number(dx),1.35,cell(Number(i)).z]} rotation={[Math.PI,0,0]}><coneGeometry args={[.075,.14,3]}/><meshBasicMaterial color={String(color)}/></mesh>)}
+  <mesh ref={write} visible={false}><boxGeometry args={[.12,.17,.12]}/><meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={2.5}/></mesh><mesh ref={read} visible={false}><boxGeometry args={[.12,.17,.12]}/><meshStandardMaterial color={READ} emissive={READ} emissiveIntensity={2}/></mesh>
+  <SignalTrace spill={1.1} strength={1.2} reducedMotion={reducedMotion} points={[[-3,.05,.8],[-1.98,.05,.8],[-1.98,.32,.8],[-1.68,.32,.8],[-1.68,.15,.75],[-1.42,.15,.75]]}/>
+  <SignalTrace color={READ} strength={.9} reducedMotion={reducedMotion} points={[[1.42,.15,.75],[1.68,.15,.75],[1.68,.32,.8],[1.98,.32,.8],[1.98,.05,.8],[3,.05,.8]]}/>
+  <pointLight position={[0,.6,0]} color='#ffb554' intensity={1.9} distance={2.8} decay={2}/>
+ </group>;
 }

@@ -60,7 +60,7 @@ export function Processor({width=1.2,active=true}:{width?:number;active?:boolean
  const fins=useMemo(()=>Array.from({length:13},(_,i)=>({position:[(i-6)*width*.052,.246,0] as [number,number,number],size:[width*.025,.024,width*.64] as [number,number,number]})),[width]);
  return <group>
   <Plate width={width*1.27} depth={width*1.27} height={.075} color='#3d4239'/>
-  <group position={[0,.12,0]}><Plate width={width} depth={width} height={.16} color='#14181a'/></group>
+  <mesh castShadow position={[0,.12,0]}><boxGeometry args={[width,.16,width]}/><meshStandardMaterial color='#151c21' metalness={.12} roughness={.58}/></mesh>
   <group position={[0,.22,0]}><Plate width={width*.75} depth={width*.72} height={.05} color='#172126'/></group>
   <Parts parts={pins} color='#bbad84' roughness={.27}/><Parts parts={fins} color='#4d6068' roughness={.25}/>
   <Label text='OA / COMPUTE' position={[0,.263,0]} width={width*.57}/>
@@ -78,6 +78,9 @@ export function SystemBed({reducedMotion,tier='medium',width=7.8,depth=6}:{reduc
   <CircuitBoard width={width} depth={depth} tier={tier} seed={33} components={false}/>
   <group position={[-width*.38,.08,-depth*.29]}><CircuitBoard width={1.1} depth={1.3} tier={tier} seed={41}/><Processor width={.45} active={false}/></group>
   <group position={[width*.36,.09,depth*.25]}><CircuitBoard width={1.2} depth={1.1} tier={tier} seed={47}/><Connector width={.7} count={8}/></group>
+  <Parts parts={[-1,1].flatMap(s=>Array.from({length:tier==='low'?8:15},(_,i)=>({position:[s*width*.43,.1,(i-7)*depth/18] as [number,number,number],size:[.25,.14,.16] as [number,number,number]})))} color='#17272c' metalness={.15} roughness={.67}/>
+  <Parts parts={[-1,1].flatMap(s=>Array.from({length:18},(_,i)=>({position:[(i-8.5)*width/22,.11,s*depth*.43] as [number,number,number],size:[.17,.065,.19] as [number,number,number]})))} color='#28373b' metalness={.6} roughness={.4}/>
+  {[-1,1].map(s=><group key={s} position={[s*width*.35,.07,-depth*.36]}><CircuitBoard width={1.2} depth={.85} tier={tier} seed={42+s}/><Processor width={.52} active={false}/><group position={[0,.1,.48]}><Connector width={.9}/></group></group>)}
   {[-1,1].flatMap(side=>[0,1,2].map(n=><SignalTrace key={`${side}-${n}`} reducedMotion={reducedMotion} offset={n*.19+(side+1)*.18} strength={n===1?1.4:.8} points={[[side*width*.48,.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,-depth*.4+n*.23],[side*(1.7+n*.21),.074,depth*.23+n*.2],[side*width*.48,.074,depth*.23+n*.2]]}/>))}
  </group>;
 }

@@ -11,6 +11,7 @@ export default function FifoDemo() {
   useEffect(()=>{window.dispatchEvent(new CustomEvent('portfolio:fifo',{detail:state}));},[state]);
   const step=(reset=false)=>{
     const transfer=clockFifo(state,{wrValid:write,rdReady:read,data,reset});
+    window.dispatchEvent(new CustomEvent('portfolio:fifo-transfer',{detail:{write:transfer.writeAccepted,read:transfer.readAccepted,writeSlot:state.wrPtr,readSlot:state.rdPtr,reset}}));
     setState(transfer.state);
     setMessage(reset?'Synchronous reset applied at this edge. Queue empty; stored memory is unchanged.':`${transfer.writeAccepted?'Write accepted':'Write not accepted'}; ${transfer.readAccepted?`read accepted: 0x${hex(transfer.readValue??0)}`:'read not accepted'}. Occupancy ${transfer.state.count} of 8.`);
   };
