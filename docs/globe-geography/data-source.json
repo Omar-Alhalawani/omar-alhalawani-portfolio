@@ -1,0 +1,45 @@
+{
+  "source": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-110m.json",
+  "version": "world-atlas 2.0.2 / Natural Earth 4.1.0 land 1:110m",
+  "sha256": "ead5f68119c49a9250902e7da303bcb209341bbb8fefe7369a439b48b704658a",
+  "license": "Natural Earth public domain; world-atlas redistribution ISC",
+  "licenseURL": "https://github.com/topojson/world-atlas/blob/master/LICENSE",
+  "sampleCounts": {
+    "medium": 1187,
+    "low": 494
+  },
+  "endpointLandChecks": {
+    "ottawa": true,
+    "europe": true,
+    "africa": true,
+    "asia": true,
+    "southAmerica": true,
+    "oceania": true
+  },
+  "nodes": {
+    "ottawa": [
+      45.4215,
+      -75.6972
+    ],
+    "europe": [
+      48.86,
+      2.35
+    ],
+    "africa": [
+      -1.29,
+      36.82
+    ],
+    "asia": [
+      28.61,
+      77.21
+    ],
+    "southAmerica": [
+      -23.55,
+      -46.63
+    ],
+    "oceania": [
+      -33.87,
+      151.21
+    ]
+  }
+}
