@@ -21,7 +21,7 @@ export function initializeWaveforms(){if(initialized)return;initialized=true;
     if(canvas.width!==Math.round(width*dpr)||canvas.height!==height*dpr){canvas.width=Math.round(width*dpr);canvas.height=height*dpr;}
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);const end=start+span,sx=(t:number)=>left+(t-start)/span*(width-left-12);
     if(eventIndex>=0){const e=data.events[eventIndex];ctx.fillStyle='#ffbd5910';ctx.fillRect(Math.max(left,sx(e.start)),top,Math.max(0,Math.min(width,sx(e.end))-Math.max(left,sx(e.start))),height-top);}
-    ctx.font='10px monospace';ctx.lineWidth=1;
+    ctx.font=innerWidth<=650?'11px monospace':'10px monospace';ctx.lineWidth=1;
     for(let t=Math.ceil(start/(span/8))*(span/8);t<=end;t+=span/8){ctx.strokeStyle='#253038';ctx.beginPath();ctx.moveTo(sx(t),top);ctx.lineTo(sx(t),height-10);ctx.stroke();ctx.fillStyle='#83949f';ctx.fillText(String(Math.round(t)),sx(t)-8,18);}
     data.signals.forEach((item,i)=>{
      const y=top+i*row,color=item.name.startsWith('rd')||item.name==='dout'?'#b5d6e2':'#ffbd59';
@@ -50,8 +50,9 @@ export function initializeWaveforms(){if(initialized)return;initialized=true;
     host.querySelector('[data-wave-description]')!.textContent=`${e.label} · ticks ${e.start}–${e.end}. ${e.description}`;
     if(inspect)probe(e.signals.includes('full')?'full':e.signals[0]);render();
    },{signal}));
+   const inspectPoint=(e:PointerEvent)=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;cursor=Math.max(start,Math.min(start+span,start+(x-left)/(r.width-left-12)*span));const i=Math.floor((y-top)/row);if(inspect&&data.signals[i])probe(data.signals[i].name);render();};
    let gesture:{x:number;y:number;start:number;id:number;claimed:boolean;touch:boolean}|undefined;
-   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;gesture={x:e.clientX,y:e.clientY,start,id:e.pointerId,claimed:e.pointerType==='mouse',touch:e.pointerType!=='mouse'};if(gesture.claimed)canvas.setPointerCapture(e.pointerId);},{signal});
+   canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;gesture={x:e.clientX,y:e.clientY,start,id:e.pointerId,claimed:e.pointerType==='mouse',touch:e.pointerType!=='mouse'};if(gesture.claimed)canvas.setPointerCapture(e.pointerId);else inspectPoint(e);},{signal});
    canvas.addEventListener('pointermove',e=>{
     const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
     if(gesture){const dx=e.clientX-gesture.x,dy=e.clientY-gesture.y;if(!gesture.claimed&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)) {gesture.claimed=true;canvas.setPointerCapture(e.pointerId);}if(gesture.claimed){setStart(gesture.start-dx/(r.width-left-12)*span);return;}}

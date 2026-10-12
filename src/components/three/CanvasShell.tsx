@@ -27,7 +27,7 @@ function SteelEnvironment({kind}:{kind:SceneKind}) {
  useEffect(()=>{
   const started=performance.now(),generator=new PMREMGenerator(gl),environment=generator.fromEquirectangular(source);
   const p=window.__PORTFOLIO_PROFILE__;if(p)(p.scenes[kind]??={}).pmremMs=performance.now()-started;
-  scene.environment=environment.texture;scene.environmentIntensity=kind==='hero'?.85:.65;
+  scene.environment=environment.texture;scene.environmentIntensity=kind==='hero'?.85:kind==='floorplan'&&matchMedia('(pointer: coarse)').matches?.9:.65;
   gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.02;
   generator.dispose();invalidate();return()=>{scene.environment=null;environment.dispose();};
  },[gl,scene,invalidate,source,kind]);
@@ -78,13 +78,13 @@ export default function CanvasShell({ scene, host, onReady, onFailure, onContext
   const monitor=useRef({elapsed:0,frames:0,poor:0,healthy:0,last:0});
   const onSlow=useCallback((delta:number)=>{const m=monitor.current;if(!Number.isFinite(delta)||delta<=0)return;m.elapsed+=Math.min(delta,1);m.frames++;if(m.elapsed<1)return;const mean=m.elapsed/m.frames;m.last++;m.poor=mean>.028?m.poor+1:0;m.healthy=mean<.019?m.healthy+1:0;if(m.poor>=4&&m.last>=4){setStage(value=>Math.min(6,value+1));m.poor=m.last=0;}else if(m.healthy>=25&&m.last>=25){setStage(value=>Math.max(0,value-1));m.healthy=m.last=0;}m.elapsed=m.frames=0;},[]);
   const [reducedMotion, setReducedMotion] = useState(()=>typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const [tier, setTier] = useState<GraphicsTier>(()=>typeof window==='undefined'?'medium':window.matchMedia('(pointer: coarse)').matches||innerWidth<768?'low':innerWidth>=1600?'high':'medium');
+  const [tier, setTier] = useState<GraphicsTier>(()=>typeof window==='undefined'?'medium':(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData||window.matchMedia('(pointer: coarse)').matches||innerWidth<768?'low':innerWidth>=1600?'high':'medium');
   const [prepared,setPrepared]=useState(false);
   const preparedScene=useCallback(()=>setPrepared(true),[]);
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const updateMotion = () => setReducedMotion(media.matches);
-    const chooseTier = () => setTier(window.matchMedia('(pointer: coarse)').matches || innerWidth < 768 ? 'low' : innerWidth >= 1600 ? 'high' : 'medium');
+    const chooseTier = () => setTier((navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData || window.matchMedia('(pointer: coarse)').matches || innerWidth < 768 ? 'low' : innerWidth >= 1600 ? 'high' : 'medium');
     updateMotion(); chooseTier();
     window.addEventListener('resize', chooseTier, { passive:true });
     media.addEventListener('change', updateMotion);
@@ -99,7 +99,7 @@ export default function CanvasShell({ scene, host, onReady, onFailure, onContext
   },[host,visible,reducedMotion]);
   return <Canvas className="scene-canvas" shadows={shadows} dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:false, powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onContextLost={onContextLost} reducedMotion={reducedMotion} tier={detailTier} kind={scene} stage={stage} onSlow={onSlow} />
-    <SteelEnvironment kind={scene}/><ambientLight intensity={.16} />
+    <SteelEnvironment kind={scene}/><ambientLight intensity={scene==='floorplan'&&tier==='low'?.28:.16} />
     <fog attach="fog" args={['#07090b',9,19]}/>
     <directionalLight castShadow={shadows} position={[-3,5,4]} color="#e4eef5" intensity={2.05} shadow-mapSize={stage>=4||tier==='medium'?[512,512]:[1024,1024]} shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={5} shadow-camera-bottom={-5} shadow-camera-far={18} shadow-bias={-.00025} shadow-normalBias={.012} />
     <directionalLight position={[4,2,-3]} color="#c4dbea" intensity={1.25} />

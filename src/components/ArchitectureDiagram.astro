@@ -27,6 +27,11 @@ const notes:Record<string,string>={
   .control-path>span { border-style:dashed; color:var(--read); font-size:9px; padding-block:12px; }
   .architecture-note { margin-top:22px; font-size:11px; line-height:1.85; color:var(--muted); }
   @media(max-width:650px) { .path,.control-path { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .path>span,.path>li,.control-path>span { font-size:9px; padding:14px 12px; } .path>span::after,.path>li::after { display:none; } .architecture-diagram { margin-block:32px; } }
+ @media(max-width:650px){
+  .architecture-diagram{padding:20px 16px}.path{grid-template-columns:1fr;gap:28px}.path>span,.path>li{font-size:12px;padding:16px}
+  .path>span:not(:last-child)::after,.path>li:not(:last-child)::after{display:block;content:'↓';right:50%;top:auto;bottom:-25px}
+  .control-path{grid-template-columns:1fr 1fr;gap:8px}.control-path>span{font-size:11px}.architecture-note,small{font-size:12px}
+ }
 </style>
 
 <style>

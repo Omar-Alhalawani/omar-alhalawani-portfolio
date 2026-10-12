@@ -1,0 +1,39 @@
+{
+  "renderer": "Chromium software SwiftShader; touch emulation, not physical iOS/Android devices",
+  "widths": [
+    {
+      "width": 320,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "overflow": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false
+    }
+  ],
+  "checks": [
+    "Hero peeks into first viewport; horizontal tilt responds/settles; native vertical scroll works",
+    "Model tap selects; CubeX loops; second model tap stays selected; selector/sheet sync; explicit Open Project camera handoff works; sheet does not overlap models",
+    "Sticky case rail and anchor offset; waveform touch pan and tap cursor",
+    "Globe drag and vertical scroll coexist; mobile form input remains usable",
+    "Reduced motion static; Save-Data immediately retains real static artwork without a canvas",
+    "Navigation sheet opens, inerts background, exposes six routes, and closes with Escape"
+  ],
+  "errors": []
+}

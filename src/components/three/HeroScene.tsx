@@ -15,17 +15,21 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
   useEffect(()=>{
     camera.position.set(0,2.45,7.5);camera.lookAt(0,0,0);
     const surface=document.querySelector<HTMLElement>('[data-hero-surface]');
+    let drag:{id:number;x:number;y:number;claimed:boolean}|undefined;
+    const down=(event:PointerEvent)=>{if(reducedMotion||event.pointerType==='mouse'||!(event.target as Element).closest('.world-stage'))return;drag={id:event.pointerId,x:event.clientX,y:event.clientY,claimed:false};};
     const move=(event:PointerEvent)=>{
+      if(drag&&event.pointerId===drag.id&&surface){const dx=event.clientX-drag.x,dy=event.clientY-drag.y;if(!drag.claimed&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)*.9){drag.claimed=true;surface.setPointerCapture(event.pointerId);}if(drag.claimed){engaged.current=true;target.current.set(MathUtils.clamp(dx/200,-1,1),MathUtils.clamp(dy/250,-.6,.6));invalidate();}return;}
       if(reducedMotion||event.pointerType!=='mouse'||!surface)return;
       const rect=surface.getBoundingClientRect();
       engaged.current=true;target.current.set(MathUtils.clamp((event.clientX-rect.left)/rect.width*2-1,-1,1),MathUtils.clamp((event.clientY-rect.top)/rect.height*2-1,-1,1));
       invalidate();
     };
-    const neutral=()=>{engaged.current=false;target.current.set(0,0);invalidate();};
+    const neutral=()=>{drag=undefined;engaged.current=false;target.current.set(0,0);invalidate();};
+    surface?.addEventListener('pointerdown',down,{passive:true});surface?.addEventListener('pointerup',neutral);surface?.addEventListener('pointercancel',neutral);
     surface?.addEventListener('pointermove',move,{passive:true});
     surface?.addEventListener('pointerleave',neutral);
     window.addEventListener('blur',neutral);
-    return()=>{surface?.removeEventListener('pointermove',move);surface?.removeEventListener('pointerleave',neutral);window.removeEventListener('blur',neutral);};
+    return()=>{surface?.removeEventListener('pointerdown',down);surface?.removeEventListener('pointerup',neutral);surface?.removeEventListener('pointercancel',neutral);surface?.removeEventListener('pointermove',move);surface?.removeEventListener('pointerleave',neutral);window.removeEventListener('blur',neutral);};
   },[camera,invalidate,reducedMotion]);
   useFrame((_,delta)=>{
     if(!form.current) return;
@@ -35,8 +39,8 @@ export default function HeroScene({ reducedMotion, tier }: SceneProps) {
     engagement.current=MathUtils.damp(engagement.current,engaged.current&&!reducedMotion?1:0,motion.light,dt);
     pointer.current.x=MathUtils.damp(pointer.current.x,target.current.x,motion.pose,dt);
     pointer.current.y=MathUtils.damp(pointer.current.y,target.current.y,motion.pose,dt);
-    const px=reducedMotion||tier==='low'?0:pointer.current.x;
-    const py=reducedMotion||tier==='low'?0:pointer.current.y;
+    const px=reducedMotion?0:pointer.current.x;
+    const py=reducedMotion?0:pointer.current.y;
     const settle=(value:number,target:number,speed:number)=>reducedMotion?target:MathUtils.damp(value,target,speed,dt);
     form.current.position.y=settle(form.current.position.y,layer*.72,4);
     form.current.scale.setScalar(Math.min(1.18,viewport.width/5.25));

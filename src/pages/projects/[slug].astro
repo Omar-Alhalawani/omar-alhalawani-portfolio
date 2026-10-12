@@ -37,7 +37,7 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
  import {onPage} from '../../lib/page-lifecycle';
  onPage(()=>{
  const nav=document.querySelector<HTMLElement>('.case-toc');
- if(nav){const links=[...nav.querySelectorAll<HTMLAnchorElement>('a')];const sections=links.map(a=>document.getElementById(a.hash.slice(1))).filter((s):s is HTMLElement=>Boolean(s));const update=(id:string)=>links.forEach(a=>{if(a.hash===`#${id}`)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});if(sections[0])update(sections[0].id);const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible[0])update(visible[0].target.id);},{rootMargin:'-120px 0px -55% 0px'});sections.forEach(section=>observer.observe(section));return()=>observer.disconnect();}
+ if(nav){const links=[...nav.querySelectorAll<HTMLAnchorElement>('a')];const sections=links.map(a=>document.getElementById(a.hash.slice(1))).filter((s):s is HTMLElement=>Boolean(s));const update=(id:string)=>links.forEach(a=>{if(a.hash===`#${id}`){a.setAttribute('aria-current','location');if(innerWidth<=800&&nav.getBoundingClientRect().top<=80)nav.scrollTo({left:a.offsetLeft-nav.clientWidth/2+a.clientWidth/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}else a.removeAttribute('aria-current');});if(sections[0])update(sections[0].id);const observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(visible[0])update(visible[0].target.id);},{rootMargin:'-120px 0px -55% 0px'});sections.forEach(section=>observer.observe(section));return()=>observer.disconnect();}
  });
 </script>
 <style>
@@ -92,4 +92,14 @@ const sceneLabel:Record<string,string>={fifo:'Eight illustrative memory cells, w
   @media(max-width:1050px) { .case-hero { gap:30px; } .case-toc { gap:0 20px; } }
   @media(max-width:800px) { .case-hero { grid-template-columns:1fr; padding-top:30px; gap:20px; padding-bottom:50px; } .case-heading>.lead { max-width:670px; } .case-canvas { height:340px; } .case-content { display:block; padding-top:32px; } .case-toc { position:sticky; top:var(--header); margin-bottom:40px; display:flex; flex-wrap:nowrap; overflow-x:auto; gap:0 20px; } .case-toc>.eyebrow { width:100%; margin-bottom:6px; } .case-toc>a { max-width:250px; flex-shrink:0; white-space:nowrap; } }
   @media(max-width:600px) { .case-canvas { height:290px; } .case-art figcaption { font-size:8px; } .case-heading h1 { font-size:45px; } .case-heading h1[data-title-length="long"],.case-heading h1[data-title-length="very-long"] { font-size:clamp(32px,8.4vw,42px); } .case-heading>.lead { font-size:15px; } .case-section { margin-top:32px; padding:28px 0 8px; } .simulation-evidence { padding:20px; }.evidence-result { padding:18px; }.case-prose p,.case-prose li { font-size:13px; } .related-projects>div { grid-template-columns:1fr; gap:0; } .related-projects h3 { font-size:25px; } .case-toc>a { padding-block:8px; min-height:44px; font-size:10px; } }
+ @media(max-width:800px){
+  .case-back{margin-top:16px;font-size:13px}.case-hero{padding-block:20px 32px;gap:12px}
+  .case-heading .eyebrow{margin-bottom:14px}.case-heading h1{font-size:36px;margin-bottom:16px}
+  .case-heading h1[data-title-length="long"],.case-heading h1[data-title-length="very-long"]{font-size:clamp(29px,8vw,35px);line-height:1.12}
+  .case-heading>.lead{font-size:14px;line-height:1.7;margin-bottom:16px}.case-status{font-size:11px;margin-block:14px}
+  .case-canvas{height:300px}.case-art figcaption{font-size:11px}.case-toc{padding:6px 0;gap:20px;margin-bottom:32px;scrollbar-width:thin}
+  .case-toc>a{font-size:12px;min-height:44px;padding:10px 0}.case-prose>section{scroll-margin-top:calc(var(--header) + 76px)}
+  .case-content{padding-top:0}.case-prose p,.case-prose li{font-size:14px;line-height:1.8}
+  .project-pagination{gap:12px}.project-pagination strong{font-size:17px}.project-pagination>a{font-size:11px}
+ }
 </style>

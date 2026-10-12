@@ -37,7 +37,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   const [active,setActive]=useState('fifo'),[opening,setOpening]=useState<string|null>(null);
   const selection=useMicroSequence(Boolean(physical),reducedMotion,3,3.6,'selection',physical||'');
   const groups=useRef<(Group|null)[]>([]),transition=useRef<CameraOpening|null>(null);
-  const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),lastTouch=useRef<string|null>(null),look=useRef(new Vector3(0,.25,0));
+  const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),look=useRef(new Vector3(0,.25,0));
   const {invalidate,camera,size,gl,scene}=useThree();
   const [labelLayer]=useState(()=>document.createElement('div')),labels=useRef(labelLayer);
   useLayoutEffect(()=>{
@@ -136,8 +136,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     event.stopPropagation();const gesture=down.current;down.current=null;
     if(!gesture||gesture.id!==id||Math.hypot(event.clientX-gesture.x,event.clientY-gesture.y)>8||performance.now()-gesture.time>700)return;
     if(event.pointerType==='mouse')open(id);
-    else if(lastTouch.current===id&&active===id)open(id);
-    else{lastTouch.current=id;setProjectIntent(id,'tap');}
+    else setProjectIntent(id,'tap');
   };
   return <group rotation={[0,-.23,0]}>
     <group position={[0,-.37,-.28]}><SystemBed width={8.6} depth={7} peripherals={false} tier={tier} reducedMotion={reducedMotion}/></group>

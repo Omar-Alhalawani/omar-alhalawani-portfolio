@@ -11,8 +11,25 @@ const active = (href: string) => href === '/' ? path === '/' : path === href || 
       {navigation.map(({href,label}) => <a href={href} class:list={[{active:active(href)}, {'nav-resume':href === '/resume'}]} aria-current={active(href) ? 'page' : undefined}>{label}{href === '/resume' && <span aria-hidden="true"> ↗</span>}</a>)}
     </nav>
     <details class="mobile-nav">
-      <summary>Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span></summary>
+      <summary aria-label="Navigation menu"><span class="sr-only">Menu</span><span class="menu-icon" aria-hidden="true"><i></i><i></i></span></summary>
       <nav aria-label="Mobile navigation">{navigation.map(({href,label}) => <a href={href} aria-current={active(href) ? 'page' : undefined}>{label}<span aria-hidden="true">↗</span></a>)}</nav>
     </details>
   </div>
 </header>
+
+<script>
+ import {onPage} from '../lib/page-lifecycle';
+ onPage(signal=>{
+  const menu=document.querySelector<HTMLDetailsElement>('.mobile-nav'),main=document.querySelector<HTMLElement>('main'),footer=document.querySelector<HTMLElement>('footer');
+  const summary=menu?.querySelector<HTMLElement>('summary');
+  const sync=()=>{const open=Boolean(menu?.open);document.body.classList.toggle('mobile-menu-open',open);if(main)main.inert=open;if(footer)footer.inert=open;};
+  sync();menu?.addEventListener('toggle',sync,{signal});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu?.open){menu.open=false;sync();summary?.focus();}},{signal});
+  menu?.addEventListener('keydown',event=>{
+   if(event.key==='Escape'&&menu.open){menu.open=false;sync();summary?.focus();}
+   if(event.key==='Tab'&&menu.open){const stops=[summary,...menu.querySelectorAll<HTMLElement>('a')].filter((e):e is HTMLElement=>Boolean(e));const first=stops[0],last=stops.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
+  },{signal});
+  menu?.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{menu.open=false;sync();},{signal}));
+  return()=>{document.body.classList.remove('mobile-menu-open');if(main)main.inert=false;if(footer)footer.inert=false;};
+ });
+</script>

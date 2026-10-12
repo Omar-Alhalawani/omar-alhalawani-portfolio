@@ -28,7 +28,7 @@ const data=parseFifoVcd(readFileSync('public/evidence/fifo/directed-tests.vcd','
  a { color:var(--amber); }
  .probe-list,.wave-events { display:flex; flex-wrap:wrap; gap:8px; margin-block:20px; }
  .probe-list[hidden] { display:none; }
- .probe-list button,.wave-events button { min-height:40px; padding:8px 12px; font:10px/1.6 var(--mono); border:1px solid var(--line); background:#151d20; border-radius:var(--radius); transition:background var(--motion-micro) var(--ease-out),border-color var(--motion-micro) var(--ease-out); }
+ .probe-list button,.wave-events button { min-height:44px; padding:8px 12px; font:10px/1.6 var(--mono); border:1px solid var(--line); background:#151d20; border-radius:var(--radius); transition:background var(--motion-micro) var(--ease-out),border-color var(--motion-micro) var(--ease-out); }
  .probe-list button:hover,.wave-events button:hover { background:#20282b; border-color:#69757b80; }
  button[aria-pressed='true'] { border-color:var(--amber); color:var(--amber); }
  .signal-explanation { border-left:2px solid var(--amber); background:#182024; padding:14px 18px; font:12px/1.8 var(--body); margin-bottom:18px; min-height:70px; }
@@ -45,4 +45,5 @@ const data=parseFifoVcd(readFileSync('public/evidence/fifo/directed-tests.vcd','
  summary { min-height:44px; padding-block:12px; }
  dt { color:var(--amber); font-family:var(--mono); } dd { margin:4px 0 16px; }
  @media(max-width:650px) { .signal-title { display:block; } .signal-title button { margin-bottom:16px; } input { width:120px; } canvas { height:530px; } }
+ @media(max-width:650px){.fifo-signals{padding:18px 0;border:0;border-top:1px solid var(--edge);border-radius:0;background:transparent}.wave-source,.wave-note{font-size:12px!important}.probe-list button,.wave-events button{font-size:11px}.wave-events{flex-wrap:nowrap;overflow-x:auto}.wave-events button{flex-shrink:0}.wave-toolbar{font-size:12px}.wave-toolbar select{min-height:44px}.wave-toolbar input{min-height:44px}.wave-canvas-wrap{margin-inline:-8px}}
 </style>

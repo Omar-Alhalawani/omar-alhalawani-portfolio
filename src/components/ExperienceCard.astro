@@ -22,4 +22,13 @@ const Heading=heading;
   .experience-card--compact h1,.experience-card--compact h3 { font-size:clamp(30px,3vw,44px); }
   @media(max-width:900px) { .experience-card { grid-template-columns:160px 1fr; gap:32px; } }
   @media(max-width:600px) { .experience-card { display:block; padding-block:32px 40px; } .experience-meta { margin-bottom:24px; } .experience-card--compact { padding:0; } .company-label { font-size:10px; } ul { font-size:13px; } }
+  @media(max-width:800px){
+   .experience-card--compact .experience-meta{gap:6px 16px;margin-bottom:16px;font-size:11px}
+   .company-label{margin-bottom:12px;font-size:13px}
+   .experience-card--compact h1,.experience-card--compact h3{font-size:32px;margin-bottom:16px}
+   .experience-summary{font-size:14px;line-height:1.7;margin-bottom:16px}
+   ul{font-size:14px;line-height:1.7;margin-bottom:20px}li+li{margin-top:8px}
+   .experience-card--compact .tech-tags{gap:5px}
+   .experience-card--compact .tech-tag:last-child{display:none}
+  }
 </style>

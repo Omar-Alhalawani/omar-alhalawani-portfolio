@@ -82,4 +82,18 @@ import { featuredProjects } from '../data/projects';
     .hero h1 { font-size:49px; }
     .hero-statement { font-size:22px; }
   }
+  @media(max-width:800px){
+    .hero{display:block;padding-top:28px;padding-bottom:40px;min-height:0}
+    .hero h1{font-size:clamp(44px,12vw,58px);margin-bottom:16px}
+    .hero .eyebrow{font-size:10px;margin-bottom:12px}
+    .eyebrow-break{display:none}
+    .hero-statement{font-size:21px;line-height:1.25;margin-bottom:12px;max-width:28ch}
+    .hero-description{font-size:14px;line-height:1.65;max-width:45ch}
+    .hero .actions{margin-top:18px;gap:8px}
+    .hero .button{min-height:44px;font-size:12px;padding:10px 13px}
+    .hero-bottom{position:static;margin-top:16px;font-size:10px;line-height:1.6}
+    .hero-assembly{min-height:calc(100svh - var(--header));}
+    .world-stage{height:clamp(300px,42svh,420px);margin-top:-28px}
+    .world-window{height:100%;min-height:0;touch-action:pan-y}
+  }
 </style>

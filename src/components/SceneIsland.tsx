@@ -34,7 +34,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
     const element = host.current;
     if (!element) return;
     if(destination()){element.dataset.handoff='true';navigationMark('scene-mount');}
-    if (new URLSearchParams(location.search).get('graphics') === 'static') {
+    if (new URLSearchParams(location.search).get('graphics') === 'static'||(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData&&!window.__PROJECT_HANDOFF__) {
       fail();
       return;
     }
