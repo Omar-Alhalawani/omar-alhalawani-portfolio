@@ -71,17 +71,17 @@ const mobileProjects=[...projects].sort((a,b)=>mobileOrder.indexOf(a.id)-mobileO
     .project-map{padding:16px 0 0;overflow:hidden;isolation:isolate}
     .world-instruction{position:relative;z-index:2;padding-inline:16px;font-size:10px}
     .mobile-project-selector{position:relative;z-index:3;display:flex;gap:4px;overflow-x:auto;padding:8px 12px;scrollbar-width:thin}
-    .mobile-project-selector button{flex-shrink:0;min-width:44px;min-height:44px;padding:8px 12px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font:11px var(--mono)}
+    .mobile-project-selector button{flex-shrink:0;min-width:44px;min-height:44px;padding:8px 8px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font:11px var(--mono)}
     .mobile-project-selector button[aria-pressed='true']{color:var(--amber);border-bottom-color:var(--amber)}
     .platform-canvas{height:clamp(430px,65svh,620px);margin:0;transform:translateY(-60px);}
-    .project-preview{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:16px 18px max(16px,env(safe-area-inset-bottom));border:0;border-top:1px solid var(--edge);border-radius:0;background:linear-gradient(150deg,#182125f7,#0b1013fa);box-shadow:none;animation:project-sheet var(--motion-standard) var(--ease-out) both}
+    .project-preview{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:12px 16px max(10px,env(safe-area-inset-bottom));border:0;border-top:1px solid var(--edge);border-radius:0;background:linear-gradient(150deg,#182125f7,#0b1013fa);box-shadow:none;animation:project-sheet var(--motion-standard) var(--ease-out) both}
     .project-title-full{display:none}.project-title-mobile{display:inline}
     .project-preview>div:not([hidden]){animation:project-sheet var(--motion-standard) var(--ease-out) both}
     .project-explorer[data-engaged="true"] .project-map{padding-bottom:0}
     .project-explorer:not([data-engaged="true"]) .project-preview p:not(.eyebrow){display:none}
     .project-preview .eyebrow{font-size:10px;margin-bottom:6px}
     .project-preview h3{font-size:21px;line-height:1.15;margin-bottom:8px;max-width:32ch}
-    .project-preview p:not(.eyebrow){font-size:13px;line-height:1.6;max-width:45ch}
+    .project-preview p:not(.eyebrow){font-size:12px;line-height:1.5;max-width:45ch}
     .project-preview .text-link{margin-top:4px;min-height:44px;font-size:13px}
     .project-map>.art-caption{display:none}
     .project-list{display:none}

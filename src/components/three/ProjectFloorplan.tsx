@@ -1,7 +1,7 @@
 import {useCallback,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {motion as response} from './motion';
 import {useFrame,useThree,type ThreeEvent} from '@react-three/fiber';
-import {Group,MathUtils,Vector3} from 'three';
+import {Group,MathUtils,Vector3,PointLight} from 'three';
 import {Html,Line} from '@react-three/drei';
 import {CircuitBoard,Connector,Parts,SystemBed} from './Circuitry';
 import {Plate} from './Hardware';
@@ -39,6 +39,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   const groups=useRef<(Group|null)[]>([]),transition=useRef<CameraOpening|null>(null);
   const down=useRef<{x:number;y:number;id:string;time:number}|null>(null),look=useRef(new Vector3(0,.25,0));
   const {invalidate,camera,size,gl,scene}=useThree();
+  const selectedFill=useRef<PointLight>(null);
   const [labelLayer]=useState(()=>document.createElement('div')),labels=useRef(labelLayer);
   useLayoutEffect(()=>{
     // Drei owns these portal nodes. Keep them outside React's canvas children
@@ -55,7 +56,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     const read=(event:Event)=>{const id=(event as CustomEvent<string>).detail;if(regions.some(r=>r.id===id)){setActive(id);invalidate();}};
     const selected=document.querySelector<HTMLElement>('[data-project-world]')?.dataset.selected;
     if(selected)setActive(selected);
-    const intent=()=>{setPhysical(activeProjectIntent());invalidate();};intent();
+    const intent=()=>{setPhysical(activeProjectIntent()||(matchMedia('(pointer: coarse)').matches||innerWidth<768?document.querySelector<HTMLElement>('[data-project-world]')?.dataset.selected||'fifo':null));invalidate();};intent();
     const surface=gl.domElement.parentElement;
     const leave=()=>{setProjectIntent(null,'hover');gl.domElement.style.cursor='';};
     surface?.addEventListener('pointerleave',leave);window.addEventListener('blur',leave);
@@ -111,6 +112,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
   },[camera,fit,invalidate]);
   useFrame((_,delta)=>{
     const motion=transition.current;
+    if(selectedFill.current){const r=regions.find(r=>r.id===(physical||active));if(r)selectedFill.current.position.set(r.x,1.5,r.z);}
     groups.current.forEach((group,i)=>{if(group){const target=regions[i].restY+(!reducedMotion&&(regions[i].id===physical||regions[i].id===opening)?ACTIVE_LIFT:0);group.position.y=Math.abs(group.position.y-target)<.0005?target:MathUtils.damp(group.position.y,target,response.selection,Math.min(delta,.25));}});
     if(motion){
       const p=Math.min(1,(performance.now()-motion.started)/motion.request.duration),ease=p*p*p*(10+p*(-15+6*p));motion.progress=p;
@@ -139,6 +141,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
     else setProjectIntent(id,'tap');
   };
   return <group rotation={[0,-.23,0]}>
+    {tier==='low'&&(matchMedia('(pointer: coarse)').matches||size.width<768)&&<pointLight ref={selectedFill} color="#ffd5a3" intensity={1.4} distance={3} decay={2} position={[0,1.5,.9]}/>}
     <group position={[0,-.37,-.28]}><SystemBed width={8.6} depth={7} peripherals={false} tier={tier} reducedMotion={reducedMotion}/></group>
     {[-1,1].map(s=><group key={`wing-${s}`} position={[s*1.72,-.17,s*.12]}><CircuitBoard width={2.9} depth={5.2} tier={tier} seed={56+s} components={false}/><Frame width={2.9} depth={5.2} height={.13}/></group>)}
     <group position={[0,-.04,-3.4]} rotation={[Math.PI/3.5,0,0]}><PowerShelf tier={tier} scale={1.2} muted/></group>
@@ -159,7 +162,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
         <group position={[0,.07,0]}><CircuitBoard width={region.dockWidth-.12} depth={region.dockDepth-.12} tier={tier} seed={i+70}/></group>
         <group position={[0,.17,-region.dockDepth/2+.13]}><Connector width={region.dockWidth*.5} count={10}/></group>
         <Line points={[[region.dockWidth*.38,.19,-region.dockDepth*.33],[region.dockWidth*.38,labelY-.07,-region.dockDepth*.33]]} color={selected?'#9e763f':'#576b73'} lineWidth={.55} raycast={()=>{}}/>
-        <Html portal={labels} position={[region.dockWidth*.38,labelY,-region.dockDepth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening?.45:physical&&region.id!==physical?.65:1}}><span className="platform-label" data-active={selected} aria-hidden="true"><span/>{region.label}</span></Html>
+        <Html portal={labels} position={[size.width<768?0:region.dockWidth*.38,labelY,size.width<768?0:-region.dockDepth*.33]} center style={{pointerEvents:'none',opacity:opening&&region.id!==opening?.45:physical&&region.id!==physical?.65:1}}><span className="platform-label" data-active={selected} aria-hidden="true"><span/>{region.label}</span></Html>
         <ProjectMount dock={region} onMeasure={onMeasure}>
           {region.id==='fifo'&&<FifoActivity active={engaged} reducedMotion={reducedMotion}/>}
           {region.id==='fpga-arithmetic'&&<ArithmeticTile a={21} b={8} result={29} active={engaged} reducedMotion={reducedMotion}/>}
@@ -168,7 +171,7 @@ export default function ProjectFloorplan({reducedMotion,tier}:SceneProps) {
           {region.id==='mini-lysimeter'&&<InstrumentTile active={engaged} reducedMotion={reducedMotion}/>}
           {region.id==='cubex'&&<Printer reducedMotion={reducedMotion} active={engaged}/>}
         </ProjectMount>
-        <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={opening===region.id||bus.running||(engaged&&selection.running)} offset={i*.13} points={[[0,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,region.dockDepth*.4],[region.dockWidth*.44,.145,region.dockDepth*.4]]}/>
+        <SignalTrace strength={selected?(opening?1.55:1.2):(opening ? .25 : .55)} reducedMotion={reducedMotion} active={engaged||bus.running} running={opening===region.id||bus.running||(engaged&&selection.running)} offset={i*.13} points={[[0,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,-region.dockDepth*.47],[-region.dockWidth*.44,.145,region.dockDepth*.4],[region.dockWidth*.44,.145,region.dockDepth*.4]]}/>
 
       </group>;
     })}

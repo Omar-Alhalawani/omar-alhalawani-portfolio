@@ -21,16 +21,22 @@ const sceneModules: Partial<Record<SceneKind, ReturnType<typeof lazy<React.Compo
   daq: lazy(() => import('./projects/DaqScene')),
 };
 
-function SteelEnvironment({kind}:{kind:SceneKind}) {
+function SteelEnvironment({kind,mobile}:{kind:SceneKind;mobile:boolean}) {
  const {gl,scene,invalidate}=useThree();
  const source=useResource('softbox-environment',()=>{const t=canvasTexture(x=>{x.fillStyle='#0b1015';x.fillRect(0,0,128,128);for(const [cx,cy,w,h,color] of [[31,35,30,62,'#889fae'],[96,40,18,50,'#b9c6ca'],[64,92,42,8,'#5f4732']] as const){const g=x.createRadialGradient(cx,cy,0,cx,cy,w);g.addColorStop(0,color);g.addColorStop(1,'#0b1015');x.fillStyle=g;x.fillRect(cx-w,cy-h/2,w*2,h);} },128,true);t.mapping=EquirectangularReflectionMapping;t.colorSpace=SRGBColorSpace;return t;});
  useEffect(()=>{
   const started=performance.now(),generator=new PMREMGenerator(gl),environment=generator.fromEquirectangular(source);
   const p=window.__PORTFOLIO_PROFILE__;if(p)(p.scenes[kind]??={}).pmremMs=performance.now()-started;
-  scene.environment=environment.texture;scene.environmentIntensity=kind==='hero'?.85:kind==='floorplan'&&matchMedia('(pointer: coarse)').matches?.9:.65;
+  scene.environment=environment.texture;scene.environmentIntensity=kind==='hero'?.85:mobile?.88:.65;
   gl.toneMapping=ACESFilmicToneMapping;gl.toneMappingExposure=1.02;
   generator.dispose();invalidate();return()=>{scene.environment=null;environment.dispose();};
- },[gl,scene,invalidate,source,kind]);
+ },[gl,scene,invalidate,source,kind,mobile]);
+ return null;
+}
+
+function MobileFog({platform}:{platform:boolean}){
+ const {scene,size}=useThree();
+ useEffect(()=>{const fog=scene.fog;if(fog&&'near' in fog){const near=fog.near,far=fog.far,fit=platform?Math.max(1,1.16/(size.width/size.height)):1;fog.near=11*fit;fog.far=25*fit;return()=>{fog.near=near;fog.far=far;};}},[scene,size.width,size.height,platform]);
  return null;
 }
 
@@ -93,16 +99,17 @@ export default function CanvasShell({ scene, host, onReady, onFailure, onContext
   const Scene = sceneModules[scene];
   const detailTier=stage>=6?'low':tier;
   const dpr=scene==='contact'?(tier==='low'||stage>=2?1:stage>=1?1.1:1.25):tier==='low'?1:stage>=2?1:stage>=1?1.1:tier==='high'?1.4:1.25;
+  const mobileHardware=(tier==='low')&&scene!=='hero'&&scene!=='contact';
   const bloom=tier!=='low'&&stage<3,shadows=scene!=='contact'&&tier!=='low'&&stage<5;
   useEffect(()=>{
     if(host.current)host.current.dataset.renderLoop=visible?(reducedMotion?'demand':'always'):'paused';
   },[host,visible,reducedMotion]);
   return <Canvas className="scene-canvas" shadows={shadows} dpr={[1,dpr]} frameloop={visible&&prepared ? (reducedMotion ? 'demand' : 'always') : 'never'} camera={{ position: [0,1.35,7.5], fov:36, near:.1, far:40 }} gl={{ alpha:true, antialias:false, powerPreference:'default' }}>
     <RenderLifecycle onReady={onReady} onContextLost={onContextLost} reducedMotion={reducedMotion} tier={detailTier} kind={scene} stage={stage} onSlow={onSlow} />
-    <SteelEnvironment kind={scene}/><ambientLight intensity={scene==='floorplan'&&tier==='low'?.28:.16} />
-    <fog attach="fog" args={['#07090b',9,19]}/>
+    <SteelEnvironment kind={scene} mobile={mobileHardware}/><ambientLight intensity={mobileHardware?.34:.16} />
+    <fog attach="fog" args={['#07090b',9,19]}/>{mobileHardware&&<MobileFog platform={scene==='floorplan'}/>}
     <directionalLight castShadow={shadows} position={[-3,5,4]} color="#e4eef5" intensity={2.05} shadow-mapSize={stage>=4||tier==='medium'?[512,512]:[1024,1024]} shadow-camera-left={-5} shadow-camera-right={5} shadow-camera-top={5} shadow-camera-bottom={-5} shadow-camera-far={18} shadow-bias={-.00025} shadow-normalBias={.012} />
-    <directionalLight position={[4,2,-3]} color="#c4dbea" intensity={1.25} />
+    <directionalLight position={[4,2,-3]} color="#c4dbea" intensity={mobileHardware?1.5:1.25} />
     <DetailTier.Provider value={detailTier}><Suspense fallback={null}>{Scene && <Scene reducedMotion={reducedMotion} tier={detailTier} />}<WarmShaders onPrepared={preparedScene} onFailure={onFailure} kind={scene}/></Suspense></DetailTier.Provider>
     {bloom&&<Suspense fallback={null}><EnergyBloom/></Suspense>}
   </Canvas>;

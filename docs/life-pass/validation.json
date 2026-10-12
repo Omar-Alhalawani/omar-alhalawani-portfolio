@@ -1,0 +1,280 @@
+{
+  "renderer": "SwiftShader software Chromium; mobile touch emulation",
+  "captures": [
+    "mobile-platform-fifo",
+    "mobile-platform-lumalink",
+    "mobile-platform-cubex",
+    "mobile-platform-mini-lysimeter",
+    "watch-cubex-1",
+    "watch-cubex-4",
+    "watch-cubex-7",
+    "watch-fifo-1",
+    "watch-fifo-4",
+    "watch-fifo-7",
+    "watch-fpga-1",
+    "watch-fpga-4",
+    "watch-fpga-7",
+    "watch-emg-1",
+    "watch-emg-4",
+    "watch-emg-7",
+    "watch-lumalink-1",
+    "watch-lumalink-4",
+    "watch-lumalink-7",
+    "watch-daq-1",
+    "watch-daq-4",
+    "watch-daq-7",
+    "mobile-standalone-cubex",
+    "mobile-standalone-lumalink",
+    "mobile-standalone-fifo",
+    "mobile-experience",
+    "watch-verification-1",
+    "watch-verification-4",
+    "watch-verification-7",
+    "mobile-reduced-motion"
+  ],
+  "loops": [
+    {
+      "kind": "cubex",
+      "seconds": 30,
+      "elapsedSeconds": 30.205,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "repeatCount": 5,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.2063011714213007,
+        0.65
+      ],
+      "observedHeadXRange": [
+        -0.4797211059129135,
+        0.48
+      ]
+    },
+    {
+      "kind": "fifo",
+      "seconds": 25,
+      "elapsedSeconds": 25.299,
+      "cycles": [
+        0,
+        1,
+        2,
+        4,
+        5
+      ],
+      "repeatCount": 5,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.18001718570180567,
+        0.65
+      ]
+    },
+    {
+      "kind": "fpga",
+      "seconds": 25,
+      "elapsedSeconds": 25.196,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "repeatCount": 5,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.18015588205246116,
+        0.65
+      ]
+    },
+    {
+      "kind": "emg",
+      "seconds": 25,
+      "elapsedSeconds": 25.013,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "repeatCount": 5,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.2494318890875114,
+        0.65
+      ]
+    },
+    {
+      "kind": "lumalink",
+      "seconds": 25,
+      "elapsedSeconds": 25.025,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "repeatCount": 4,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.18076351284401979,
+        0.65
+      ]
+    },
+    {
+      "kind": "daq",
+      "seconds": 25,
+      "elapsedSeconds": 25.211,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "repeatCount": 4,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": [
+        0.21188637600232677,
+        0.2541904675044818
+      ]
+    },
+    {
+      "kind": "verification",
+      "seconds": 30,
+      "elapsedSeconds": 30.087,
+      "cycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "repeatCount": 5,
+      "idleObserved": true,
+      "observedStages": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "idleIndicatorEmissionRange": null
+    }
+  ],
+  "widths": [
+    {
+      "width": 320,
+      "overflow": false,
+      "dpr": 1
+    },
+    {
+      "width": 360,
+      "overflow": false,
+      "dpr": 1
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "dpr": 1
+    },
+    {
+      "width": 430,
+      "overflow": false,
+      "dpr": 1
+    }
+  ],
+  "checks": [
+    "Selected touch loops persist after release; previous strong loop yields on change; offscreen renderer/clock pause and resume",
+    "FIFO autonomous illustration never mutates interactive state, yields to manual event and resumes after inactivity",
+    "Reduced motion: readable static hardware, no autonomous loops"
+  ],
+  "errors": [],
+  "lifecycle": {
+    "headerClear": true,
+    "hiddenPause": true,
+    "resumeWithoutLargeDelta": true,
+    "fifoStateUnchanged": true,
+    "fifoManualYield": true,
+    "fifoResumeSeconds": 1.98
+  },
+  "desktop": {
+    "renderer": "SwiftShader software Chromium; mobile touch emulation",
+    "captures": [
+      "after-desktop-hero",
+      "after-desktop-platform",
+      "after-desktop-cubex",
+      "after-desktop-fifo",
+      "after-desktop-lumalink"
+    ],
+    "loops": [],
+    "widths": [],
+    "checks": [],
+    "errors": []
+  },
+  "automated": {
+    "build": "pass, 13 pages",
+    "typecheck": "pass, no errors or warnings, one existing hint",
+    "lint": "pass",
+    "tests": "18 passed"
+  }
+}

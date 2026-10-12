@@ -6,13 +6,14 @@ import {CircuitBoard,Processor,Connector,SystemBed,Parts} from './Circuitry';
 import {Plate,Label,AMBER,READ} from './Hardware';
 import {Frame,PowerBank,SiliconDie} from './ModuleHardware';
 import Waveform from './Waveform';
+import PoweredIndicator from './PoweredIndicator';
 import SignalTrace from './SignalTrace';
 import {PortBank,PowerShelf} from './EngineeringDetails';
 import {useMicroSequence,useSectionActivation} from './useMicroSequence';
 import type {SceneProps} from './types';
 
 export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
- const activation=useSectionActivation('experience'),sequence=useMicroSequence(activation,reducedMotion,5,4.8,'verification',undefined,{loop:true,pause:2.8});
+ const activation=useSectionActivation('experience'),sequence=useMicroSequence(activation,reducedMotion,5,4.8,'verification',undefined,{loop:true,pause:1.2});
  useSceneCamera('floorplan');const materials=useRef<(MeshStandardMaterial|null)[]>([]),pass=useRef<MeshStandardMaterial>(null),time=useRef(0),phase=useRef(.9);
  const [lit,setLit]=useState([false,false,false,false]),litState=useRef(lit);
  const activity=useRef([{current:.5},{current:0},{current:0},{current:0}]);
@@ -20,13 +21,14 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
   if(!reducedMotion)time.current+=Math.min(delta,.1);
   phase.current=reducedMotion?.85:sequence.progress.current;
   const windows=[[0,.19],[.19,.39],[.39,.68],[.68,.91]];
-  materials.current.forEach((m,i)=>{const [a,b]=windows[i],p=phase.current;const value=reducedMotion?.55:p>=a&&p<b?MathUtils.smoothstep(p,a,a+.025)*(1-MathUtils.smoothstep(p,b-.025,b)):0;activity.current[i].current=value;if(m)m.emissiveIntensity=.035+value*.7;});
+  materials.current.forEach((m,i)=>{const [a,b]=windows[i],p=phase.current;const value=reducedMotion?.55:p>=a&&p<b?MathUtils.smoothstep(p,a,a+.025)*(1-MathUtils.smoothstep(p,b-.025,b)):0;activity.current[i].current=value||(.045+.015*Math.sin(time.current*2+i));if(m)m.emissiveIntensity=.035+value*.7;});
   const next=activity.current.map(a=>a.current>.12);
   if(next.some((on,i)=>on!==litState.current[i])){litState.current=next;setLit(next);}
   if(pass.current)pass.current.emissiveIntensity=reducedMotion||phase.current>.77&&phase.current<.98?.85:.035;
   const sample=window.__PORTFOLIO_PROFILE__?.scenes.verification;if(sample)sample.pose=[phase.current,sequence.stage];
  });
  return <group rotation={[0,-.2,0]}>
+  <PoweredIndicator position={[2.44,.9,.42]} running={sequence.running} reducedMotion={reducedMotion}/>
   <group position={[0,-.25,0]}><SystemBed width={7.2} depth={4.5} tier={tier} reducedMotion={reducedMotion}/></group>
   <group position={[0,-.05,0]}><CircuitBoard width={5.7} depth={2.95} tier={tier} seed={107} components={false}/><Frame width={5.7} depth={2.95} height={.16}/></group>
   <group position={[0,.02,-1.72]}><PowerShelf tier={tier} scale={1.15}/></group>
@@ -62,6 +64,6 @@ export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
    <SignalTrace strength={1.05} reducedMotion={reducedMotion} activityRef={activity.current[i]} speed={.18} offset={i*.25} points={[[0,.23,.84],[-.53,.23,.84],[-.53,.23,-.5],[-.53,.69,-.5],[0,.69,-.5],[0,.76,0]]}/>
    <mesh position={[0,.12,.91]}><boxGeometry args={[1.1,.018,.014]}/><meshStandardMaterial color={AMBER} emissive='#ffac40' emissiveIntensity={.35}/></mesh>
   </group>)}
-  {[0,1,2].map(n=><SignalTrace key={n} spill={n===1?.75:0} active={sequence.running} strength={n===1?1.3:.75} reducedMotion={reducedMotion} duty={.45} period={24} progressRef={phase} offset={.08+n*.12} points={[[-2.65,.14,1.1+n*.11],[-2.05,.14,1.1+n*.11],[-2.05,.14,.94],[-.68,.14,.94],[-.68,.14,1.1+n*.11],[.68,.14,1.1+n*.11],[.68,.14,.94],[2.05,.14,.94],[2.05,.14,1.1+n*.11],[2.6,.14,1.1+n*.11]]}/>)}
+  {[0,1,2].map(n=><SignalTrace key={n} spill={n===1?.75:0} active running={sequence.running} strength={n===1?1.3:.75} reducedMotion={reducedMotion} duty={.45} period={24} progressRef={phase} offset={.08+n*.12} points={[[-2.65,.14,1.1+n*.11],[-2.05,.14,1.1+n*.11],[-2.05,.14,.94],[-.68,.14,.94],[-.68,.14,1.1+n*.11],[.68,.14,1.1+n*.11],[.68,.14,.94],[2.05,.14,.94],[2.05,.14,1.1+n*.11],[2.6,.14,1.1+n*.11]]}/>)}
  </group>;
 }

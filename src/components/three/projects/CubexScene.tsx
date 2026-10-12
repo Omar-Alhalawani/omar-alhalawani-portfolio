@@ -1,21 +1,31 @@
 import {useRef} from 'react';
 import {useFrame,useThree} from '@react-three/fiber';
-import {Group,MathUtils} from 'three';
+import {Group,MeshStandardMaterial,MathUtils} from 'three';
 import {Line} from '@react-three/drei';
 import {Board} from '../Board';
 import {Parts,Connector,CircuitBoard,Processor} from '../Circuitry';
 import {Plate,Label,AMBER} from '../Hardware';
 import {useSceneCamera} from '../useSceneData';
 import SignalTrace from '../SignalTrace';
+import PoweredIndicator from '../PoweredIndicator';
+import {printerToolpath} from '../../../lib/printer-toolpath';
 import {useMicroSequence} from '../useMicroSequence';
 import type {SceneProps} from '../types';
 
 export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boolean;scale?:number;active?:boolean}) {
- const sequence=useMicroSequence(active,reducedMotion,4,3.2,'cubex',undefined,{loop:true,pause:1.7});
+ const sequence=useMicroSequence(active,reducedMotion,5,4.6,'cubex',undefined,{loop:true,pause:1.1});
  const {gl}=useThree();
- const head=useRef<Group>(null),gantry=useRef<Group>(null),time=useRef(0);
- useFrame((_,delta)=>{time.current=sequence.progress.current;const move=sequence.running?Math.sin(time.current*Math.PI*2):0;if(head.current)head.current.position.x=reducedMotion?0:MathUtils.damp(head.current.position.x,move*.45,12,Math.min(delta,.1));if(gantry.current)gantry.current.position.z=reducedMotion?0:MathUtils.damp(gantry.current.position.z,move*.2,12,Math.min(delta,.1));if(window.__PORTFOLIO_PROFILE__){const kind=gl.domElement.closest<HTMLElement>('.scene-island')?.dataset.scene||'';const sample=window.__PORTFOLIO_PROFILE__?.scenes[kind]?.activity?.cubex;if(sample)sample.motion=[head.current?.position.x??0,gantry.current?.position.z??0];}});
+ const head=useRef<Group>(null),gantry=useRef<Group>(null),heater=useRef<MeshStandardMaterial>(null),powered=useRef(0);
+ useFrame((_,delta)=>{
+  if(!reducedMotion)powered.current+=Math.min(delta,.1);
+  const [x,z]=sequence.running?printerToolpath(sequence.progress.current,sequence.cycle.current):[0,0];
+  // Timeline interpolation itself is continuous; no reset or FPS-dependent damping.
+  if(head.current)head.current.position.x=reducedMotion?0:sequence.running?x:MathUtils.damp(head.current.position.x,0,8,Math.min(delta,.1));if(gantry.current)gantry.current.position.z=reducedMotion?0:sequence.running?z:MathUtils.damp(gantry.current.position.z,0,8,Math.min(delta,.1));
+  if(heater.current)heater.current.emissiveIntensity=sequence.running?.3:.11+.035*Math.sin(powered.current*2);
+  if(window.__PORTFOLIO_PROFILE__){const kind=gl.domElement.closest<HTMLElement>('.scene-island')?.dataset.scene||'';const sample=window.__PORTFOLIO_PROFILE__.scenes[kind]?.activity?.cubex;if(sample)sample.motion=[x,z,heater.current?.emissiveIntensity??0];}
+ });
  return <group scale={scale}>
+  <PoweredIndicator position={[1.13,.58,.19]} running={sequence.running} reducedMotion={reducedMotion}/>
   <Parts parts={[[0,.16,-.95],[-1.12,1.45,-.03],[1.16,.18,-.7]].map(p=>({position:p as [number,number,number],size:[.36,.34,.35] as [number,number,number]}))} color='#223038' metalness={.4} roughness={.5}/>
   {[-1,1].map(s=><mesh key={`lead-${s}`} position={[s*.94,.91,-.68]}><cylinderGeometry args={[.026,.026,1.52,12]}/><meshStandardMaterial color='#a5b1b8' metalness={.95} roughness={.24}/></mesh>)}
   <Line points={[[-.9,1.46,-.06],[.9,1.46,-.06],[.9,1.46,.08],[-.9,1.46,.08],[-.9,1.46,-.06]]} color='#0d161c' lineWidth={2} raycast={()=>{}}/>
@@ -37,13 +47,13 @@ export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boole
     <mesh position={[0,0,.2]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.115,.115,.034,16]}/><meshStandardMaterial color='#101a1e' roughness={.6}/></mesh>
     <Parts parts={[-1,1].flatMap(s=>[{position:[s*.047,0,.222] as [number,number,number],size:[.026,.14,.009] as [number,number,number]},{position:[0,s*.047,.222] as [number,number,number],size:[.14,.026,.009] as [number,number,number]}])} color='#75868e'/>
     <Parts parts={[-1,1].map(s=>({position:[s*.085,-.19,0] as [number,number,number],size:[.04,.12,.16] as [number,number,number]}))} color='#a7b2b1'/>
-    <mesh position={[0,-.27,0]}><boxGeometry args={[.13,.12,.13]}/><meshStandardMaterial color='#a79468' metalness={.92} roughness={.3} emissive={AMBER} emissiveIntensity={sequence.running?.3:0}/></mesh>
+    <mesh position={[0,-.27,0]}><boxGeometry args={[.13,.12,.13]}/><meshStandardMaterial ref={heater} color='#a79468' metalness={.92} roughness={.3} emissive={AMBER} emissiveIntensity={.15}/></mesh>
     <mesh position={[0,-.37,0]} rotation={[Math.PI,0,0]}><coneGeometry args={[.067,.12,12]}/><meshStandardMaterial color='#bca15f' metalness={.9} roughness={.25}/></mesh>
    </group>
   </group>
   <Line points={[[-.65,.33,-.4],[.65,.33,-.4],[.65,.33,.4],[-.65,.33,.4],[-.65,.33,-.4]]} color={sequence.running?AMBER:'#ac8f55'} lineWidth={.7} transparent opacity={sequence.running?.8:.18} raycast={()=>{}}/>
   <group position={[1.12,.45,-.05]} rotation={[0,0,Math.PI/2]}><CircuitBoard width={.58} depth={.85} seed={133}/><Processor width={.25} active={false}/><group position={[0,.12,.32]}><Connector width={.44} count={6}/></group><Label text='MOTION / CTRL' position={[0,.27,-.26]} width={.49}/></group>
-  <SignalTrace active={sequence.running} progressRef={sequence.progress} reducedMotion={reducedMotion} strength={.65} points={[[1.11,.35,.4],[1.11,.35,-.5],[1.11,1.75,-.5],[.3,1.75,-.5],[.3,1.53,-.5]]}/>
+  <SignalTrace active running={sequence.running} progressRef={sequence.progress} reducedMotion={reducedMotion} strength={.65} points={[[1.11,.35,.4],[1.11,.35,-.5],[1.11,1.75,-.5],[.3,1.75,-.5],[.3,1.53,-.5]]}/>
  </group>;
 }
 export default function CubexScene({reducedMotion}:SceneProps) {

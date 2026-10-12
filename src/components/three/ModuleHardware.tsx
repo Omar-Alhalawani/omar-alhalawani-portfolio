@@ -1,13 +1,14 @@
 import {useLayoutEffect,useRef} from 'react';
 import {RoundedBox} from '@react-three/drei';
 import {useFrame} from '@react-three/fiber';
-import {CylinderGeometry,InstancedMesh,Matrix4,MeshStandardMaterial} from 'three';
+import {CylinderGeometry,InstancedMesh,Matrix4,MeshStandardMaterial,MathUtils} from 'three';
 import {Plate,Label,AMBER,READ} from './Hardware';
 import {Parts,Processor,Connector,CircuitBoard} from './Circuitry';
 import {useMetal,useResource,canvasTexture} from './resources';
 import {useDetailTier} from './quality';
 import SignalTrace from './SignalTrace';
 import Waveform from './Waveform';
+import PoweredIndicator from './PoweredIndicator';
 import {useMicroSequence} from './useMicroSequence';
 
 // Open manufactured frames preserve the view of the PCB and its internal routes.
@@ -53,8 +54,9 @@ export function MemoryBank({occupied=Array(8).fill(false),values=[],scale=1}:{oc
 }
 
 export function ArithmeticTile({a=0,b=0,result=0,switches=21,subtract=false,reducedMotion,active=true,scale=1}:{a?:number;b?:number;result?:number;switches?:number;subtract?:boolean;reducedMotion:boolean;active?:boolean;scale?:number}) {
- const sequence=useMicroSequence(active,reducedMotion,5,3.5,'fpga',`${a}:${b}:${result}:${switches}:${subtract}`,{loop:true,pause:2.2}),stage=sequence.stage;
+ const sequence=useMicroSequence(active,reducedMotion,5,3.5,'fpga',`${a}:${b}:${result}:${switches}:${subtract}`,{loop:true,pause:1.1}),stage=sequence.stage;
  return <group scale={scale}>
+  <PoweredIndicator position={[.73,.12,.87]} running={sequence.running} reducedMotion={reducedMotion}/>
   {sequence.running&&<pointLight position={[.35,1.1,.72]} color='#ffe0b4' intensity={1.7} distance={2.9} decay={2}/>}
   <Frame width={3.6} depth={2.45} height={.13}/>
   <group position={[-1.43,.18,0]}>
@@ -77,8 +79,9 @@ export function ArithmeticTile({a=0,b=0,result=0,switches=21,subtract=false,redu
 }
 
 export function AcquisitionTile({reducedMotion,active=true,scale=1}:{reducedMotion:boolean;active?:boolean;scale?:number}) {
- const sequence=useMicroSequence(active,reducedMotion,5,3.8,'emg',undefined,{loop:true,pause:2.6}),stage=sequence.stage;
+ const sequence=useMicroSequence(active,reducedMotion,5,3.8,'emg',undefined,{loop:true,pause:1.1}),stage=sequence.stage;
  return <group scale={scale}>
+  <PoweredIndicator position={[-.6,.15,-.5]} running={sequence.running} reducedMotion={reducedMotion}/>
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.38,-.51] as [number,number,number],size:[.1,.65,.12] as [number,number,number]}))} color='#788b94' metalness={.9} roughness={.28}/>
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.12,-.48] as [number,number,number],size:[.28,.055,.55] as [number,number,number]}))} color='#667980'/>
   <group position={[-.74,.13,.72]}><Plate width={1.22} depth={.54} height={.08} color='#2e413e'/><Parts parts={[-.4,0,.4].map(x=>({position:[x,.09,0] as [number,number,number],size:[.23,.1,.24] as [number,number,number]}))} color='#14242a' metalness={.12}/><Label text='ANALOG FRONT END' width={1.05} position={[0,.15,.18]}/></group>
@@ -95,28 +98,30 @@ export function AcquisitionTile({reducedMotion,active=true,scale=1}:{reducedMoti
    <mesh position={[0,0,.088]}><planeGeometry args={[1.88,.96]}/><meshPhysicalMaterial color='#06171d' metalness={.05} roughness={.4} clearcoat={.25} clearcoatRoughness={.38}/></mesh>
    <Parts parts={Array.from({length:9},(_,i)=>({position:[(i-4)*.21,0,.091] as [number,number,number],size:[.003,.88,.003] as [number,number,number]}))} color='#203e43' metalness={0}/>
    <Parts parts={Array.from({length:5},(_,i)=>({position:[0,(i-2)*.18,.091] as [number,number,number],size:[1.77,.003,.003] as [number,number,number]}))} color='#203e43' metalness={0}/>
-   <Waveform position={[0,.12,.096]} width={1.75} amplitude={.15} noisy color={READ} active={sequence.running&&stage===4} reducedMotion={reducedMotion}/>
-   <Waveform position={[0,-.19,.096]} width={1.75} amplitude={.11} color={AMBER} active={sequence.running&&stage===4} reducedMotion={reducedMotion}/>
+   <Waveform position={[0,.12,.096]} width={1.75} amplitude={sequence.running&&stage===4?.15:.025} noisy color={READ} active reducedMotion={reducedMotion}/>
+   <Waveform position={[0,-.19,.096]} width={1.75} amplitude={sequence.running&&stage===4?.11:.018} color={AMBER} active reducedMotion={reducedMotion}/>
    <Parts parts={[-.65,-.5,-.35].map(x=>({position:[x,-.49,.098] as [number,number,number],size:[.045,.02,.015] as [number,number,number]}))} color={AMBER} emissive/>
    <Label text='SYNTHETIC / SERIAL' position={[0,.37,.097]} rotation={[0,0,0]} width={1.4} color={READ}/>
   </group>
-  <SignalTrace active={sequence.running} progressRef={sequence.progress} spill={.65} reducedMotion={reducedMotion} points={[[-1.3,.07,.25],[-.95,.07,.25],[-.95,.07,-.28],[-.55,.1,-.28],[-.1,.1,-.28],[-.1,.1,.48],[.37,.1,.48],[1.45,.1,.48],[1.45,.3,-.48],[.5,.4,-.48]]}/>
+  <SignalTrace active running={sequence.running} progressRef={sequence.progress} spill={.65} reducedMotion={reducedMotion} points={[[-1.3,.07,.25],[-.95,.07,.25],[-.95,.07,-.28],[-.55,.1,-.28],[-.1,.1,-.28],[-.1,.1,.48],[.37,.1,.48],[1.45,.1,.48],[1.45,.3,-.48],[.5,.4,-.48]]}/>
  </group>;
 }
 
 export function OpticalTile({reducedMotion,active=true,scale=1}:{reducedMotion:boolean;active?:boolean;scale?:number}) {
- const sequence=useMicroSequence(active,reducedMotion,4,3.6,'lumalink');
- const screen=useRef<MeshStandardMaterial>(null),exposure=useRef<MeshStandardMaterial>(null),decode=useRef<MeshStandardMaterial>(null),clock=useRef(0),propagation=useRef(.3),received=useRef(.3);
+ const sequence=useMicroSequence(active,reducedMotion,5,4.2,'lumalink',undefined,{loop:true,pause:1.1});
+ const screen=useRef<MeshStandardMaterial>(null),exposure=useRef<MeshStandardMaterial>(null),decode=useRef<MeshStandardMaterial>(null),clock=useRef(0),propagation=useRef(.3),received=useRef(.3),opticalProgress=useRef(0);
  useFrame(()=>{
-  clock.current=sequence.progress.current*3.6;
-  const t=clock.current,pulse=(n:number)=>n>=0&&[[0,.18],[.36,.54],[.72,1.2]].some(([a,b])=>n>=a&&n<b);
-  const transmitting=sequence.running&&(reducedMotion||pulse(t)),capturing=sequence.running&&(reducedMotion||pulse(t-.2)),decoded=sequence.running&&(reducedMotion||t>1.5&&t<3.9);
-  propagation.current=transmitting||capturing?1:.05;received.current=decoded?.75:.05;
-  if(screen.current)screen.current.emissiveIntensity=transmitting?1.7:.045;
-  if(exposure.current)exposure.current.emissiveIntensity=capturing?1.8:.03;
-  if(decode.current)decode.current.emissiveIntensity=decoded?1.15:.025;
+  clock.current=sequence.progress.current*4.2;
+  const t=clock.current,window=(a:number,b:number)=>sequence.running?MathUtils.smoothstep(t,a,a+.12)*(1-MathUtils.smoothstep(t,b-.12,b)):0;
+  const transmitting=window(0,1.6),propagating=window(.8,2),capturing=window(1.6,2.6),decoded=window(2.4,4.2);
+  opticalProgress.current=Math.max(0,Math.min(.999,(t-.8)/1.2));
+  propagation.current=propagating;received.current=decoded;
+  if(screen.current)screen.current.emissiveIntensity=.045+transmitting*(.8+.85*(.5+.5*Math.sin(t*24)));
+  if(exposure.current)exposure.current.emissiveIntensity=.03+capturing*1.77;
+  if(decode.current)decode.current.emissiveIntensity=.12+decoded*1.03;
  });
  return <group scale={scale}>
+  <PoweredIndicator position={[1.48,.19,.5]} running={sequence.running} reducedMotion={reducedMotion}/>
   <group position={[-1.22,.1,0]}><Plate width={.88} depth={1.31} height={.09} color='#6a787b' bolts/></group><group position={[1.08,.1,0]}><Plate width={1.14} depth={1.33} height={.09} color='#697a81' bolts/></group>
   <Parts parts={[-1,1].map(s=>({position:[-1.27,.28,s*.46] as [number,number,number],size:[.12,.35,.1] as [number,number,number]}))} color='#85959b' roughness={.27}/>
   <group position={[-1.27,.66,0]}>
@@ -133,20 +138,21 @@ export function OpticalTile({reducedMotion,active=true,scale=1}:{reducedMotion:b
    {[0,.08,.16].map((y,i)=><mesh key={i} position={[0,y,0]}><cylinderGeometry args={[.235-i*.03,.235-i*.03,.07,24]}/><meshStandardMaterial color={i===1?'#8c9ba3':'#17272d'} metalness={.92} roughness={.19}/></mesh>)}
    <mesh position={[0,.21,0]}><cylinderGeometry args={[.16,.16,.012,24]}/><meshPhysicalMaterial color='#426f84' metalness={.55} roughness={.08} clearcoat={1}/></mesh>
   </group><mesh position={[-.13,.32,.4]}><boxGeometry args={[.1,.035,.045]}/><meshStandardMaterial ref={exposure} color={READ} emissive={READ} roughness={.25}/></mesh><group position={[.12,.38,0]}><Processor width={.46} active={false}/></group><Label text='RX / CAMERA' position={[0,.3,.36]} width={.76}/></group>
-  <SignalTrace color='#ffdb9e' active={sequence.running} activityRef={propagation} spill={.55} reducedMotion={reducedMotion} strength={.6} speed={1.1} points={[[-1.2,.65,0],[.35,.43,0]]}/>
-  <SignalTrace color={READ} active={sequence.running} activityRef={received} reducedMotion={reducedMotion} strength={.65} points={[[1.18,.09,.48],[1.18,.09,.86],[.2,.09,.86],[.2,.09,1.15]]}/>
-  <group position={[.15,.19,.97]}><Plate width={.85} depth={.34} height={.12} color='#283a41'/><mesh position={[.29,.078,0]}><boxGeometry args={[.12,.027,.12]}/><meshStandardMaterial ref={decode} color={AMBER} emissive={AMBER}/></mesh><Label text='DECODE' position={[-.09,.084,0]} width={.49}/></group>
+  <SignalTrace color='#ffdb9e' active running={sequence.running} progressRef={opticalProgress} activityRef={propagation} spill={.55} reducedMotion={reducedMotion} strength={.6} speed={1.1} points={[[-1.2,.65,0],[.35,.43,0]]}/>
+  <SignalTrace color={READ} active running={sequence.running} activityRef={received} reducedMotion={reducedMotion} strength={.65} points={[[1.18,.09,.48],[1.18,.09,.86],[.2,.09,.86],[.2,.09,1.15]]}/>
+  <group position={[.15,.19,.97]}><Plate width={.85} depth={.34} height={.12} color='#283a41'/><mesh position={[.29,.078,0]}><boxGeometry args={[.12,.027,.12]}/><meshStandardMaterial ref={decode} color={AMBER} emissive={AMBER}/></mesh><Label text={sequence.running&&sequence.stage===4?'RESULT':'DECODE'} position={[-.09,.084,0]} width={.49}/></group>
   <group position={[-1.45,.13,.84]}><Connector width={.55} count={8}/></group>
  </group>;
 }
 
 export function InstrumentTile({active=true,reducedMotion=false}:{active?:boolean;reducedMotion?:boolean}) {
- const sequence=useMicroSequence(active,reducedMotion,5,3.2,'daq');
+ const sequence=useMicroSequence(active,reducedMotion,5,4,'daq',undefined,{loop:true,pause:1.1});
  return <group>
+  <PoweredIndicator position={[.47,.48,-.65]} running={sequence.running} reducedMotion={reducedMotion}/>
   <Frame width={1.24} depth={1.58} height={.14}/><group position={[0,.17,-.25]}><Plate width={1.05} depth={.88} height={.25} color='#6b7a7c'/></group>
   {[-.37,-.12,.12,.37].map((x,i)=><group key={x}><group position={[x,.4,-.25]}><Plate width={.16} depth={.66} height={.08} color='#1f383b'/></group><mesh position={[x,.26,.44]}><cylinderGeometry args={[.064,.064,.25,12]}/><meshStandardMaterial color='#b9b49e' metalness={.87} roughness={.24}/></mesh><Label text={`CH${i}${sequence.stage===i?" / ↑":""}`} position={[x,.451,-.24]} width={.13} color={sequence.stage===i?AMBER:READ}/></group>)}
   <Parts parts={[-.37,-.12,.12,.37].map(x=>({position:[x,.457,.12] as [number,number,number],size:[.05,.022,.075] as [number,number,number]}))} color={sequence.running?AMBER:'#34474b'} emissive={sequence.running}/>
-  <group position={[0,.48,-.65]} rotation={[-.25,0,0]}><Plate width={1.08} depth={.12} height={.38} color='#75868d'/><mesh position={[0,0,.065]}><planeGeometry args={[.96,.28]}/><meshStandardMaterial color='#09222a' metalness={.05} roughness={.4}/></mesh><Label text={sequence.running?`CH ${Math.min(3,sequence.stage)} / SAMPLE`:'4 CH / LOG'} position={[0,.04,.067]} rotation={[0,0,0]} width={.8} color={READ}/><Parts parts={Array.from({length:4},(_,i)=>({position:[(i-1.5)*.2,-.075,.067] as [number,number,number],size:[.14,.018,.005] as [number,number,number]}))} color='#7b9ca1'/></group>
+  <group position={[0,.48,-.65]} rotation={[-.25,0,0]}><Plate width={1.08} depth={.12} height={.38} color='#75868d'/><mesh position={[0,0,.065]}><planeGeometry args={[.96,.28]}/><meshStandardMaterial color='#09222a' metalness={.05} roughness={.4}/></mesh><Label text={sequence.running?(sequence.stage===4?'ACQUIRE / LOG':`CH ${sequence.stage} / SAMPLE`):'4 CH / LOG'} position={[0,.04,.067]} rotation={[0,0,0]} width={.8} color={READ}/><Parts parts={Array.from({length:4},(_,i)=>({position:[(i-1.5)*.2,-.075,.067] as [number,number,number],size:[.14,.018,.005] as [number,number,number]}))} color='#7b9ca1'/></group>
  </group>;
 }
 
