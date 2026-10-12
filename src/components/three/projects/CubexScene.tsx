@@ -1,6 +1,6 @@
 import {useRef} from 'react';
-import {useFrame} from '@react-three/fiber';
-import {Group} from 'three';
+import {useFrame,useThree} from '@react-three/fiber';
+import {Group,MathUtils} from 'three';
 import {Line} from '@react-three/drei';
 import {Board} from '../Board';
 import {Parts,Connector,CircuitBoard,Processor} from '../Circuitry';
@@ -11,9 +11,10 @@ import {useMicroSequence} from '../useMicroSequence';
 import type {SceneProps} from '../types';
 
 export function Printer({reducedMotion,scale=1,active=true}:{reducedMotion:boolean;scale?:number;active?:boolean}) {
- const sequence=useMicroSequence(active,reducedMotion,4,3.2,'cubex');
+ const sequence=useMicroSequence(active,reducedMotion,4,3.2,'cubex',undefined,{loop:true,pause:1.7});
+ const {gl}=useThree();
  const head=useRef<Group>(null),gantry=useRef<Group>(null),time=useRef(0);
- useFrame(()=>{time.current=sequence.progress.current;const move=sequence.running?Math.sin(time.current*Math.PI*2):0;if(head.current)head.current.position.x=reducedMotion?0:move*.45;if(gantry.current)gantry.current.position.z=reducedMotion?0:move*.2;});
+ useFrame((_,delta)=>{time.current=sequence.progress.current;const move=sequence.running?Math.sin(time.current*Math.PI*2):0;if(head.current)head.current.position.x=reducedMotion?0:MathUtils.damp(head.current.position.x,move*.45,12,Math.min(delta,.1));if(gantry.current)gantry.current.position.z=reducedMotion?0:MathUtils.damp(gantry.current.position.z,move*.2,12,Math.min(delta,.1));if(window.__PORTFOLIO_PROFILE__){const kind=gl.domElement.closest<HTMLElement>('.scene-island')?.dataset.scene||'';const sample=window.__PORTFOLIO_PROFILE__?.scenes[kind]?.activity?.cubex;if(sample)sample.motion=[head.current?.position.x??0,gantry.current?.position.z??0];}});
  return <group scale={scale}>
   <Parts parts={[[0,.16,-.95],[-1.12,1.45,-.03],[1.16,.18,-.7]].map(p=>({position:p as [number,number,number],size:[.36,.34,.35] as [number,number,number]}))} color='#223038' metalness={.4} roughness={.5}/>
   {[-1,1].map(s=><mesh key={`lead-${s}`} position={[s*.94,.91,-.68]}><cylinderGeometry args={[.026,.026,1.52,12]}/><meshStandardMaterial color='#a5b1b8' metalness={.95} roughness={.24}/></mesh>)}

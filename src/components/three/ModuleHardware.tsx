@@ -53,7 +53,7 @@ export function MemoryBank({occupied=Array(8).fill(false),values=[],scale=1}:{oc
 }
 
 export function ArithmeticTile({a=0,b=0,result=0,switches=21,subtract=false,reducedMotion,active=true,scale=1}:{a?:number;b?:number;result?:number;switches?:number;subtract?:boolean;reducedMotion:boolean;active?:boolean;scale?:number}) {
- const sequence=useMicroSequence(active,reducedMotion,5,3.5,'fpga',`${a}:${b}:${result}:${switches}:${subtract}`),stage=sequence.stage;
+ const sequence=useMicroSequence(active,reducedMotion,5,3.5,'fpga',`${a}:${b}:${result}:${switches}:${subtract}`,{loop:true,pause:2.2}),stage=sequence.stage;
  return <group scale={scale}>
   {sequence.running&&<pointLight position={[.35,1.1,.72]} color='#ffe0b4' intensity={1.7} distance={2.9} decay={2}/>}
   <Frame width={3.6} depth={2.45} height={.13}/>
@@ -77,7 +77,7 @@ export function ArithmeticTile({a=0,b=0,result=0,switches=21,subtract=false,redu
 }
 
 export function AcquisitionTile({reducedMotion,active=true,scale=1}:{reducedMotion:boolean;active?:boolean;scale?:number}) {
- const sequence=useMicroSequence(active,reducedMotion,5,3.8,'emg'),stage=sequence.stage;
+ const sequence=useMicroSequence(active,reducedMotion,5,3.8,'emg',undefined,{loop:true,pause:2.6}),stage=sequence.stage;
  return <group scale={scale}>
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.38,-.51] as [number,number,number],size:[.1,.65,.12] as [number,number,number]}))} color='#788b94' metalness={.9} roughness={.28}/>
   <Parts parts={[-1,1].map(s=>({position:[.5+s*.7,.12,-.48] as [number,number,number],size:[.28,.055,.55] as [number,number,number]}))} color='#667980'/>

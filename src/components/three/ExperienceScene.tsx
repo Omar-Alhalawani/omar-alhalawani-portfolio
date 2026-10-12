@@ -12,7 +12,7 @@ import {useMicroSequence,useSectionActivation} from './useMicroSequence';
 import type {SceneProps} from './types';
 
 export default function ExperienceScene({reducedMotion,tier}:SceneProps) {
- const activation=useSectionActivation('experience'),sequence=useMicroSequence(activation,reducedMotion,5,4.8,'verification');
+ const activation=useSectionActivation('experience'),sequence=useMicroSequence(activation,reducedMotion,5,4.8,'verification',undefined,{loop:true,pause:2.8});
  useSceneCamera('floorplan');const materials=useRef<(MeshStandardMaterial|null)[]>([]),pass=useRef<MeshStandardMaterial>(null),time=useRef(0),phase=useRef(.9);
  const [lit,setLit]=useState([false,false,false,false]),litState=useRef(lit);
  const activity=useRef([{current:.5},{current:0},{current:0},{current:0}]);
