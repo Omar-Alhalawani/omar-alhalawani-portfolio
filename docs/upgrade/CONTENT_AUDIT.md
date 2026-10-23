@@ -12,7 +12,7 @@ CubeX remains in progress. Its public bring-up log supports X/Y/Z movement, dual
 
 ## Content changes
 
-Replace all public slogans with factual headings. Expand Ciena with Python/Makefile dependency analysis, research with fault diagnosis and GUI workflows, and teaching with ECOR 1031 / SYSC 2310. Add the independent repair business and uBreakiFix. Add six secondary project cards, with JPacman and Robot Dog explicitly in progress. Add education, Doulos training, grouped broader skills, and concise current/past leadership on About.
+Replace all public slogans with factual headings. Expand Ciena with Python/Makefile dependency analysis, research with fault diagnosis and GUI workflows, and teaching with programming and digital-systems instruction. Add the independent repair business and uBreakiFix. Add six secondary project cards, with JPacman and Robot Dog explicitly in progress. Add education, Doulos training, grouped broader skills, and concise current/past leadership on About.
 
 ## Visual references
 
