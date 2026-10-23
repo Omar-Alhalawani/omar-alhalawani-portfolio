@@ -23,10 +23,10 @@ export const experience = [
   {
     id:'teaching', company:'Carleton University', role:'Teaching Assistant', team:'Programming and Digital Systems',
     period:'September 2025 – May 2026', location:'Ottawa, Ontario',
-    summary:'Supported programming and digital-systems laboratory instruction in ECOR 1031 and SYSC 2310.',
+    summary:'Supported programming and digital-systems instruction, including Python development and RTL fundamentals.',
     points:[
       'Helped 150+ ECOR 1031 students debug Python exercises and understand programming concepts in fall 2025.',
-      'Coached SYSC 2310 students on combinational/sequential logic, FSMs, synchronous RTL, simulation, waveforms, and HDL validation in winter 2026.',
+      'Coached students on combinational/sequential logic, FSMs, synchronous RTL, simulation, waveforms, and HDL validation in winter 2026.',
       'Provided individual and group assistance, graded assigned work, and coordinated lab delivery with instructors and other teaching assistants.',
     ], tags:['Python','RTL','Simulation','Waveforms','Teaching'],
   },
