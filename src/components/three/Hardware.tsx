@@ -1,6 +1,10 @@
-import {Line,RoundedBox} from '@react-three/drei';
-import {CanvasTexture,CylinderGeometry,InstancedMesh,Matrix4,MeshBasicMaterial,PlaneGeometry,SRGBColorSpace} from 'three';
-import {useLayoutEffect,useRef} from 'react';
+import {Line,RoundedBox,Text} from '@react-three/drei';
+import {CylinderGeometry,InstancedMesh,Matrix4,Mesh,Vector3} from 'three';
+import {useEffect,useLayoutEffect,useRef} from 'react';
+import {useFrame,useThree} from '@react-three/fiber';
+import labelFont from '@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff?url';
+import {labelLayout} from '../../lib/scene-labels';
+import {useDetailTier} from './quality';
 import {useSteelGrain,usePlateGeometry,useMetal,useResource} from './resources';
 
 export const AMBER='#ffbd59';
@@ -16,7 +20,7 @@ function BoltSet({width,depth,y}:{width:number;depth:number;y:number}) {
  return <instancedMesh ref={ref} args={[geometry,material,4]} dispose={null}/>;
 }
 export function Plate({width=3.4,depth=2.8,height=.12,color='#202429',rim=false,bolts=false,metalness=.88,roughness=.4}:{width?:number;depth?:number;height?:number;color?:string;rim?:boolean;bolts?:boolean;metalness?:number;roughness?:number}) {
-  const grain=useSteelGrain(),geometry=usePlateGeometry(width,height,depth),material=useMetal(color,metalness,roughness,grain);
+  const tier=useDetailTier(),grain=useSteelGrain(),geometry=usePlateGeometry(width,height,depth,tier==='low'?1:2),material=useMetal(color,metalness,roughness,grain);
   return <group>
     <mesh castShadow receiveShadow geometry={geometry} material={material} dispose={null}/>
     {rim&&<Line points={[[-width/2+.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,-depth/2+.08],[width/2-.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,depth/2-.08],[-width/2+.08,height/2+.005,-depth/2+.08]]} color="#939a9f" lineWidth={.65} transparent opacity={.6}/>}
@@ -30,17 +34,22 @@ export function Chip({width=.8,depth=.8,active=false}:{width?:number;depth?:numb
     {[-1,1].map(side=><mesh key={side} position={[side*(width/2+.015),-.04,0]}><boxGeometry args={[.035,.055,depth*.83]}/><meshStandardMaterial color="#c0aa75" metalness={.85} roughness={.32}/></mesh>)}
   </group>;
 }
-// Identical engravings share their texture/material across modules and islands.
+// Signed-distance glyphs retain clean edges at oblique angles and during zoom.
+// Tiny markings are omitted rather than rendered as unreadable pixel noise;
+// primary labels also have full-size HTML equivalents beside every scene.
 export function Label({text,position=[0,.1,0],width=.9,color='#dadbd7',rotation=[-Math.PI/2,0,0]}:{text:string;position?:[number,number,number];width?:number;color?:string;rotation?:[number,number,number]}) {
-  const texture=useResource(`label-texture:${text}:${color}`,()=>{
-    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=128;
-    const ctx=canvas.getContext('2d')!;
-    ctx.fillStyle=color;ctx.font='500 56px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64,490);
-    const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;return texture;
-  });
-  const geometry=useResource('label-plane',()=>new PlaneGeometry(1,.25));
-  const material=useResource(`label-material:${text}:${color}`,()=>new MeshBasicMaterial({map:texture,transparent:true,depthWrite:false,toneMapped:false}));
-  return <mesh position={position} rotation={rotation} scale={[width,width,1]} geometry={geometry} material={material} dispose={null} raycast={()=>{}}/>;
+ const mesh=useRef<Mesh>(null),clock=useRef(Infinity),top=useRef(new Vector3()),bottom=useRef(new Vector3());
+ const {size}=useThree(),layout=labelLayout(text,width);
+ useEffect(()=>{clock.current=Infinity;},[text,width,size.width,size.height]);
+ useFrame(({camera},delta)=>{
+  clock.current+=delta;if(clock.current<.125||!mesh.current)return;clock.current=0;
+  mesh.current.updateWorldMatrix(true,false);
+  top.current.set(0,layout.fontSize*.5,0).applyMatrix4(mesh.current.matrixWorld).project(camera);
+  bottom.current.set(0,-layout.fontSize*.5,0).applyMatrix4(mesh.current.matrixWorld).project(camera);
+  const pixels=Math.hypot((top.current.x-bottom.current.x)*size.width/2,(top.current.y-bottom.current.y)*size.height/2);
+  mesh.current.visible=pixels>=(mesh.current.visible?11:13);
+ });
+ return <Text ref={mesh} position={position} rotation={rotation} font={labelFont} characters="" fontSize={layout.fontSize} maxWidth={width} lineHeight={1.15} anchorX="center" anchorY="middle" textAlign="center" color={color} sdfGlyphSize={64} depthOffset={-1} material-toneMapped={false} material-depthWrite={false} onUpdate={object=>{(object as Mesh&{gpuAccelerateSDF:boolean}).gpuAccelerateSDF=false;}} raycast={()=>{}}>{layout.text}</Text>;
 }
 export function ContactShade({width=4,depth=3,position=[0,-.3,0]}:{width?:number;depth?:number;position?:[number,number,number]}) {
   return <mesh position={position} rotation={[-Math.PI/2,0,0]}><planeGeometry args={[width*1.3,depth*1.3]}/><shaderMaterial transparent depthWrite={false} vertexShader="varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}" fragmentShader="varying vec2 vUv; void main(){float d=length((vUv-.5)*2.);gl_FragColor=vec4(0.,0.,0.,.5*(1.-smoothstep(.15,.95,d)));}"/></mesh>;

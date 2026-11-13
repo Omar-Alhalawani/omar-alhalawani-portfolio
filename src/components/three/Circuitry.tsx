@@ -20,7 +20,7 @@ export function Parts({parts,color='#202427',metalness=.75,roughness=.36,emissiv
  return <instancedMesh receiveShadow ref={ref} args={[undefined,undefined,parts.length]} raycast={()=>{}}><primitive object={geometry} attach="geometry" dispose={null}/><primitive object={material} attach="material" dispose={null}/></instancedMesh>;
 }
 
-function boardTexture(width:number,depth:number,seed:number,resolution:number) {
+function boardTexture(seed:number,resolution:number) {
  const c=document.createElement('canvas');c.width=resolution;c.height=resolution;const x=c.getContext('2d')!;x.scale(resolution/1024,resolution/1024);
  let state=seed+1;const random=()=>{state=(state*1664525+1013904223)>>>0;return state/4294967296;};
  x.fillStyle='#111918';x.fillRect(0,0,1024,1024);
@@ -39,13 +39,13 @@ function boardTexture(width:number,depth:number,seed:number,resolution:number) {
   x.save();x.translate(512,512);x.rotate(side*Math.PI/2);const p=(n-13.5)*10;
   x.fillStyle='#bbaa71';x.fillRect(p,-209,5,16);x.strokeStyle='#5e603d';x.beginPath();x.moveTo(p+2,-208);x.lineTo(p+2,-260);x.lineTo(p*1.55,-280);x.lineTo(p*1.55,-380);x.stroke();x.restore();
  }
- x.fillStyle='#a7ada4';x.font='14px monospace';x.fillText('OA // CONCEPTUAL SYSTEM',42,975);x.font='11px monospace';x.fillText(`${width.toFixed(1)} / ${depth.toFixed(1)}  —  COMPUTE SUBSTRATE`,42,54);
+ // Identification is rendered as scalable text, never tiny baked-in pixels.
  const t=new CanvasTexture(c);t.colorSpace=SRGBColorSpace;t.anisotropy=4;return t;
 }
 
 export function CircuitBoard({width=3.4,depth=2.6,tier:requestedTier,seed=1,components=true,base=true}:{width?:number;depth?:number;tier?:GraphicsTier;seed?:number;components?:boolean;base?:boolean}) {
  const inheritedTier=useDetailTier(),tier=requestedTier||inheritedTier;
- const texture=useResource(`pcb:${seed}:${width}:${depth}`,()=>boardTexture(width,depth,seed,512));
+ const texture=useResource(`pcb:${seed}:${width}:${depth}`,()=>boardTexture(seed,512));
  const bodies=useMemo(()=>{
   const a:Box[]=[];const step=tier==='low'?.45:tier==='medium'?.29:.23;
   for(let z=-depth/2+.22;z<depth/2-.12;z+=step)for(let x=-width/2+.24;x<width/2-.15;x+=step){

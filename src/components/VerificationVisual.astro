@@ -3,15 +3,15 @@ import SceneIsland from './SceneIsland';
 ---
 <figure class="verification-visual">
   <div class="verification-art"><SceneIsland scene="verification" client:visible /></div>
-  <div class="verification-stages" aria-label="Verification workflow"><span>SPECIFICATION</span><span>RTL</span><span>TESTBENCH</span><span>VERIFY</span></div>
+  <div class="verification-stages" aria-label="Verification workflow"><span aria-label="Specification">SPEC</span><span>RTL</span><span>TESTBENCH</span><span>VERIFY</span></div>
   <figcaption class="art-caption">Conceptual verification workflow; independent of employer designs.</figcaption>
 </figure>
 <style>
   .verification-visual { display:grid; align-content:center; background:#0a0d0e; border:0; border-block:1px solid var(--edge); border-radius:0; padding:18px; box-shadow:none; }
   .verification-art { height:480px; margin-inline:-18px; }
-  .verification-stages { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; text-align:center; font:400 10px/1.7 var(--mono); color:var(--muted); max-width:540px; margin-inline:auto; width:100%; }
+  .verification-stages { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; text-align:center; font:500 13px/1.7 var(--mono); color:var(--muted); max-width:540px; margin-inline:auto; width:100%; }
   figcaption { margin-top:24px; text-align:center; }
-  @media(max-width:800px) { .verification-art { height:320px; } .verification-stages { font-size:7px; gap:8px; } }
+  @media(max-width:800px) { .verification-art { height:320px; } .verification-stages { font-size:12px; gap:8px; } }
   @media(max-width:350px) { .verification-art { height:270px; } }
-  @media(max-width:800px){.verification-visual{padding:8px;border-color:transparent;background:transparent;box-shadow:none}.verification-art{height:360px;margin-inline:-8px}.verification-stages{font-size:10px;gap:6px}figcaption{font-size:11px;margin-top:16px}}
+  @media(max-width:800px){.verification-visual{padding:8px;border-color:transparent;background:transparent;box-shadow:none}.verification-art{height:360px;margin-inline:-8px}.verification-stages{font-size:12px;gap:6px}figcaption{font-size:12px;margin-top:16px}}
 </style>

@@ -9,6 +9,7 @@ Present Omar's engineering work through readable, source-backed explanations and
 - Shared spacing tokens follow a 4px scale. Use one 4px surface radius through `--radius`; `--radius-panel` aliases it. Functional circles such as LEDs remain circular.
 - Use Omar’s name in navigation rather than a fictional studio identity. Bring the existing portrait into the homepage; keep it in natural color.
 - Prefer open sections and clear hierarchy. Reserve panels for actual tools, diagrams, forms, and selected-project context. Prefer flat surfaces and thin rules to repeated glow, inset shadows, and gradient cards; show skill labels as plain text. Keep tap targets at least 44px.
+- Never bake meaningful text into scene posters or tiny PCB textures. Use scalable 3D glyphs and HTML/SVG labels; omit micro-engravings below readable screen size. Hardware fallbacks use text-free vectors with separate labels.
 - Use the existing real portrait and clearly labeled conceptual engineering artwork. Do not invent project photos, measurements, achievements, or availability.
 
 ## Interaction states

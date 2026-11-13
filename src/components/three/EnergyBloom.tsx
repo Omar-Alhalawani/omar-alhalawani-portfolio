@@ -9,15 +9,15 @@ import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
 import {FXAAShader} from 'three/addons/shaders/FXAAShader.js';
 
 // One AA path; the five bloom mips run below CSS resolution, without depth-of-field.
-export default function EnergyBloom() {
+export default function EnergyBloom({contact=false}:{contact?:boolean}) {
  const {gl,scene,camera,size,invalidate}=useThree();
  const pipeline=useMemo(()=>{
-  const composer=new EffectComposer(gl),render=new RenderPass(scene,camera),bloom=new UnrealBloomPass(new Vector2(256,256),.32,.28,1.5),output=new OutputPass(),fxaa=new ShaderPass(FXAAShader);
+  const composer=new EffectComposer(gl),render=new RenderPass(scene,camera),bloom=new UnrealBloomPass(new Vector2(256,256),contact?.32:.24,contact?.28:.2,contact?1.5:1.8),output=new OutputPass(),fxaa=new ShaderPass(FXAAShader);
   composer.addPass(render);composer.addPass(bloom);composer.addPass(output);composer.addPass(fxaa);
   // Keep the main image crisp; only the glow pyramid is downsampled.
   const sizeBloom=bloom.setSize.bind(bloom);bloom.setSize=(w,h)=>sizeBloom(Math.max(1,Math.round(w*.55)),Math.max(1,Math.round(h*.55)));
   return {composer,render,bloom,output,fxaa};
- },[gl,scene,camera]);
+ },[gl,scene,camera,contact]);
  const ratio=useThree(state=>state.viewport.dpr);
  useEffect(()=>{pipeline.composer.setPixelRatio(ratio);pipeline.composer.setSize(size.width,size.height);pipeline.fxaa.uniforms.resolution.value.set(1/(size.width*ratio),1/(size.height*ratio));invalidate();},[pipeline,ratio,size.width,size.height,invalidate]);
  useEffect(()=>{gl.info.autoReset=false;return()=>{gl.info.autoReset=true;};},[gl]);

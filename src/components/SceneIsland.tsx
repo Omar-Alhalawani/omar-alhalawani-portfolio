@@ -1,5 +1,6 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import {navigationMark} from '../lib/navigation-metrics';
+import {scenePresentation} from '../lib/scene-presentation';
 import type { SceneKind } from './three/types';
 
 const loadCanvas = () => import('./three/CanvasShell');
@@ -41,7 +42,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
     observer.observe(element);document.addEventListener('visibilitychange',update);
     return()=>{observer.disconnect();clearTimeout(timer);document.removeEventListener('visibilitychange',update);};
   },[load,status,fail]);
-  const fallback = `/art/${scene}-render.webp`;
+  const presentation=scenePresentation[scene],fallback=presentation.image;
   useEffect(() => {
     const element = host.current;
     if (!element) return;
@@ -72,6 +73,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
         <Suspense fallback={null}><CanvasShell scene={scene} host={host} onReady={ready} onFailure={fail} onContextLost={recover} /></Suspense>
       </GraphicsBoundary>}
       </div>
+      {presentation.labels.length>0&&<div className="scene-key" aria-label="Illustrated components">{presentation.labels.map(label=><span key={label}>{label}</span>)}</div>}
       {(load&&status==='loading'||status==='fallback')&&<span className="scene-status" role="status" aria-live="polite">{status==='loading'?'Loading interactive view…':fallbackReason==='data-saver'?'Static view · data saver':fallbackReason==='static'?'Static view':'Interactive 3D unavailable · static view shown'}</span>}
     </div>
   );
