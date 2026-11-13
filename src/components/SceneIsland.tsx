@@ -16,6 +16,7 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
   const host = useRef<HTMLDivElement>(null);
   const [load, setLoad] = useState(false);
   const [status, setStatus] = useState<'loading' | 'ready' | 'fallback'>('loading');
+  const [fallbackReason,setFallbackReason]=useState<'unavailable'|'static'|'data-saver'>('unavailable');
   const [generation,setGeneration]=useState(0);
   const recovery=useRef({attempted:false,timer:0});
   const destination=()=>Boolean(window.__PROJECT_HANDOFF__&&location.pathname===`/projects/${window.__PROJECT_HANDOFF__.id}`&&scene!=='floorplan'&&scene!=='hero'&&scene!=='verification');
@@ -29,22 +30,34 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
     recovery.current.timer=window.setTimeout(()=>{setGeneration(value=>value+1);setStatus('loading');setLoad(true);},750);
   },[fail]);
   useEffect(()=>()=>clearTimeout(recovery.current.timer),[]);
+  useEffect(()=>{
+    const element=host.current;
+    if(!element||!load||status!=='loading')return;
+    let timer=0,inView=false;
+    // A stalled shader/import must leave the real poster available. Count only
+    // visible loading time, so deferred/offscreen scenes aren't timed out.
+    const update=()=>{clearTimeout(timer);if(inView&&!document.hidden)timer=window.setTimeout(fail,30000);};
+    const observer=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;update();});
+    observer.observe(element);document.addEventListener('visibilitychange',update);
+    return()=>{observer.disconnect();clearTimeout(timer);document.removeEventListener('visibilitychange',update);};
+  },[load,status,fail]);
   const fallback = `/art/${scene}-render.webp`;
   useEffect(() => {
     const element = host.current;
     if (!element) return;
     if(destination()){element.dataset.handoff='true';navigationMark('scene-mount');}
     if (new URLSearchParams(location.search).get('graphics') === 'static'||(navigator as Navigator&{connection?:{saveData?:boolean}}).connection?.saveData&&!window.__PROJECT_HANDOFF__) {
+      setFallbackReason(new URLSearchParams(location.search).get('graphics')==='static'?'static':'data-saver');
       fail();
       return;
     }
     // The real renderer is the capability check; a separate temporary WebGL
     // context delays startup and consumes another driver allocation.
-    if(scene==='hero'||window.__PROJECT_HANDOFF__){void loadCanvas();if(scene==='hero')void import('./three/HeroScene');setLoad(true);return;}
+    if(scene==='hero'||window.__PROJECT_HANDOFF__){void loadCanvas().catch(fail);if(scene==='hero')void import('./three/HeroScene').catch(fail);setLoad(true);return;}
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         observer.disconnect();
-        void loadCanvas();
+        void loadCanvas().catch(fail);
         setLoad(true);
       }
     }, { rootMargin: '250px' });
@@ -52,11 +65,14 @@ export default function SceneIsland({ scene = 'hero' }: { scene?: SceneKind }) {
     return () => observer.disconnect();
   }, [scene,fail]);
   return (
-    <div className="scene-island" ref={host} data-state={status} data-scene={scene} aria-hidden="true">
+    <div className="scene-island" ref={host} data-state={status} data-scene={scene} aria-busy={status==='loading'&&load}>
+      <div aria-hidden="true">
       <img className="scene-fallback" src={fallback} width="900" height={scene==='hero'?900:600} alt="" loading={scene==='hero'?'eager':'lazy'} fetchPriority={scene==='hero'?'high':'auto'} />
       {load && status !== 'fallback' && <GraphicsBoundary key={generation} onFailure={fail}>
         <Suspense fallback={null}><CanvasShell scene={scene} host={host} onReady={ready} onFailure={fail} onContextLost={recover} /></Suspense>
       </GraphicsBoundary>}
+      </div>
+      {(load&&status==='loading'||status==='fallback')&&<span className="scene-status" role="status" aria-live="polite">{status==='loading'?'Loading interactive view…':fallbackReason==='data-saver'?'Static view · data saver':fallbackReason==='static'?'Static view':'Interactive 3D unavailable · static view shown'}</span>}
     </div>
   );
 }

@@ -7,28 +7,59 @@ import {site} from '../data/site';
 <SiteLayout title="Contact — Omar Alhalawani" description="Contact Omar Alhalawani about ASIC verification, digital design, embedded systems, and engineering opportunities. Based in Ottawa, Canada.">
   <div class="container"><section class="contact-hero"><div class="contact-copy"><Eyebrow>Contact // Engineering inquiries</Eyebrow><h1>Contact</h1><p class="lead">For engineering roles, research, or project collaboration, get in touch.</p>
     <aside class="contact-details"><div><span class="contact-label">EMAIL</span><a href={`mailto:${site.email}`}>{site.email} <span aria-hidden="true">↗</span></a></div><div><span class="contact-label">ELSEWHERE</span><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><div><span class="contact-label">BASED IN</span><p>{site.location}<br />{site.university}</p></div></aside><a class="button button--primary contact-entry" href="#contact-form">Send a message ↓</a></div><figure class="contact-globe" aria-label="Interactive conceptual globe showing Ottawa and illustrative intercontinental communication paths."><SceneIsland client:visible scene="contact"/><span class="globe-drag-hint" data-globe-hint hidden>DRAG TO ROTATE</span><figcaption>OTTAWA, CANADA <span>Conceptual communication paths</span></figcaption></figure></section>
-      <div class="contact-form-wrap"><form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100"/></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254"/></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint"></textarea><p id="message-hint">At least 10 characters.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit">Send message ↗</button><p id="form-status" class="form-status" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also email me directly.</p></form>
+      <div class="contact-form-wrap"><form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100" aria-describedby="contact-name-error"/><p class="form-error" id="contact-name-error" hidden>Check your name and try again.</p></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="contact-email-error"/><p class="form-error" id="contact-email-error" hidden>Enter a valid email address.</p></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint contact-message-error"></textarea><p id="message-hint">At least 10 characters.</p><p class="form-error" id="contact-message-error" hidden>Check your message and try again.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit">Send message ↗</button><p id="form-status" class="form-status" tabindex="-1" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also <a href={`mailto:${site.email}`}>email me directly</a>.</p></form>
     </div>
   </div>
 </SiteLayout>
 <script>
   import {onPage} from '../lib/page-lifecycle';
+  import {contactFailure, contactFields} from '../lib/contact-feedback';
   onPage(signal=>{
   document.querySelector('.contact-entry')?.addEventListener('click',event=>{event.preventDefault();document.querySelector('#contact-form')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});document.querySelector<HTMLInputElement>('#contact-name')?.focus({preventScroll:true});},{signal});
   const form=document.querySelector<HTMLFormElement>('#contact-form');
   const status=document.querySelector<HTMLParagraphElement>('#form-status');
   const submit=form?.querySelector<HTMLButtonElement>('button[type="submit"]');
-  if(form&&status&&submit)form.addEventListener('submit',async event=>{
+  if(!form||!status||!submit)return;
+  const fields=contactFields.map(name=>form.elements.namedItem(name)).filter((field):field is HTMLInputElement|HTMLTextAreaElement=>field instanceof HTMLInputElement||field instanceof HTMLTextAreaElement);
+  const clearField=(field:HTMLInputElement|HTMLTextAreaElement)=>{
+    field.removeAttribute('aria-invalid');field.setCustomValidity('');
+    const error=document.getElementById(`contact-${field.name}-error`);if(error)error.hidden=true;
+  };
+  fields.forEach(field=>field.addEventListener('input',()=>clearField(field),{signal}));
+  const showError=(message:string)=>{status.textContent=message;status.dataset.state='error';status.focus({preventScroll:true});};
+  form.addEventListener('submit',async event=>{
     event.preventDefault();
-    if(!form.reportValidity())return;
+    if(submit.disabled||!form.reportValidity())return;
+    if(!navigator.onLine){showError('You appear to be offline. Reconnect, then try again. Your message is still here.');return;}
+    fields.forEach(clearField);
     submit.disabled=true;submit.textContent='Sending…';form.setAttribute('aria-busy','true');status.textContent='Sending your message…';status.dataset.state='pending';
+    const request=new AbortController(),cancel=()=>request.abort();
+    signal.addEventListener('abort',cancel,{once:true});
+    let timedOut=false;
+    const timeout=window.setTimeout(()=>{timedOut=true;request.abort();},20000);
     try{
-      const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'},signal});
-      if(!response.ok)throw new Error('Delivery failed');
+      const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'},signal:request.signal});
+      if(signal.aborted)return;
+      if(!response.ok){
+        const payload:unknown=await response.json().catch(()=>null);
+        if(signal.aborted)return;
+        const feedback=contactFailure(response.status,payload);showError(feedback.message);
+        for(const field of fields)if(feedback.fields.includes(field.name as typeof contactFields[number])){
+          field.setAttribute('aria-invalid','true');
+          field.setCustomValidity('Check this field and try again.');
+          const error=document.getElementById(`contact-${field.name}-error`);if(error)error.hidden=false;
+        }
+        fields.find(field=>field.getAttribute('aria-invalid')==='true')?.focus({preventScroll:true});
+        return;
+      }
       form.reset();status.textContent='Message sent. Thank you for getting in touch.';status.dataset.state='success';
     }catch{
-      status.textContent='Your message could not be sent. Please try again or email me directly. Your text is still here.';status.dataset.state='error';
-    }finally{submit.disabled=false;submit.textContent='Send message ↗';form.removeAttribute('aria-busy');}
+      if(signal.aborted)return;
+      showError(timedOut?'Delivery could not be confirmed within 20 seconds. Your message is still here. Try again later or email me directly.':'A connection problem prevented delivery confirmation. Your message is still here. Check your connection, then try again or email me directly.');
+    }finally{
+      clearTimeout(timeout);signal.removeEventListener('abort',cancel);
+      submit.disabled=false;submit.textContent='Send message ↗';form.removeAttribute('aria-busy');
+    }
   },{signal});
   });
 </script>
@@ -60,7 +91,9 @@ import {site} from '../data/site';
   .form-trap { display:none; }
   .form-status { font-size:13px; margin-top:22px; line-height:1.85; min-height:24px; }
   .form-status[data-state='success'] { color:var(--amber); }
-  .form-status[data-state='error'] { color:#ffc2a4; }
+  .form-status[data-state='error'],.form-field>.form-error { color:#ffc2a4; }
+  input[aria-invalid='true'],textarea[aria-invalid='true'] { border-color:#ffc2a4; }
+  .form-note a { color:var(--amber); text-decoration:underline; text-underline-offset:3px; }
   .form-note { font-size:10px; color:var(--muted); margin-top:16px; line-height:1.85; }
   button:disabled { opacity:.7; cursor:wait; }
   @media(max-width:1000px) { .contact-hero { gap:20px; } .contact-globe { height:480px; } }

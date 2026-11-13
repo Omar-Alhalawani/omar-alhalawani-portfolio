@@ -1,5 +1,5 @@
 @layer components {
-  .demo { background:var(--bg-raised); border:1px solid var(--line); padding:clamp(20px,3vw,40px); margin-block:48px; border-radius:5px; }
+  .demo { background:var(--bg-raised); border:1px solid var(--line); padding:clamp(20px,3vw,40px); margin-block:48px; border-radius:var(--radius); }
   .demo>.eyebrow { margin-bottom:16px; }
   .demo h3 { font-size:clamp(25px,2.5vw,34px); margin-bottom:18px; }
   .demo-intro { font-size:13px; max-width:680px; margin-bottom:26px; }
