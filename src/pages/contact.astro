@@ -1,13 +1,14 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import SceneIsland from '../components/SceneIsland';
 import Eyebrow from '../components/Eyebrow.astro';
 import {site} from '../data/site';
 ---
 <SiteLayout title="Contact — Omar Alhalawani" description="Contact Omar Alhalawani about ASIC verification, digital design, embedded systems, and engineering opportunities. Based in Ottawa, Canada.">
-  <div class="container"><section class="contact-hero"><div class="contact-copy"><Eyebrow>Contact // Engineering inquiries</Eyebrow><h1>Contact</h1><p class="lead">For engineering roles, research, or project collaboration, get in touch.</p>
-    <aside class="contact-details"><div><span class="contact-label">EMAIL</span><a href={`mailto:${site.email}`}>{site.email} <span aria-hidden="true">↗</span></a></div><div><span class="contact-label">ELSEWHERE</span><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div><div><span class="contact-label">BASED IN</span><p>{site.location}<br />{site.university}</p></div></aside><a class="button button--primary contact-entry" href="#contact-form">Send a message ↓</a></div><figure class="contact-globe" aria-label="Interactive conceptual globe showing Ottawa and illustrative intercontinental communication paths."><SceneIsland client:visible scene="contact"/><span class="globe-drag-hint" data-globe-hint hidden>DRAG TO ROTATE</span><figcaption>OTTAWA, CANADA <span>Conceptual communication paths</span></figcaption></figure></section>
-      <div class="contact-form-wrap"><form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100" aria-describedby="contact-name-error"/><p class="form-error" id="contact-name-error" hidden>Check your name and try again.</p></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="contact-email-error"/><p class="form-error" id="contact-email-error" hidden>Enter a valid email address.</p></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint contact-message-error"></textarea><p id="message-hint">At least 10 characters.</p><p class="form-error" id="contact-message-error" hidden>Check your message and try again.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit">Send message ↗</button><p id="form-status" class="form-status" tabindex="-1" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also <a href={`mailto:${site.email}`}>email me directly</a>.</p></form>
+  <div class="container"><section class="contact-hero"><div class="contact-copy"><Eyebrow>Contact · Engineering inquiries</Eyebrow><h1>Contact</h1><p class="lead">For engineering roles, research, or project collaboration, get in touch.</p>
+    <aside class="contact-details"><div><span class="contact-label">EMAIL</span><a href={`mailto:${site.email}`}>{site.email} <span aria-hidden="true"><ArrowIcon /></span></a></div><div><span class="contact-label">ELSEWHERE</span><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowIcon /></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <ArrowIcon /></a></div><div><span class="contact-label">BASED IN</span><p>{site.location}<br />{site.university}</p></div></aside><a class="button button--primary contact-entry" href="#contact-form">Send a message <ArrowIcon direction="down" /></a></div><figure class="contact-globe" aria-label="Interactive conceptual globe showing Ottawa and illustrative intercontinental communication paths."><SceneIsland client:visible scene="contact"/><span class="globe-drag-hint" data-globe-hint hidden>DRAG TO ROTATE</span><figcaption>OTTAWA, CANADA <span>Conceptual communication paths</span></figcaption></figure></section>
+      <div class="contact-form-wrap"><form id="contact-form" action={site.formAction} method="POST"><h2>Send a message.</h2><p class="form-intro">All fields below are required.</p><div class="form-field"><label for="contact-name">Name</label><input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100" aria-describedby="contact-name-error"/><p class="form-error" id="contact-name-error" hidden>Check your name and try again.</p></div><div class="form-field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="contact-email-error"/><p class="form-error" id="contact-email-error" hidden>Enter a valid email address.</p></div><div class="form-field"><label for="contact-message">Message</label><textarea id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="message-hint contact-message-error"></textarea><p id="message-hint">At least 10 characters.</p><p class="form-error" id="contact-message-error" hidden>Check your message and try again.</p></div><div class="form-trap" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off"/></div><button class="button button--primary" type="submit"><span data-submit-label>Send message</span><ArrowIcon /></button><p id="form-status" class="form-status" tabindex="-1" role="status" aria-live="polite"></p><p class="form-note">Messages are delivered through Formspree. You can also <a href={`mailto:${site.email}`}>email me directly</a>.</p></form>
     </div>
   </div>
 </SiteLayout>
@@ -19,7 +20,8 @@ import {site} from '../data/site';
   const form=document.querySelector<HTMLFormElement>('#contact-form');
   const status=document.querySelector<HTMLParagraphElement>('#form-status');
   const submit=form?.querySelector<HTMLButtonElement>('button[type="submit"]');
-  if(!form||!status||!submit)return;
+  const submitLabel=submit?.querySelector<HTMLElement>('[data-submit-label]');
+  if(!form||!status||!submit||!submitLabel)return;
   const fields=contactFields.map(name=>form.elements.namedItem(name)).filter((field):field is HTMLInputElement|HTMLTextAreaElement=>field instanceof HTMLInputElement||field instanceof HTMLTextAreaElement);
   const clearField=(field:HTMLInputElement|HTMLTextAreaElement)=>{
     field.removeAttribute('aria-invalid');field.setCustomValidity('');
@@ -32,7 +34,7 @@ import {site} from '../data/site';
     if(submit.disabled||!form.reportValidity())return;
     if(!navigator.onLine){showError('You appear to be offline. Reconnect, then try again. Your message is still here.');return;}
     fields.forEach(clearField);
-    submit.disabled=true;submit.textContent='Sending…';form.setAttribute('aria-busy','true');status.textContent='Sending your message…';status.dataset.state='pending';
+    submit.disabled=true;submitLabel.textContent='Sending…';form.setAttribute('aria-busy','true');status.textContent='Sending your message…';status.dataset.state='pending';
     const request=new AbortController(),cancel=()=>request.abort();
     signal.addEventListener('abort',cancel,{once:true});
     let timedOut=false;
@@ -58,7 +60,7 @@ import {site} from '../data/site';
       showError(timedOut?'Delivery could not be confirmed within 20 seconds. Your message is still here. Try again later or email me directly.':'A connection problem prevented delivery confirmation. Your message is still here. Check your connection, then try again or email me directly.');
     }finally{
       clearTimeout(timeout);signal.removeEventListener('abort',cancel);
-      submit.disabled=false;submit.textContent='Send message ↗';form.removeAttribute('aria-busy');
+      submit.disabled=false;submitLabel.textContent='Send message';form.removeAttribute('aria-busy');
     }
   },{signal});
   });
@@ -78,7 +80,7 @@ import {site} from '../data/site';
   .contact-globe figcaption { position:absolute; bottom:5px; left:10%; font:9px/1.8 var(--mono); color:var(--amber); letter-spacing:.08em; }
   .contact-globe figcaption span { display:block; color:var(--muted); font-size:8px; }
   .contact-form-wrap { width:100%; max-width:800px; margin-inline:auto; padding:40px 0 100px; scroll-margin-top:100px; }
-  form { border:1px solid var(--edge); padding:clamp(22px,4vw,48px); border-radius:var(--radius-panel); background:linear-gradient(135deg,#12191c,var(--bg-raised)); }
+  form { border:1px solid var(--edge); padding:clamp(22px,4vw,48px); border-radius:var(--radius-panel); background:var(--bg-raised); }
   form h2 { font-size:32px; margin-bottom:16px; }
   .form-intro { font-size:12px; color:var(--muted); margin-bottom:30px; }
   .form-field { margin-bottom:26px; }

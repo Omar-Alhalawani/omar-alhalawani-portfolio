@@ -5,9 +5,10 @@ Present Omar's engineering work through readable, source-backed explanations and
 ## Visual system
 
 - Preserve the dark Amber + Steel palette. Amber is the action/energy accent; cool steel supports material and read-path contrast. No unrelated gradients or extra accent colors.
-- Space Grotesk headings, Inter body text and JetBrains Mono technical labels have distinct roles. Keep readable body typography rather than replacing fonts to follow a trend.
+- Use Space Grotesk for the main name/title, Inter for section headings and body copy, and JetBrains Mono only for actual technical labels. Keep readable body typography and avoid tiny decorative metadata.
 - Shared spacing tokens follow a 4px scale. Use one 4px surface radius through `--radius`; `--radius-panel` aliases it. Functional circles such as LEDs remain circular.
-- Prefer open sections and clear hierarchy. Reserve panels for actual tools, diagrams, forms, and selected-project context. Keep tap targets at least 44px.
+- Use Omar’s name in navigation rather than a fictional studio identity. Bring the existing portrait into the homepage; keep it in natural color.
+- Prefer open sections and clear hierarchy. Reserve panels for actual tools, diagrams, forms, and selected-project context. Prefer flat surfaces and thin rules to repeated glow, inset shadows, and gradient cards; show skill labels as plain text. Keep tap targets at least 44px.
 - Use the existing real portrait and clearly labeled conceptual engineering artwork. Do not invent project photos, measurements, achievements, or availability.
 
 ## Interaction states

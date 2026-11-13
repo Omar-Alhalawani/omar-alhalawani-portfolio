@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from './ArrowIcon.astro';
 const cards=[
  {number:'01',title:'Technical Focus',text:'RTL, verification, embedded hardware, and engineering automation.',image:'/images/engineering-overview.webp',alt:'Detailed layered conceptual computing hardware.',href:'#engineering-stack',link:'Explore disciplines'},
  {number:'02',title:'Experience',text:'ASIC verification at Ciena, research instrumentation, and teaching.',image:'/images/verification-overview.webp',alt:'Four illuminated conceptual verification modules on a circuit substrate.',href:'/experience',link:'View experience'},
@@ -7,7 +8,7 @@ const cards=[
 ];
 ---
 <nav class="engineering-overview" aria-label="Explore engineering portfolio">
- {cards.map(card=><a href={card.href} class="overview-card"><p class="eyebrow">{card.number} // {card.title}</p><h2>{card.title}</h2><img src={card.image} alt={card.alt} width="640" height="480" loading="lazy" decoding="async"/><p class="overview-description">{card.text}</p><span class="overview-action">{card.link}<span aria-hidden="true">→</span></span></a>)}
+ {cards.map(card=><a href={card.href} class="overview-card"><p class="eyebrow">{card.number} // {card.title}</p><h2>{card.title}</h2><img src={card.image} alt={card.alt} width="640" height="480" loading="lazy" decoding="async"/><p class="overview-description">{card.text}</p><span class="overview-action">{card.link}<span aria-hidden="true"><ArrowIcon direction="right" /></span></span></a>)}
 </nav>
 <style>
  .engineering-overview{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid #695a4266;background:#080c0efc}

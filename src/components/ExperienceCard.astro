@@ -6,7 +6,7 @@ const Heading=heading;
 ---
 <article class:list={['experience-card',{'experience-card--compact':compact}]} id={compact?undefined:item.id}>
   <div class="experience-meta"><span>{item.period}</span><span>{item.location}</span></div>
-  <div class="experience-body"><p class="company-label">{item.company} <span>// {item.team}</span></p><Heading>{item.role}</Heading><p class="experience-summary">{item.summary}</p><ul>{(compact?item.points.slice(0,3):item.points).map(point=><li>{point}</li>)}</ul><div class="tech-tags">{item.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div></div>
+  <div class="experience-body"><p class="company-label">{item.company} <span>· {item.team}</span></p><Heading>{item.role}</Heading><p class="experience-summary">{item.summary}</p><ul>{(compact?item.points.slice(0,3):item.points).map(point=><li>{point}</li>)}</ul><div class="tech-tags">{item.tags.map(tag=><span class="tech-tag">{tag}</span>)}</div></div>
 </article>
 <style>
   .experience-card { display:grid; grid-template-columns:240px 1fr; gap:60px; border-top:1px solid var(--line); padding-block:48px 56px; }

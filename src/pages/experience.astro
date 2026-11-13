@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Eyebrow from '../components/Eyebrow.astro';
 import ExperienceCard from '../components/ExperienceCard.astro';
@@ -9,12 +10,12 @@ import {experience} from '../data/experience';
 <SiteLayout title="Experience — Omar Alhalawani" description="ASIC verification methodology at Ciena, research instrumentation at Carleton, and teaching digital systems. Public-safe engineering experience.">
   <div class="container">
     <section class="experience-flagship" aria-label="Ciena ASIC verification experience">
-      <div class="flagship-copy"><Eyebrow>Experience // ASIC verification</Eyebrow><ExperienceCard item={experience[0]} compact heading="h1"/></div>
+      <div class="flagship-copy"><Eyebrow>Experience · ASIC verification</Eyebrow><ExperienceCard item={experience[0]} compact heading="h1"/></div>
       <VerificationVisual />
     </section>
     <section aria-label="Additional engineering experience"><h2 class="sr-only">Additional experience</h2>{experience.slice(1).map(item=><ExperienceCard item={item}/>)}</section>
     <div class="experience-note"><span class="eyebrow">Public scope</span><p>These summaries describe responsibilities and methods. They do not expose internal RTL, specifications, benchmarks, or confidential employer designs.</p></div>
-    <section class="cta-band"><div><Eyebrow>Project case studies</Eyebrow><h2>Selected Projects</h2></div><Button href="/projects" variant="primary">View projects ↗</Button></section>
+    <section class="cta-band"><div><Eyebrow>Project case studies</Eyebrow><h2>Selected Projects</h2></div><Button href="/projects" variant="primary">View projects <ArrowIcon /></Button></section>
   </div>
 </SiteLayout>
 <style>
