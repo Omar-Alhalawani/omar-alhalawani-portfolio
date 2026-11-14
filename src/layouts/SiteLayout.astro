@@ -1,5 +1,6 @@
 ---
 import {ClientRouter} from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 import '@fontsource/inter/latin-400.css';
 import '@fontsource/inter/latin-500.css';
 import '@fontsource/space-grotesk/latin-500.css';
@@ -62,6 +63,7 @@ const schema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
     <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')} />
+    <Analytics />
   </head>
   <body transition:animate="none">
     <div class="technical-background" aria-hidden="true">
